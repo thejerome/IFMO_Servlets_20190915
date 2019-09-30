@@ -1,3 +1,5 @@
+package com.webprog.task;
+
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -36,20 +38,21 @@ public class Solution extends HttpServlet {
         out.close();
     }
 
-    private boolean isDigits(String input){
-        for (int i = 0; i<input.length(); ++i){
-            if (input.charAt(i) < '0' || input.charAt(i) > '9'){
+    private boolean isDigits(String s){
+        for (int i = 0; i<s.length(); ++i){
+            if (s.charAt(i) < '0' || s.charAt(i) > '9'){
                 return false;
             }
         }
         return true;
     }
 
-    private String toOPN(String input) {
-        StringBuilder sbStack = new StringBuilder(), sbOut = new StringBuilder();
+    private String toOPN(String notOPN) {
+        StringBuilder sbStack = new StringBuilder();
+        StringBuilder sbOut = new StringBuilder();
         char cIn, cTmp;
-        for (int i = 0; i < input.length(); i++) {
-            cIn = input.charAt(i);
+        for (int i = 0; i < notOPN.length(); i++) {
+            cIn = notOPN.charAt(i);
             if (isOperator(cIn)) {
                 while (sbStack.length() > 0) {
                     cTmp = sbStack.substring(sbStack.length() - 1).charAt(0);
@@ -93,8 +96,9 @@ public class Solution extends HttpServlet {
             case '*':
             case '/':
                 return true;
+            default:
+                return false;
         }
-        return false;
     }
 
     private int priorityOfOperator(char c) {
@@ -102,16 +106,18 @@ public class Solution extends HttpServlet {
             case '*':
             case '/':
                 return 2;
+            default:
+                return 1;
         }
-        return 1;
     }
 
-    private int calculate(String input) {
-        input = toOPN(input);
-        int lhs, rhs;
+    private int calculate(String equation) {
+        equation = toOPN(equation);
+        int lhs;
+        int rhs;
         String tmp;
         Deque<Integer> st = new ArrayDeque<>();
-        StringTokenizer tokenizer = new StringTokenizer(input);
+        StringTokenizer tokenizer = new StringTokenizer(equation);
         while (tokenizer.hasMoreTokens()) {
             tmp = tokenizer.nextToken().trim();
             if (1 == tmp.length() && isOperator(tmp.charAt(0))) {
@@ -129,6 +135,8 @@ public class Solution extends HttpServlet {
                         break;
                     case '*':
                         lhs *= rhs;
+                        break;
+                    default:
                         break;
                 }
                 st.push(lhs);
