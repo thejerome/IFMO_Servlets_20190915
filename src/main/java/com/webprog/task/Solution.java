@@ -19,6 +19,7 @@ public class Solution extends HttpServlet {
         PrintWriter out = resp.getWriter();
         String equation = req.getParameter("equation");
         Map<String, String[]> parameterMap = req.getParameterMap();
+
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < equation.length(); ++i) {
             char cur = equation.charAt(i);
