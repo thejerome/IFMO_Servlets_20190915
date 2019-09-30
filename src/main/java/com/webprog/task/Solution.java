@@ -50,7 +50,8 @@ public class Solution extends HttpServlet {
     private String toOPN(String notOPN) {
         StringBuilder sbStack = new StringBuilder();
         StringBuilder sbOut = new StringBuilder();
-        char cIn, cTmp;
+        char cIn;
+        char cTmp;
         for (int i = 0; i < notOPN.length(); i++) {
             cIn = notOPN.charAt(i);
             if (isOperator(cIn)) {
@@ -111,13 +112,13 @@ public class Solution extends HttpServlet {
         }
     }
 
-    private int calculate(String equation) {
-        equation = toOPN(equation);
+    private int calculate(String input) {
+        String equation = toOPN(input);
         int lhs;
         int rhs;
         String tmp;
         Deque<Integer> st = new ArrayDeque<>();
-        StringTokenizer tokenizer = new StringTokenizer(equation);
+        StringTokenizer tokenizer = new StringTokenizer(input);
         while (tokenizer.hasMoreTokens()) {
             tmp = tokenizer.nextToken().trim();
             if (1 == tmp.length() && isOperator(tmp.charAt(0))) {
