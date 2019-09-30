@@ -119,7 +119,7 @@ public class Solution extends HttpServlet {
         int rhs;
         String tmp;
         Deque<Integer> st = new ArrayDeque<>();
-        StringTokenizer tokenizer = new StringTokenizer(input);
+        StringTokenizer tokenizer = new StringTokenizer(equation);
         while (tokenizer.hasMoreTokens()) {
             tmp = tokenizer.nextToken().trim();
             if (1 == tmp.length() && isOperator(tmp.charAt(0))) {
