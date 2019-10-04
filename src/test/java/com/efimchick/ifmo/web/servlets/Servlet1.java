@@ -32,7 +32,6 @@ public class Servlet1 extends HttpServlet {
             }
             equation = withValues.toString();
         }
-        ;
         ArrayDeque<String> rpn = shuntingYard(equation);
         out.println(calculate(rpn));
         out.flush();
@@ -50,7 +49,7 @@ public class Servlet1 extends HttpServlet {
         String top;
 
         for (int i = 0; i < infix.length(); i++) {
-            token = infix.charAt(i);;
+            token = infix.charAt(i);
             if (Character.isDigit(token)) {
                 temp.append(token);
             }
@@ -139,13 +138,14 @@ public class Servlet1 extends HttpServlet {
                     value = operand1 / operand2;
                     result.offerLast(value);
                 }
-            } else {
+            }
+            else {
                 if (!elem.equals("")) {
                     result.offerLast(Integer.valueOf(elem));
                 }
             }
         }
-        return Integer.valueOf(result.pollLast());
+        return result.pollLast();
     }
 
     private boolean hasVars(String input) {
