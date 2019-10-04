@@ -17,10 +17,6 @@ public class Servlet1 extends HttpServlet {
 
         PrintWriter out = resp.getWriter();
         String equation = req.getParameter("equation"); // use %2b for +
-        //out.println("equation="+equation);
-        //out.println("length="+equation.length());
-
-        // loop for nested variables a = b, b = 7
         while (hasVars(equation)){
             StringBuilder withValues = new StringBuilder();
             Map<String, String[]> params = req.getParameterMap();
@@ -35,21 +31,9 @@ public class Servlet1 extends HttpServlet {
                 }
             }
             equation = withValues.toString();
-            //System.out.println(equation);
         }
-
-        //out.println("withvalues="+equation);
-        //out.println("rpn=");
+        ;
         ArrayDeque<String> rpn = shuntingYard(equation);
-        ArrayDeque<String> result = new ArrayDeque<>();
-        //out.println(rpn.size());
-        /*
-        Iterator<String> it = rpn.iterator();
-        while (it.hasNext()) {
-            out.println(it.next());
-        }
-        */
-        //out.println('-');
         out.println(calculate(rpn));
         out.flush();
         out.close();
@@ -66,8 +50,7 @@ public class Servlet1 extends HttpServlet {
         String top;
 
         for (int i = 0; i < infix.length(); i++) {
-            token = infix.charAt(i);
-            //System.out.println(token);
+            token = infix.charAt(i);;
             if (Character.isDigit(token)) {
                 temp.append(token);
             }
@@ -85,17 +68,14 @@ public class Servlet1 extends HttpServlet {
             if (isOper(token)) {
                 if ((lastOper == i-1 || operStack.peekLast() == "(") && token == '-') {
                     negative = true;
-                    //System.out.println("negative");
                 }
                 else {
                     while (operStack.peekLast() != null && precedence(token) <= precedence(operStack.peekLast().charAt(0)) &&
                             !operStack.peekLast().equals("(")) {
-                        //System.out.println(operStack.peekLast()+"x ");
                         postfix.offerLast(operStack.pollLast());
                     }
                     operStack.offerLast(Character.toString(token));
                     lastOper = i;
-                    //System.out.println(token);
                 }
             }
 
@@ -129,59 +109,41 @@ public class Servlet1 extends HttpServlet {
     }
 
     private boolean isOper(char input) {
-        if (input == '-' || input == '+' || input == '*' || input == '/') {
-            return true;
-        }
-        return false;
+        return input == '-' || input == '+' || input == '*' || input == '/';
     }
 
     private int calculate(ArrayDeque<String> input) {
-        //System.out.println(input.size());
         String elem;
         Integer operand1;
         Integer operand2;
         Integer value;
         ArrayDeque<Integer> result = new ArrayDeque<>();
-        Iterator<String> it = input.iterator();
-        while (it.hasNext()) {
-            elem = it.next();
-            //System.out.println(elem);
-
+        for (String s : input) {
+            elem = s;
             if (elem.length() == 1 && isOper(elem.charAt(0))) {
-                //System.out.println(result.size());
-                //System.out.println(elem);
                 operand2 = result.pollLast();
-                //System.out.println(operand2);
                 operand1 = result.pollLast();
-                //System.out.println(operand1);
                 if (elem.equals("+")) {
                     value = operand1 + operand2;
                     result.offerLast(value);
-                    //System.out.println(operand1+"+"+operand2);
                 }
                 if (elem.equals("-")) {
                     value = operand1 - operand2;
                     result.offerLast(value);
-                    //System.out.println(operand1+"-"+operand2);
                 }
                 if (elem.equals("*")) {
                     value = operand1 * operand2;
                     result.offerLast(value);
-                    //System.out.println(operand1+"*"+operand2);
                 }
                 if (elem.equals("/")) {
                     value = operand1 / operand2;
                     result.offerLast(value);
-                    //System.out.println(operand1+"/"+operand2);
                 }
-            }
-            else {
+            } else {
                 if (!elem.equals("")) {
                     result.offerLast(Integer.valueOf(elem));
                 }
             }
-            //System.out.println(result.peekLast());
-            //System.out.println("--------------------------");
         }
         return Integer.valueOf(result.pollLast());
     }
