@@ -1,3 +1,5 @@
+package com.marycia.web.servlets;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -5,6 +7,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.util.*;
+
+
 
 
 @WebServlet(
@@ -32,7 +36,7 @@ public class Calculator extends HttpServlet {
             }
         }
 
-        Parser n = new Parser();
+        MyParser n = new MyParser();
         List<String> expression = n.parse(equation);
 
         out.println(calc(expression));

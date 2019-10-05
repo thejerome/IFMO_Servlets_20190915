@@ -1,6 +1,8 @@
+package com.marycia.web.servlets;
+
 import java.util.*;
 
-public class Parser {
+public class MyParser {
     private static String operators = "+-*/";
     private static String delimiters = "() " + operators;
     public static boolean flag = true;
