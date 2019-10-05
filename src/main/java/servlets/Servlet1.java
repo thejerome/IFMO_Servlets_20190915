@@ -41,7 +41,7 @@ public class Servlet1 extends HttpServlet {
         passedValues.forEach(new BiConsumer<String, String[]>() {
             @Override
             public void accept(String s, String[] strings) {
-                if (s.isEmpty() || !isParameterName(s.charAt(0)) || strings.length == 0 || !isNumber(strings[0]) || s.equals("equation")) {
+                if (s.isEmpty() || !isParameterName(s.charAt(0)) || strings.length == 0 || (!isNumber(strings[0]) && !isParameterName(strings[0].charAt(0))) || s.equals("equation")) {
                     if (s.equals("equation")) return;
                     try {
                         showFailResponse(resp);
@@ -49,7 +49,7 @@ public class Servlet1 extends HttpServlet {
                         ex.printStackTrace();
                     }
                 } else {
-                    values.put(s.charAt(0), Integer.valueOf(strings[0]));
+                    values.put(s.charAt(0), isNumber(strings[0]) ? Integer.valueOf(strings[0]) : values.get(strings[0].charAt(0)));
                 }
             }
         });
