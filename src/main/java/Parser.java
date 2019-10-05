@@ -1,6 +1,5 @@
 import java.util.*;
 import java.lang.*;
-import java.io.*;
 
 public class Parser {
     private static String operators = "+-*/";
@@ -14,17 +13,11 @@ public class Parser {
         return false;
     }
 
-    private static boolean isOperator (String tmp) {
-        for (int i = 0; i < operators.length(); i++) {
-            if (tmp.charAt(0) == operators.charAt(i)) return true;
-        }
-        return false;
-    }
 
     private static int priority (String tmp) {
-        if (tmp.equals("(")) return 1;
-        if (tmp.equals("+") || tmp.equals("-")) return 2;
-        if (tmp.equals("*") || tmp.equals("/")) return 3;
+        if ("(".equals(tmp)) return 1;
+        if ("+".equals(tmp) || "-".equals(tmp)) return 2;
+        if ("*".equals(tmp) || "/".equals(tmp)) return 3;
         return 4; //Подумать, нужно ли 4, можно ли обойтись тремя, у нас нет функций
     }
 
@@ -32,13 +25,12 @@ public class Parser {
         List<String> postfix = new ArrayList<String>();
         Deque<String> stack = new ArrayDeque<String>();
         StringTokenizer tokenizer = new StringTokenizer(infix, delimiters, true);
-        String prev = "";
         String curr = "";
         while (tokenizer.hasMoreTokens()) {
             curr = tokenizer.nextToken();
             if (isDelimiters(curr)) {
-                if (curr.equals("(")) stack.push(curr);
-                else if (curr.equals(")")) {
+                if ("(".equals(curr)) stack.push(curr);
+                else if (")".equals(curr)) {
                     while (!stack.peek().equals("(")) {
                         postfix.add(stack.pop());
                     }
@@ -55,8 +47,6 @@ public class Parser {
             } else {
                 postfix.add(curr);
             }
-
-            prev = curr;
         }
 
         while (!stack.isEmpty()) {

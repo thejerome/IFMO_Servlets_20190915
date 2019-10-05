@@ -4,7 +4,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
-import java.lang.*;
 import java.util.*;
 
 
@@ -25,7 +24,7 @@ public class Calculator extends HttpServlet {
         Map<String, String[]> prmts = req.getParameterMap();
         equation = equation.replaceAll("\\s+", "");
 
-        while (ConsistOfLetters(equation)) {
+        while (consistOfLetters(equation)) {
             for (int i = 0; i < equation.length(); i++) {
                 if (equation.charAt(i) >= 'a' && equation.charAt(i) <= 'z') {
                     equation = equation.replace(String.valueOf(equation.charAt(i)), String.valueOf(prmts.get(String.valueOf(equation.charAt(i)))[0]));
@@ -44,20 +43,24 @@ public class Calculator extends HttpServlet {
     public static Integer calc(List<String> postfix) {
         Deque<Integer> stack = new ArrayDeque<Integer>();
         for (String x : postfix) {
-            if (x.equals("+")) stack.push(stack.pop() + stack.pop());
-            else if (x.equals("-")) {
-                Integer b = stack.pop(), a = stack.pop();
+            if ("+".equals(x)) {
+                stack.push(stack.pop() + stack.pop());
+            } else if ("-".equals(x)) {
+                Integer b = stack.pop();
+                Integer a = stack.pop();
                 stack.push(a - b);
-            } else if (x.equals("*")) stack.push(stack.pop() * stack.pop());
-            else if (x.equals("/")) {
-                int b = stack.pop(), a = stack.pop();
+            } else if ("*".equals(x)) {
+                stack.push(stack.pop() * stack.pop());
+            } else if ("/".equals(x)) {
+                int b = stack.pop();
+                int a = stack.pop();
                 stack.push(a / b);
             } else stack.push(Integer.valueOf(x));
         }
         return stack.pop();
     }
 
-    public boolean ConsistOfLetters(String tmp) {
+    public boolean consistOfLetters(String tmp) {
         for (int i = 0; i < tmp.length(); i++) {
             if ('a' < tmp.charAt(i) && 'z' > tmp.charAt(i)) return true;
         }
