@@ -2,7 +2,7 @@ package com.marycia.web.servlets;
 
 import java.util.*;
 
-public class MyParser {
+public class MyPars {
     private static String operators = "+-*/";
     private static String delimiters = "() " + operators;
     public static boolean flag = true;

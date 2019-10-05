@@ -36,7 +36,7 @@ public class Calculator extends HttpServlet {
             }
         }
 
-        MyParser n = new MyParser();
+        MyPars n = new MyPars();
         List<String> expression = n.parse(equation);
 
         out.println(calc(expression));
