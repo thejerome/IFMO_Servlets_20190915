@@ -1,3 +1,5 @@
+package mainpkg;
+
 import java.io.File;
 import org.apache.catalina.Context;
 import org.apache.catalina.startup.Tomcat;

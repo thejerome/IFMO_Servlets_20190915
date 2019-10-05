@@ -41,8 +41,8 @@ public class Servlet1 extends HttpServlet {
         passedValues.forEach(new BiConsumer<String, String[]>() {
             @Override
             public void accept(String s, String[] strings) {
-                if (s.isEmpty() || !isParameterName(s.charAt(0)) || strings.length == 0 || (!isNumber(strings[0]) && !isParameterName(strings[0].charAt(0))) || s.equals("equation")) {
-                    if (s.equals("equation")) return;
+                if (s.isEmpty() || !isParameterName(s.charAt(0)) || strings.length == 0 || (!isNumber(strings[0]) && !isParameterName(strings[0].charAt(0))) || "equation".equals(s)) {
+                    if ("equation".equals(s)) return;
                     try {
                         showFailResponse(resp);
                     } catch (IOException ex) {
@@ -64,6 +64,7 @@ public class Servlet1 extends HttpServlet {
         Deque<Character> operations = new ArrayDeque<>();
         for (int i = 0; i < equation.length() ; i++) {
             char current = equation.charAt(i);
+            if (current == ' ') continue;
             if (isParameterName(current)) {
                 numbers.addLast(values.get(current));
             } else {
@@ -79,7 +80,7 @@ public class Servlet1 extends HttpServlet {
     }
 
     private void updateStacks(Deque<Integer> numbers, Deque<Character> operations, char current) {
-        while (operations.size() > 0 && operations.getLast() != null && priorities.get(operations.getLast()) >= priorities.get(current) && current != '(') {
+        while (operations.size() > 0 && operations.getLast() != null && priorities.get(operations.getLast()) >= priorities.get(current) && current != '(' && !(operations.getLast() == '(' && current == ')')) {
             Character lastOperation = operations.getLast();
             if (lastOperation == '(' && current == ')') {
                 operations.removeLast();
@@ -91,7 +92,11 @@ public class Servlet1 extends HttpServlet {
                 System.err.println(numbers.toString() + '\n' + operations.toString());
             }
         }
-        if (current != ')') operations.addLast(current);
+        if (current != ')') {
+            operations.addLast(current);
+        } else {
+            if (operations.size() > 0 && operations.getLast() == '(') operations.removeLast();
+        }
     }
 
     private void doCurrentStackOperation(Deque<Integer> numbers, Deque<Character> operations) {
