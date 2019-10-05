@@ -2,10 +2,9 @@ package com.marycia.web.servlets;
 
 import java.util.*;
 
-public class MyPars {
+public class MagicPolNotation {
     private static String operators = "+-*/";
     private static String delimiters = "() " + operators;
-    public static boolean flag = true;
 
     private static boolean isDelimiters (String tmp) {
         for (int i = 0; i < delimiters.length(); i++) {

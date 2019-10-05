@@ -36,7 +36,7 @@ public class Calculator extends HttpServlet {
             }
         }
 
-        MyPars n = new MyPars();
+        MagicPolNotation n = new MagicPolNotation();
         List<String> expression = n.parse(equation);
 
         out.println(calc(expression));
