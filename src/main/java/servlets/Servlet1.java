@@ -131,6 +131,7 @@ public class Servlet1 extends HttpServlet {
             case '/': res = arg1/arg2;
                 break;
             default: res = 0;
+                break;
         }
         return res;
     }
