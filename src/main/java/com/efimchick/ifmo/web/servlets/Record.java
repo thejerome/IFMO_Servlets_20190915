@@ -34,7 +34,7 @@ public class Record extends HttpServlet {
         writer.println(calculation(equation));
     }
 
-    int calculation(String st) {
+    private int calculation(String st) {
         int lft;
         int rht;
         Stack<Integer> stack = new Stack<>();
@@ -73,7 +73,7 @@ public class Record extends HttpServlet {
         return stack.pop();
     }
 
-    String pol(String src) {
+    private String pol(String src) {
         char tmp;
         char buffer;
 
@@ -116,12 +116,12 @@ public class Record extends HttpServlet {
         return res.toString();
     }
 
-    boolean opr(char x) {
+    private boolean opr(char x) {
         return x == '+' || x == '-' || x == '*' || x == '/';
     }
 
 
-    int priority(char x) {
+    private int priority(char x) {
         if (x == '*' || x == '/')
             return 2;
         return 1;
