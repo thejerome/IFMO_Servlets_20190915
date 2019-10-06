@@ -120,7 +120,7 @@ public class Servlet1 extends HttpServlet {
     }
 
     private int doSimpleOperation(int arg1, int arg2, char operation) {
-        int res = 0;
+        int res;
         switch (operation) {
             case '+': res = arg1 + arg2;
                 break;
@@ -130,6 +130,7 @@ public class Servlet1 extends HttpServlet {
                 break;
             case '/': res = arg1/arg2;
                 break;
+            default: res = 0;
         }
         return res;
     }
