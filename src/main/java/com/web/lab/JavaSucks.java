@@ -17,9 +17,9 @@ import java.util.StringTokenizer;
 )
 public class JavaSucks extends HttpServlet {
 
-    private int calc_it(String m_str) {
+    private int calcit(String m_str) {
         Deque<Integer> deque_ = new LinkedList<>();
-        String equation = to_reversed_polska_notazia(m_str);
+        String equation = toreversedpolskanotazia(m_str);
         int left_part;
         int right_part;
         StringTokenizer str_parter = new StringTokenizer(equation);
@@ -29,7 +29,7 @@ public class JavaSucks extends HttpServlet {
 
             temp_str = str_parter.nextToken().trim();
 
-            if (1 == temp_str.length() && is_action(temp_str.charAt(0))) {
+            if (1 == temp_str.length() && isaction(temp_str.charAt(0))) {
                 right_part = deque_.pop();
                 left_part = deque_.pop();
 
@@ -64,7 +64,7 @@ public class JavaSucks extends HttpServlet {
         return deque_.pop();
     }
 
-    private int get_action_weight(char x) {
+    private int getactionweight(char x) {
         switch (x) {
             case '*':
             case '/':
@@ -75,7 +75,7 @@ public class JavaSucks extends HttpServlet {
     }
 
 
-    private boolean ist_digitable(String mstr) {
+    private boolean istdigitable(String mstr) {
         for (int i = 0; i < mstr.length(); ++i) {
             if (mstr.charAt(i) > '9' || mstr.charAt(i) < '0') {
                 return false;
@@ -85,7 +85,7 @@ public class JavaSucks extends HttpServlet {
     }
 
 
-    private String to_reversed_polska_notazia(String ne_polska) {
+    private String toreversedpolskanotazia(String ne_polska) {
         char buff;
         StringBuilder result = new StringBuilder();
         char temp;
@@ -98,14 +98,14 @@ public class JavaSucks extends HttpServlet {
             /**/
             buff = ne_polska.charAt(i);
 
-            if (is_action(buff)) {
+            if (isaction(buff)) {
 
                 while (str_b_st.length() > 0) {
                     temp = str_b_st.substring(str_b_st.length() - 1).charAt(0);
                     /*
                      *
                      * */
-                    if (is_action(temp) && (get_action_weight(buff) <= get_action_weight(temp))) {
+                    if (isaction(temp) && (getactionweight(buff) <= getactionweight(temp))) {
                         result.append(" ").append(temp).append(" ");
                         /*-^-^-*/
                         str_b_st.setLength(str_b_st.length() - 1);
@@ -148,7 +148,7 @@ public class JavaSucks extends HttpServlet {
         return result.toString();
     }
 
-    private boolean is_action(char x) {
+    private boolean isaction(char x) {
         switch (x) {
             case '+':
             case '*':
@@ -173,7 +173,7 @@ public class JavaSucks extends HttpServlet {
             char current = eq_param.charAt(i);
             if (current >= 'a' && current <= 'z') {
                 String buff = parameters_dict.get(String.valueOf(/**/current))[0];
-                while (/*-----*/!ist_digitable(buff)) {
+                while (/*-----*/!istdigitable(buff)) {
                     /*---*/
                     buff = parameters_dict.get(/**/buff)[/**/0];
                 }
@@ -185,7 +185,7 @@ public class JavaSucks extends HttpServlet {
              */
         }
         eq_param = str_b.toString();
-        out_writer.print(calc_it(eq_param));
+        out_writer.print(calcit(eq_param));
         out_writer.flush(/**/);
         out_writer.close(/**/);
     }
