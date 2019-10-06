@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.efimchick.ifmo.web.servlets.CalcServletTest" tests="9" skipped="0" failures="0" errors="0" timestamp="2019-10-06T09:50:53" hostname="localhost.localdomain" time="0.413">
+  <properties/>
+  <testcase name="test001" classname="com.efimchick.ifmo.web.servlets.CalcServletTest" time="0.376"/>
+  <testcase name="test002" classname="com.efimchick.ifmo.web.servlets.CalcServletTest" time="0.003"/>
+  <testcase name="test003" classname="com.efimchick.ifmo.web.servlets.CalcServletTest" time="0.003"/>
+  <testcase name="test004" classname="com.efimchick.ifmo.web.servlets.CalcServletTest" time="0.004"/>
+  <testcase name="test005" classname="com.efimchick.ifmo.web.servlets.CalcServletTest" time="0.005"/>
+  <testcase name="test006" classname="com.efimchick.ifmo.web.servlets.CalcServletTest" time="0.005"/>
+  <testcase name="test007" classname="com.efimchick.ifmo.web.servlets.CalcServletTest" time="0.005"/>
+  <testcase name="test008" classname="com.efimchick.ifmo.web.servlets.CalcServletTest" time="0.004"/>
+  <testcase name="test009" classname="com.efimchick.ifmo.web.servlets.CalcServletTest" time="0.004"/>
+  <system-out><![CDATA[configuring app with basedir: /home/thomas/Projects/IFMO_Servlets_20190915/./src/main/webapp
+http://localhost:8080/calc?equation=a%2Bb%2Fc&a=1&b=2&c=3
+http://localhost:8080/calc?equation=x%2By%2Fz&x=1&y=2&z=3
+http://localhost:8080/calc?equation=x%2By%2Fz&z=1&y=2&x=3
+http://localhost:8080/calc?equation=x%2By%2Fz&x=1&y=2&z=x
+http://localhost:8080/calc?equation=%28f+%2B+k%29*%28h+-+g%29%2Ff&f=61&k=32&h=354&g=19
+http://localhost:8080/calc?equation=a%2Fb%2Fc%2Fd&a=89411&b=32&c=7&d=5
+http://localhost:8080/calc?equation=a%2Bb%2Fc&a=42&b=8&c=56
+http://localhost:8080/calc?equation=%28c*%28a-b%29%2Fb%29*a&a=92&b=51&c=46
+http://localhost:8080/calc?equation=%28c*%28a-b%29%2Fb%29*a&a=12&b=55&c=a
+]]></system-out>
+  <system-err><![CDATA[окт 06, 2019 12:50:52 PM org.apache.coyote.AbstractProtocol init
+INFO: Initializing ProtocolHandler ["http-nio-8080"]
+окт 06, 2019 12:50:52 PM org.apache.tomcat.util.net.NioSelectorPool getSharedSelector
+INFO: Using a shared selector for servlet write/read
+окт 06, 2019 12:50:52 PM org.apache.catalina.core.StandardService startInternal
+INFO: Starting service Tomcat
+окт 06, 2019 12:50:52 PM org.apache.catalina.core.StandardEngine startInternal
+INFO: Starting Servlet Engine: Apache Tomcat/8.0.47
+окт 06, 2019 12:50:53 PM org.apache.catalina.startup.ContextConfig getDefaultWebXmlFragment
+INFO: No global web.xml found
+окт 06, 2019 12:50:53 PM org.apache.jasper.servlet.TldScanner scanJars
+INFO: At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+окт 06, 2019 12:50:53 PM org.apache.coyote.AbstractProtocol start
+INFO: Starting ProtocolHandler ["http-nio-8080"]
+окт 06, 2019 12:50:54 PM org.apache.coyote.AbstractProtocol pause
+INFO: Pausing ProtocolHandler ["http-nio-8080"]
+окт 06, 2019 12:50:54 PM org.apache.catalina.core.StandardService stopInternal
+INFO: Stopping service Tomcat
+окт 06, 2019 12:50:54 PM org.apache.coyote.AbstractProtocol stop
+INFO: Stopping ProtocolHandler ["http-nio-8080"]
+]]></system-err>
+</testsuite>
