@@ -39,9 +39,9 @@ public class ServletCalc extends HttpServlet {
         out.close();
     }
 
-    private int calculate (String eq) {
+    private int calculate (String toCalc) {
         // 1. Перевод строки выражения в очередь в обратной польской нотации
-        eq = '(' + eq + ')';
+        String eq = '(' + toCalc + ')';
 
         ArrayDeque<String> queue = new ArrayDeque<>();
         Stack<Character> eqStack = new Stack<>();
