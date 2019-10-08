@@ -24,36 +24,41 @@ public class ServletCalc extends HttpServlet {
         final Map<String, String[]> parameterMap= req.getParameterMap();
 
         // Убираем пробелы и вставляем значения переменных в выражение
-        String eq = req.getParameter("equation").replace(" ", "");
-        while (!Pattern.matches("^[0-9*+-/()]+$", eq)) {
+        String equation = req.getParameter("equation").replace(" ", "");
+
+        while (!Pattern.matches("^[0-9*+-/()]+$", equation)) {
             for (Map.Entry<String, String[]> parameterEntry : parameterMap.entrySet()) {
-                eq = eq.replace(parameterEntry.getKey(), parameterEntry.getValue()[0]);
+                equation = equation.replace(parameterEntry.getKey(), parameterEntry.getValue()[0]);
             }
         }
 
         // Вычисляем и выводим результат выражения
-        out.println(calculate(eq));
+        out.println(calculate(equation));
 
         out.flush();
         out.close();
     }
 
-    int calculate (String eq) {
+    private int calculate (String eq) {
         // 1. Перевод строки выражения в очередь в обратной польской нотации
         eq = '(' + eq + ')';
 
         ArrayDeque<String> queue = new ArrayDeque<>();
         Stack<Character> eqStack = new Stack<>();
 
-        for (int i = 0; i < eq.length(); i++) {
+        int i = 0;
+        while (i < eq.length()) {
             char ch = eq.charAt(i);
 
             // Если символ - число, добавляем в очередь
             if (Character.isDigit(ch)) {
                 String num = "";
 
-                for (; Character.isDigit(eq.charAt(i)); i++)
+
+                while (Character.isDigit(eq.charAt(i))) {
                     num = num + eq.charAt(i);
+                    i++;
+                }
 
                 queue.offer(num);
                 i--;
@@ -80,6 +85,8 @@ public class ServletCalc extends HttpServlet {
 
                 eqStack.push(ch);
             }
+
+            i++;
         }
 
         // Выталкиваем в очередь все оставшиеся элементы стека
