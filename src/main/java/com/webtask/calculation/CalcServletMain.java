@@ -7,8 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+
 
 @WebServlet(name = "CalcServletMain", urlPatterns = {"/calc"})
 public class CalcServletMain extends HttpServlet{
@@ -38,16 +37,16 @@ public class CalcServletMain extends HttpServlet{
     }
 
     public boolean isNumeric(String str){
-        Pattern pattern = Pattern.compile("[0-9]*");
-        Matcher isNum = pattern.matcher(str);
+        java.util.regex.Pattern pattern = java.util.regex.Pattern.compile("[0-9]*");
+        java.util.regex.Matcher isNum = pattern.matcher(str);
         return isNum.matches();
     }
 
     public static String cal(String src) {
         StringBuilder builder = new StringBuilder();
         if (src.contains("(")) {
-            Pattern pattern = Pattern.compile("\\(([^()]+)\\)");
-            Matcher matcher = pattern.matcher(src);
+            java.util.regex.Pattern pattern = java.util.regex.Pattern.compile("\\(([^()]+)\\)");
+            java.util.regex.Matcher matcher = pattern.matcher(src);
             int lastEnd = 0;
             while (matcher.find()) {
 
@@ -57,9 +56,9 @@ public class CalcServletMain extends HttpServlet{
             }
             builder.append(src.substring(lastEnd));
         } else {
-            Pattern pattern = Pattern.compile("(-?[\\d.]+)\\s*([*/])\\s*(-?[\\d.]+)");
+            java.util.regex.Pattern pattern = java.util.regex.Pattern.compile("(-?[\\d.]+)\\s*([*/])\\s*(-?[\\d.]+)");
             builder.append(src);
-            Matcher matcher = pattern.matcher(builder.toString());
+            java.util.regex.Matcher matcher = pattern.matcher(builder.toString());
             while (matcher.find()){
                 float f1 = Float.parseFloat(matcher.group(1));
                 float f2 = Float.parseFloat(matcher.group(3));
@@ -79,7 +78,7 @@ public class CalcServletMain extends HttpServlet{
                         String.valueOf(result));
                 matcher.reset(builder.toString());
             }
-            pattern = Pattern.compile("([\\d.]+)\\s*([+-])\\s*([\\d.]+)");
+            pattern = java.util.regex.Pattern.compile("([\\d.]+)\\s*([+-])\\s*([\\d.]+)");
             matcher = pattern.matcher(builder.toString());
             while (matcher.find()){
                 float f1 = Float.parseFloat(matcher.group(1));
