@@ -40,10 +40,7 @@ public class CalcServletMain extends HttpServlet{
     public boolean isNumeric(String str){
         Pattern pattern = Pattern.compile("[0-9]*");
         Matcher isNum = pattern.matcher(str);
-        if( !isNum.matches() ){
-            return false;
-        }
-        return true;
+        return isNum.matches();
     }
 
     public static String cal(String src) {
@@ -74,6 +71,8 @@ public class CalcServletMain extends HttpServlet{
                     case "/":
                         result = (long)(f1 / f2);
                         break;
+                    default:
+                        result = 0;
                 }
                 builder.replace(matcher.start(), matcher.end(),
                         String.valueOf(result));
@@ -92,6 +91,8 @@ public class CalcServletMain extends HttpServlet{
                     case "-":
                         result = (long)(f1 - f2);
                         break;
+                    default:
+                        result = 0;
                 }
                 builder.replace(matcher.start(), matcher.end(),
                         String.valueOf(result));
