@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
         name = "CalcServlet",
         urlPatterns = "/calc"
 )
-public class ServletCalc extends HttpServlet {
+public class CalcServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
