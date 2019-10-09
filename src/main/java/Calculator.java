@@ -47,7 +47,6 @@ public class Calculator {
     public static int decis(String s) {
         LinkedList<Integer> numb = new LinkedList<Integer>();
         LinkedList<Character> op = new LinkedList<Character>();
-        HashMap<Character, Integer> map = new HashMap<>();
         s=s.replaceAll("\\s+","");
         if (s.charAt(0)=='-')
             numb.add(0);
@@ -66,9 +65,7 @@ public class Calculator {
                 while (!op.isEmpty() && prio(op.getLast()) >= prio(p))
                     Calcul(numb, op.removeLast());
                 op.add(p);
-            } else if(Character.isLetter(p)){
-                numb.add(map.get(p));
-            } else {
+            }  else {
                 String number = "";
                 while (i < s.length() && Character.isDigit(s.charAt(i)))
                     number += s.charAt(i++);
