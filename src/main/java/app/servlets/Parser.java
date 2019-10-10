@@ -5,17 +5,9 @@ public class Parser {
 
     private enum Operator {
 
-        PLUS, MINUS, MULTIPLY, DIVIDE, LEFT_BRACKET, RIGHT_BRACKET, LEFT_SQUARE_BRACKET, RIGHT_SQUARE_BRACKET, LEFT_CURLY_BRACKET, RIGHT_CURLY_BRACKET, COMMA, SIN, COS, TAN, COT, SEC, CSC, ASIN, ACOS, ATAN, ACOT, ASEC, ACSC, SINH, COSH, TANH, COTH, SECH, CSCH, ASINH, ACOSH, ATANH, ACOTH, ASECH, ACSCH, RANDOM, CEIL, FLOOR, ROUND, ABS, EXP, LOG, SQRT, POW, ATAN2, MIN, MAX, X, NUMBER, UNARY_MINUS, END
+        PLUS, MINUS, MULTIPLY, DIVIDE, LEFT_BRACKET, RIGHT_BRACKET, LEFT_SQUARE_BRACKET, RIGHT_SQUARE_BRACKET, LEFT_CURLY_BRACKET, RIGHT_CURLY_BRACKET, COMMA, SIN, COS, TAN, COT, SEC, CSC, ASIN, ACOS, ATAN, RANDOM, CEIL, FLOOR, ROUND, ABS, EXP, LOG, SQRT, POW, ATAN2, MIN, MAX, X, NUMBER, UNARY_MINUS, END
     }
 
-
-    private enum constantName {
-        PI, E, SQRT2, SQRT1_2, LN2, LN10, LOG2E, LOG10E //Constants should go in a row. Order is important
-    }
-
-    private static final double CONSTANT_VALUE[] = {
-            Math.PI, Math.E, Math.sqrt(2), Math.sqrt(.5), Math.log(2), Math.log(10), 1. / Math.log(2), 1. / Math.log(10)
-    };
 
     private Node root = null;
     private byte[] expression;
@@ -50,7 +42,7 @@ public class Parser {
         }
 
         double calculate() throws Exception {
-            double x;
+
             switch (operator) {
 
                 case NUMBER:
@@ -108,10 +100,10 @@ public class Parser {
         } else if (isLetter()) {
             for (i = position++; isFunctionSymbol(); position++) ;
             String token = new String(expression, i, position - i);
-            ;
+
 
             try {
-                    if (token.charAt(0) == 'X' && token.length() > 1 && Character.isDigit(token.charAt(1))) {
+                if (token.charAt(0) == 'X' && token.length() > 1 && Character.isDigit(token.charAt(1))) {
                     i = Integer.parseInt(token.substring(1));
 
                     if (arguments < i + 1) {
@@ -195,7 +187,7 @@ public class Parser {
     }
 
     private Node parse3() throws Exception {
-        Node node;
+        Node node = null;
         Operator open;
 
         if (operator.ordinal() >= Operator.SIN.ordinal() && operator.ordinal() <= Operator.MAX.ordinal()) {
@@ -222,7 +214,7 @@ public class Parser {
                     node.right = parse();
                 }
             }
-            checkBracketBalance(open);
+
         } else {
             switch (operator) {
 
@@ -237,20 +229,16 @@ public class Parser {
                     open = operator;
                     getToken();
                     node = parse();
-                    checkBracketBalance(open);
+
                     break;
 
                 default:
-                    throw new Exception("unexpected operator");
+                    break;
             }
 
         }
         getToken();
         return node;
-    }
-
-    private void checkBracketBalance(Operator open) throws Exception {
-
     }
 
     public double calculate(double[] x) throws Exception {
@@ -259,8 +247,6 @@ public class Parser {
     }
 
     public double calculate() throws Exception {
-
-        int length = argument == null ? 0 : argument.length;
 
         return root.calculate();
     }
@@ -277,4 +263,4 @@ public class Parser {
         return estimator.calculate();
     }
 
-};
+}

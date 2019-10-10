@@ -15,7 +15,7 @@ import java.util.Set;
         name = "calc",
         urlPatterns = {"/calc"}
 )
-public class calc extends HttpServlet {
+public class Calc extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         PrintWriter out = response.getWriter();
@@ -26,7 +26,7 @@ public class calc extends HttpServlet {
         String value = "";
         Map<String, Object> map = new HashMap<>();
         for (String s : params) {
-            if (!s.equals("equation")) {
+            if (!"equation".equals(s)) {
                 value = request.getParameter(s);
                 if (value.matches("[a-zA-Z]+")) {
                     map.put(s, value);
