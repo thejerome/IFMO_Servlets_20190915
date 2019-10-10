@@ -18,7 +18,7 @@ public class calc extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        RequestDispatcher requestDispatcher = request.getRequestDispatcher();
-        System.out.println();
+        //RequestDispatcher requestDispatcher = request.getRequestDispatcher();
+        System.out.println(request);
     }
 }
