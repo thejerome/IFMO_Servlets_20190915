@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 
@@ -17,11 +18,13 @@ public class KekClass extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         PrintWriter outputStream = new PrintWriter(resp.getOutputStream());
         String equation = req.getParameter("equation");
+        //outputStream.write("Your equation: " + equation + "\n");
         StringBuilder stringBuilder = new StringBuilder();
         for (int i = 0; i < equation.length(); i++) {
             String equationCharacter = Character.toString(equation.charAt(i));
             while (equationCharacter.charAt(0) >= 'a' && equationCharacter.charAt(0) <= 'z'
                 || equationCharacter.charAt(0) >= 'A' && equationCharacter.charAt(0) <= 'Z') {
+                //variables.put(equationCharacter, req.getParameter(Character.toString(equationCharacter.charAt(0))));
                 equationCharacter = req.getParameter(Character.toString(equationCharacter.charAt(0)));
             }
             stringBuilder.append(equationCharacter);
@@ -57,6 +60,12 @@ public class KekClass extends HttpServlet {
                 switch (equation.charAt(i)){
                     case ('*'):
                     case ('/'):
+                        if (!operatorStack.isEmpty()) {
+                            if (operatorStack.get(operatorStack.size() - 1) == '*' || operatorStack.get(operatorStack.size() - 1) == '/') {
+                                outputStack.add(operatorStack.get(operatorStack.size() - 1).toString());
+                                operatorStack.remove(operatorStack.size() - 1);
+                            }
+                        }
                         operatorStack.add(equation.charAt(i));
                         break;
                     case ('+'):
@@ -94,6 +103,7 @@ public class KekClass extends HttpServlet {
             outputStack.add(operatorStack.get(operatorStack.size() - 1).toString());
             operatorStack.remove(operatorStack.size() - 1);
         }
+        //outputStream.write("Your equation: " + outputStack + "\n");
         while (outputStack.size() > 1) {
             for (int i = 1; i < outputStack.size() - 1; i++){
                 if (       !outputStack.get(i-1).equals("+")
@@ -130,7 +140,11 @@ public class KekClass extends HttpServlet {
                     }
                 }
             }
+            //outputStream.write("Your equation: " + outputStack + "\n");
         }
+
+
+
         outputStream.write(outputStack.get(0));
         outputStream.flush();
         outputStream.close();
