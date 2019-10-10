@@ -12,7 +12,7 @@ public class Parser {
     private Node root = null;
     private byte[] expression;
     private double tokenValue;
-    Operator operator;
+    private Operator operator;
     private int position;
     private double[] argument;
     private int arguments;
@@ -58,13 +58,14 @@ public class Parser {
                     return left.calculate() * right.calculate();
 
                 case DIVIDE:
-                    return Math.floor(left.calculate() / right.calculate());
+                    double res = (left.calculate() / right.calculate());
+                    return (res>=0?Math.floor(res):Math.ceil(res));
 
                 case UNARY_MINUS:
                     return -left.calculate();
 
                 case X:
-                    return Math.floor(argument[(int) value]);
+                    return argument[(int) value];
 
                 default:
                     return 0;

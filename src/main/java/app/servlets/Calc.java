@@ -60,7 +60,7 @@ public class Calc extends HttpServlet {
         Parser estimator = new Parser();
         try {
             estimator.compile(equation);
-            out.println((int) Math.floor(estimator.calculate(v)));
+            out.println((int) estimator.calculate(v));
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
