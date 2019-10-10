@@ -16,18 +16,18 @@ public class KekClass extends HttpServlet {
     public String calculateRPN(ArrayList<String> equation) {
         while (equation.size() > 1) {
             for (int i = 1; i < equation.size() - 1; i++) {
-                if (!equation.get(i - 1).equals("+")
-                        && !equation.get(i - 1).equals("-")
-                        && !equation.get(i - 1).equals("*")
-                        && !equation.get(i - 1).equals("/")
-                        && !equation.get(i).equals("+")
-                        && !equation.get(i).equals("-")
-                        && !equation.get(i).equals("*")
-                        && !equation.get(i).equals("/")
-                        && (equation.get(i + 1).equals("+")
-                        || equation.get(i + 1).equals("-")
-                        || equation.get(i + 1).equals("*")
-                        || equation.get(i + 1).equals("/"))) {
+                if (   !equation.get(i - 1).equals("+")
+                    && !equation.get(i - 1).equals("-")
+                    && !equation.get(i - 1).equals("*")
+                    && !equation.get(i - 1).equals("/")
+                    && !equation.get(i    ).equals("+")
+                    && !equation.get(i    ).equals("-")
+                    && !equation.get(i    ).equals("*")
+                    && !equation.get(i    ).equals("/")
+                    && (equation.get(i + 1).equals("+")
+                    ||  equation.get(i + 1).equals("-")
+                    ||  equation.get(i + 1).equals("*")
+                    ||  equation.get(i + 1).equals("/"))) {
 
                     int leftNumber = Integer.parseInt(equation.get(i - 1));
                     int rightNumber = Integer.parseInt(equation.get(i));
@@ -63,11 +63,7 @@ public class KekClass extends HttpServlet {
         StringBuilder tempNumber = new StringBuilder();
         for (int i = 0; i < equation.length(); i++){
             if (equation.charAt(i) >= '0' && equation.charAt(i) <= '9'){
-                if (tempNumber.length() != 0){
-                    tempNumber.append(equation.charAt(i));
-                } else {
-                    tempNumber.append(equation.charAt(i));
-                }
+                tempNumber.append(equation.charAt(i));
             } else {
                 if (tempNumber.length() != 0) {
                     outputStack.add(tempNumber.toString());
@@ -76,24 +72,20 @@ public class KekClass extends HttpServlet {
                 switch (equation.charAt(i)){
                     case ('*'):
                     case ('/'):
-                        if (!operatorStack.isEmpty()) {
-                            if (operatorStack.get(operatorStack.size() - 1) == '*' || operatorStack.get(operatorStack.size() - 1) == '/') {
-                                outputStack.add(operatorStack.get(operatorStack.size() - 1).toString());
-                                operatorStack.remove(operatorStack.size() - 1);
-                            }
+                        if (!operatorStack.isEmpty() && (operatorStack.get(operatorStack.size() - 1) == '*' || operatorStack.get(operatorStack.size() - 1) == '/')) {
+                            outputStack.add(operatorStack.get(operatorStack.size() - 1).toString());
+                            operatorStack.remove(operatorStack.size() - 1);
                         }
                         operatorStack.add(equation.charAt(i));
                         break;
                     case ('+'):
                     case ('-'):
-                        if(!operatorStack.isEmpty()) {
-                            while (!operatorStack.isEmpty()){
-                                if (operatorStack.get(operatorStack.size() - 1) != '(' ) {
-                                    outputStack.add(operatorStack.get(operatorStack.size() - 1).toString());
-                                    operatorStack.remove(operatorStack.size() - 1);
-                                } else {
-                                    break;
-                                }
+                        while (!operatorStack.isEmpty()){
+                            if (operatorStack.get(operatorStack.size() - 1) != '(' ) {
+                                outputStack.add(operatorStack.get(operatorStack.size() - 1).toString());
+                                operatorStack.remove(operatorStack.size() - 1);
+                            } else {
+                                break;
                             }
                         }
                         operatorStack.add(equation.charAt(i));
