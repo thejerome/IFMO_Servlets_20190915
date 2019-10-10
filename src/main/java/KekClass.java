@@ -13,49 +13,66 @@ import java.util.ArrayList;
 )
 public class KekClass extends HttpServlet {
 
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        PrintWriter outputStream = new PrintWriter(resp.getOutputStream());
-        String equation = req.getParameter("equation");
-        //outputStream.write("Your equation: " + equation + "\n");
-        StringBuilder stringBuilder = new StringBuilder();
-        for (int i = 0; i < equation.length(); i++) {
-            String equationCharacter = Character.toString(equation.charAt(i));
-            while (equationCharacter.charAt(0) >= 'a' && equationCharacter.charAt(0) <= 'z'
-                || equationCharacter.charAt(0) >= 'A' && equationCharacter.charAt(0) <= 'Z') {
-                //variables.put(equationCharacter, req.getParameter(Character.toString(equationCharacter.charAt(0))));
-                equationCharacter = req.getParameter(Character.toString(equationCharacter.charAt(0)));
+    public String calculateRPN(ArrayList<String> equation) {
+        while (equation.size() > 1) {
+            for (int i = 1; i < equation.size() - 1; i++) {
+                if (!equation.get(i - 1).equals("+")
+                        && !equation.get(i - 1).equals("-")
+                        && !equation.get(i - 1).equals("*")
+                        && !equation.get(i - 1).equals("/")
+                        && !equation.get(i).equals("+")
+                        && !equation.get(i).equals("-")
+                        && !equation.get(i).equals("*")
+                        && !equation.get(i).equals("/")
+                        && (equation.get(i + 1).equals("+")
+                        || equation.get(i + 1).equals("-")
+                        || equation.get(i + 1).equals("*")
+                        || equation.get(i + 1).equals("/"))) {
+
+                    int leftNumber = Integer.parseInt(equation.get(i - 1));
+                    int rightNumber = Integer.parseInt(equation.get(i));
+                    String operator = equation.get(i + 1);
+                    for (int j = i + 1; j >= i - 1; j--) {
+                        equation.remove(j);
+                    }
+                    switch (operator) {
+                        case ("+"):
+                            equation.add(i - 1, Integer.toString(leftNumber + rightNumber));
+                            break;
+                        case ("-"):
+                            equation.add(i - 1, Integer.toString(leftNumber - rightNumber));
+                            break;
+                        case ("*"):
+                            equation.add(i - 1, Integer.toString(leftNumber * rightNumber));
+                            break;
+                        case ("/"):
+                            equation.add(i - 1, Integer.toString(leftNumber / rightNumber));
+                            break;
+                        default:
+                            break;
+                    }
+                }
             }
-            stringBuilder.append(equationCharacter);
         }
+        return equation.get(0);
+    }
 
-        if (stringBuilder.charAt(0) == '-'){
-            equation = "0" + stringBuilder.toString();
-        } else {
-            equation = stringBuilder.toString();
-        }
-
+    public ArrayList<String> buildRPN(String equation){
         ArrayList<Character> operatorStack = new ArrayList<>();
         ArrayList<String> outputStack = new ArrayList<>();
         StringBuilder tempNumber = new StringBuilder();
         for (int i = 0; i < equation.length(); i++){
             if (equation.charAt(i) >= '0' && equation.charAt(i) <= '9'){
-
                 if (tempNumber.length() != 0){
-
                     tempNumber.append(equation.charAt(i));
-
                 } else {
-
                     tempNumber.append(equation.charAt(i));
                 }
             } else {
-
                 if (tempNumber.length() != 0) {
                     outputStack.add(tempNumber.toString());
                     tempNumber.setLength(0);
                 }
-
                 switch (equation.charAt(i)){
                     case ('*'):
                     case ('/'):
@@ -90,10 +107,11 @@ public class KekClass extends HttpServlet {
                             operatorStack.remove(operatorStack.size() - 1);
                         }
                         operatorStack.remove(operatorStack.size() - 1);
+                    default:
+                        break;
                 }
             }
         }
-        
         if (tempNumber.length() != 0) {
             outputStack.add(tempNumber.toString());
             tempNumber.setLength(0);
@@ -102,49 +120,24 @@ public class KekClass extends HttpServlet {
             outputStack.add(operatorStack.get(operatorStack.size() - 1).toString());
             operatorStack.remove(operatorStack.size() - 1);
         }
-        //outputStream.write("Your equation: " + outputStack + "\n");
-        while (outputStack.size() > 1) {
-            for (int i = 1; i < outputStack.size() - 1; i++){
-                if (       !outputStack.get(i-1).equals("+")
-                        && !outputStack.get(i-1).equals("-")
-                        && !outputStack.get(i-1).equals("*")
-                        && !outputStack.get(i-1).equals("/")
-                        && !outputStack.get( i ).equals("+")
-                        && !outputStack.get( i ).equals("-")
-                        && !outputStack.get( i ).equals("*")
-                        && !outputStack.get( i ).equals("/")
-                        && (outputStack.get(i+1).equals("+")
-                        ||  outputStack.get(i+1).equals("-")
-                        ||  outputStack.get(i+1).equals("*")
-                        ||  outputStack.get(i+1).equals("/"))){
-                    int leftNumber = Integer.parseInt(outputStack.get(i-1));
-                    int rightNumber = Integer.parseInt(outputStack.get(i));
-                    String operator = outputStack.get(i+1);
-                    outputStack.remove(i+1);
-                    outputStack.remove(i+0);
-                    outputStack.remove(i-1);
-                    switch (operator){
-                        case ("+"):
-                            outputStack.add(i-1, Integer.toString(leftNumber + rightNumber));
-                            break;
-                        case ("-"):
-                            outputStack.add(i-1, Integer.toString(leftNumber - rightNumber));
-                            break;
-                        case ("*"):
-                            outputStack.add(i-1, Integer.toString(leftNumber * rightNumber));
-                            break;
-                        case ("/"):
-                            outputStack.add(i-1, Integer.toString(leftNumber / rightNumber));
-                            break;
-                    }
-                }
+        return outputStack;
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        PrintWriter outputStream = new PrintWriter(resp.getOutputStream());
+        String equation = req.getParameter("equation");
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i < equation.length(); i++) {
+            String equationCharacter = Character.toString(equation.charAt(i));
+            while (equationCharacter.charAt(0) >= 'a' && equationCharacter.charAt(0) <= 'z'
+                || equationCharacter.charAt(0) >= 'A' && equationCharacter.charAt(0) <= 'Z') {
+                equationCharacter = req.getParameter(Character.toString(equationCharacter.charAt(0)));
             }
-            //outputStream.write("Your equation: " + outputStack + "\n");
+            stringBuilder.append(equationCharacter);
         }
 
-
-
-        outputStream.write(outputStack.get(0));
+        outputStream.write(calculateRPN(buildRPN(stringBuilder.toString())));
         outputStream.flush();
         outputStream.close();
     }
