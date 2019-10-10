@@ -69,7 +69,8 @@ public class CalcServlet extends HttpServlet {
             if (Pattern.matches("^[0-9]+$", qq)) {
                 polStack.push(Integer.parseInt(qq));
             }
-            else {
+            else
+                {
                 char op = q.peek().charAt(0);
                 int b = polStack.pop();
                 int a = polStack.pop();
@@ -95,4 +96,3 @@ public class CalcServlet extends HttpServlet {
         return polStack.pop();
     }
     }
-}
