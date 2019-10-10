@@ -11,7 +11,7 @@ import java.util.*;
 @WebServlet(
         name = "newTask", urlPatterns = {"/calc"})
 
-public class newTask extends HttpServlet {
+public class NewTask extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
@@ -178,7 +178,7 @@ public class newTask extends HttpServlet {
                     case '-': result = b - a; break;
                     case '*': result = b * a; break;
                     case '/': result = b / a; break;
-                    default: result = 0;
+                    default: result = 0; break;
                 }
                 temp.push(result); //Результат вычисления записываем обратно в стек
             }
