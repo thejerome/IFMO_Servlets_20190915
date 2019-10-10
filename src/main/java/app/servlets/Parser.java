@@ -64,7 +64,7 @@ public class Parser {
                     return -left.calculate();
 
                 case X:
-                    return argument[(int) value];
+                    return Math.floor(argument[(int) value]);
 
                 default:
                     return 0;
