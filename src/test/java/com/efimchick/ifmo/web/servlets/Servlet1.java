@@ -16,7 +16,7 @@ public class Servlet1 extends HttpServlet {
             throws ServletException, IOException {
 
         PrintWriter out = resp.getWriter();
-        String equation = req.getParameter("equation"); // use %2b for +
+        String equation = req.getParameter("equation");
         while (hasVars(equation)){
             StringBuilder withValues = new StringBuilder();
             Map<String, String[]> params = req.getParameterMap();
