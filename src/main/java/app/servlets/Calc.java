@@ -51,7 +51,6 @@ public class Calc extends HttpServlet {
         for (String s : variables) {
             mapa.put(s, (int) (map.get(s).getClass() != test.getClass() ? map.get(map.get(s)) : map.get(s)));
         }
-
         double[] v = new double[variables.size()];
         i = 0;
         for (String s : variables) {

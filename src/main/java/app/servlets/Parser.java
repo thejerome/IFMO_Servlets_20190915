@@ -71,7 +71,6 @@ public class Parser {
             }
         }
     }
-
     private boolean isLetter() {
         return Character.isLetter(expression[position]);
     }
