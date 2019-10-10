@@ -12,15 +12,15 @@ public class Parser {
     private Node root = null;
     private byte[] expression;
     private double tokenValue;
-    private Operator operator;
+    Operator operator;
     private int position;
     private double[] argument;
     private int arguments;
 
     private class Node {
-        Operator operator;
-        double value;
-        Node left,
+        private Operator operator;
+        private double value;
+        private Node left,
                 right;
 
         private void init(Operator operator, double value, Node left) {
@@ -41,7 +41,7 @@ public class Parser {
             init(operator, value, null);
         }
 
-        double calculate() throws Exception {
+        private double calculate() throws Exception {
 
             switch (operator) {
 
@@ -187,7 +187,7 @@ public class Parser {
 
     private Node parse3() throws Exception {
         Node node = null;
-        Operator open;
+
 
         if (operator.ordinal() >= Operator.SIN.ordinal() && operator.ordinal() <= Operator.MAX.ordinal()) {
             int arguments;
@@ -200,7 +200,7 @@ public class Parser {
             node = new Node(operator);
 
             getToken();
-            open = operator;
+
 
             getToken();
 
@@ -225,7 +225,7 @@ public class Parser {
                 case LEFT_BRACKET:
                 case LEFT_SQUARE_BRACKET:
                 case LEFT_CURLY_BRACKET:
-                    open = operator;
+
                     getToken();
                     node = parse();
 
