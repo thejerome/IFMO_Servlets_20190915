@@ -1,18 +1,17 @@
 import java.util.LinkedList;
 import java.util.Scanner;
-import java.util.HashMap;
 
 public class Calculator {
     public static void main(String[] ars) {
         Scanner Scanner = new Scanner(System.in);
-        System.out.println(decis(Scanner.nextLine()));
+        System.out.println(deci(Scanner.nextLine()));
     }
 
-    static boolean Oper(char c) {
+    private static boolean Ope(char c) {
         return c == '+' || c == '-' || c == '*' || c == '/';
     }
 
-    static int prio(char op) {
+    private static int prior(char op) {
         switch (op) {
             case '+':
             case '-':
@@ -25,7 +24,7 @@ public class Calculator {
         }
     }
 
-    static void Calcul(LinkedList<Integer> st, char op) {
+    private static void Calc(LinkedList<Integer> st, char op) {
         int x = st.removeLast();
         int y = st.removeLast();
         switch (op) {
@@ -41,40 +40,42 @@ public class Calculator {
             case '/':
                 st.add(y / x);
                 break;
+            default:
+                break;
         }
     }
 
-    public static int decis(String s) {
+    static int deci(String str) {
         LinkedList<Integer> numb = new LinkedList<Integer>();
         LinkedList<Character> op = new LinkedList<Character>();
-        s=s.replaceAll("\\s+","");
-        if (s.charAt(0)=='-')
+        str=str.replaceAll("\\s+","");
+        if (str.charAt(0)=='-')
             numb.add(0);
-        for (int i = 0; i < s.length(); i++) {
-            char p = s.charAt(i);
+        for (int i = 0; i < str.length(); i++) {
+            char p = str.charAt(i);
             if (p == '(') {
                 op.add('(');
-                if (s.charAt(i+1)=='-')
+                if (str.charAt(i+1)=='-')
                     numb.add(0);
             }
             else if (p == ')') {
                 while (op.getLast() != '(')
-                    Calcul(numb, op.removeLast());
+                    Calc(numb, op.removeLast());
                 op.removeLast();
-            } else if (Oper(p)) {
-                while (!op.isEmpty() && prio(op.getLast()) >= prio(p))
-                    Calcul(numb, op.removeLast());
+            } else if (Ope(p)) {
+                while (!op.isEmpty() && prior(op.getLast()) >= prior(p))
+                    Calc(numb, op.removeLast());
                 op.add(p);
             }  else {
-                String number = "";
-                while (i < s.length() && Character.isDigit(s.charAt(i)))
-                    number += s.charAt(i++);
+                StringBuilder number = new StringBuilder();
+                while (i < str.length() && Character.isDigit(str.charAt(i)))
+                    number.append(str.charAt(i++));
                 --i;
-                numb.add(Integer.parseInt(number));
+                numb.add(Integer.parseInt(number.toString()));
             }
         }
         while (!op.isEmpty())
-            Calcul(numb, op.removeLast());
+            Calc(numb, op.removeLast());
         return numb.get(0);
     }
 }

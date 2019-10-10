@@ -1,5 +1,4 @@
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebInitParam;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -29,7 +28,7 @@ public class CalculatorServlet extends HttpServlet {
             }
         }
         equation = sb.toString();
-        writer.println(Calculator.decis(equation));
+        writer.println(Calculator.deci(equation));
         writer.flush();
         writer.close();
     }
