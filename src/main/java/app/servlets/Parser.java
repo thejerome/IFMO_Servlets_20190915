@@ -3,13 +3,13 @@ package app.servlets;
 
 public class Parser {
 
-    private enum OPERATOR {
+    private enum Operator {
 
         PLUS, MINUS, MULTIPLY, DIVIDE, LEFT_BRACKET, RIGHT_BRACKET, LEFT_SQUARE_BRACKET, RIGHT_SQUARE_BRACKET, LEFT_CURLY_BRACKET, RIGHT_CURLY_BRACKET, COMMA, SIN, COS, TAN, COT, SEC, CSC, ASIN, ACOS, ATAN, ACOT, ASEC, ACSC, SINH, COSH, TANH, COTH, SECH, CSCH, ASINH, ACOSH, ATANH, ACOTH, ASECH, ACSCH, RANDOM, CEIL, FLOOR, ROUND, ABS, EXP, LOG, SQRT, POW, ATAN2, MIN, MAX, X, NUMBER, UNARY_MINUS, END
     }
 
 
-    private enum CONSTANT_NAME {
+    private enum constantName {
         PI, E, SQRT2, SQRT1_2, LN2, LN10, LOG2E, LOG10E //Constants should go in a row. Order is important
     }
 
@@ -20,31 +20,32 @@ public class Parser {
     private Node root = null;
     private byte[] expression;
     private double tokenValue;
-    private OPERATOR operator;
+    private Operator operator;
     private int position;
     private double[] argument;
     private int arguments;
 
     private class Node {
-        OPERATOR operator;
+        Operator operator;
         double value;
-        Node left, right;
+        Node left,
+                right;
 
-        private void init(OPERATOR operator, double value, Node left) {
+        private void init(Operator operator, double value, Node left) {
             this.operator = operator;
             this.value = value;
             this.left = left;
         }
 
-        Node(OPERATOR operator, Node left) {
+        Node(Operator operator, Node left) {
             init(operator, 0, left);
         }
 
-        Node(OPERATOR operator) {
+        Node(Operator operator) {
             init(operator, 0, null);
         }
 
-        Node(OPERATOR operator, double value) {
+        Node(Operator operator, double value) {
             init(operator, value, null);
         }
 
@@ -70,131 +71,11 @@ public class Parser {
                 case UNARY_MINUS:
                     return -left.calculate();
 
-                case SIN:
-                    return Math.sin(left.calculate());
-
-                case COS:
-                    return Math.cos(left.calculate());
-
-                case TAN:
-                    return Math.tan(left.calculate());
-
-                case COT:
-                    return 1 / Math.tan(left.calculate());
-
-                case SEC:
-                    return 1 / Math.cos(left.calculate());
-
-                case CSC:
-                    return 1 / Math.sin(left.calculate());
-
-                case ASIN:
-                    return Math.asin(left.calculate());
-
-                case ACOS:
-                    return Math.acos(left.calculate());
-
-                case ATAN:
-                    return Math.atan(left.calculate());
-
-                case ACOT:
-                    return Math.PI / 2 - Math.atan(left.calculate());
-
-                case ASEC:
-                    return Math.acos(1 / left.calculate());
-
-                case ACSC:
-                    return Math.asin(1 / left.calculate());
-
-                case SINH:
-                    x = left.calculate();
-                    return (Math.exp(x) - Math.exp(-x)) / 2;
-
-                case COSH:
-                    x = left.calculate();
-                    return (Math.exp(x) + Math.exp(-x)) / 2;
-
-                case TANH:
-                    x = left.calculate();
-                    return (Math.exp(2 * x) - 1) / (Math.exp(2 * x) + 1);
-
-                case COTH:
-                    x = left.calculate();
-                    return (Math.exp(2 * x) + 1) / (Math.exp(2 * x) - 1);
-
-                case SECH:
-                    x = left.calculate();
-                    return 2 / (Math.exp(x) + Math.exp(-x));
-
-                case CSCH:
-                    x = left.calculate();
-                    return 2 / (Math.exp(x) - Math.exp(-x));
-
-                case ASINH:
-                    x = left.calculate();
-                    return Math.log(x + Math.sqrt(x * x + 1));
-
-                case ACOSH:
-                    x = left.calculate();
-                    return Math.log(x + Math.sqrt(x * x - 1));
-
-                case ATANH:
-                    x = left.calculate();
-                    return Math.log((1 + x) / (1 - x)) / 2;
-
-                case ACOTH:
-                    x = left.calculate();
-                    return Math.log((x + 1) / (x - 1)) / 2;
-
-                case ASECH:
-                    x = left.calculate();
-                    return Math.log((1 + Math.sqrt(1 - x * x)) / x);
-
-                case ACSCH:
-                    x = left.calculate();
-                    return Math.log(1 / x + Math.sqrt(1 + x * x) / Math.abs(x));
-
-                case RANDOM:
-                    return Math.random();
-
-                case CEIL:
-                    return Math.ceil(left.calculate());
-
-                case FLOOR:
-                    return Math.floor(left.calculate());
-
-                case ROUND:
-                    return Math.round(left.calculate());
-
-                case ABS:
-                    return Math.abs(left.calculate());
-
-                case EXP:
-                    return Math.exp(left.calculate());
-
-                case LOG:
-                    return Math.log(left.calculate());
-
-                case SQRT:
-                    return Math.sqrt(left.calculate());
-
-                case POW:
-                    return Math.pow(left.calculate(), right.calculate());
-
-                case ATAN2:
-                    return Math.atan2(left.calculate(), right.calculate());
-
-                case MIN:
-                    return Math.min(left.calculate(), right.calculate());
-
-                case MAX:
-                    return Math.max(left.calculate(), right.calculate());
-
                 case X:
                     return argument[(int) value];
 
                 default:
-                    throw new Exception("Node.calculate error");
+                    return 0;
             }
         }
     }
@@ -220,42 +101,33 @@ public class Parser {
         int i;
 
         if (position == expression.length - 1) {
-            operator = OPERATOR.END;
+            operator = Operator.END;
         } else if ((i = "+-*/()[]{},".indexOf(expression[position])) != -1) {
             position++;
-            operator = OPERATOR.values()[i];
+            operator = Operator.values()[i];
         } else if (isLetter()) {
             for (i = position++; isFunctionSymbol(); position++) ;
             String token = new String(expression, i, position - i);
             ;
 
             try {
-                if (token.charAt(0) == 'X' && token.length() == 1) {
-                    throw new Exception("unknown keyword");
-                } else if (token.charAt(0) == 'X' && token.length() > 1 && Character.isDigit(token.charAt(1))) {
+                    if (token.charAt(0) == 'X' && token.length() > 1 && Character.isDigit(token.charAt(1))) {
                     i = Integer.parseInt(token.substring(1));
-                    if (i < 0) {
-                        throw new Exception("index of 'x' should be nonnegative integer number");
-                    }
+
                     if (arguments < i + 1) {
                         arguments = i + 1;
                     }
-                    operator = OPERATOR.X;
+                    operator = Operator.X;
                     tokenValue = i;
                 } else {
-                    operator = OPERATOR.valueOf(token);
+                    operator = Operator.valueOf(token);
                     i = operator.ordinal();
-                    if (i < OPERATOR.SIN.ordinal() || i > OPERATOR.MAX.ordinal()) {
+                    if (i < Operator.SIN.ordinal() || i > Operator.MAX.ordinal()) {
                         throw new IllegalArgumentException();
                     }
                 }
             } catch (IllegalArgumentException _ex) {
-                try {
-                    tokenValue = CONSTANT_VALUE[CONSTANT_NAME.valueOf(token).ordinal()];
-                    operator = OPERATOR.NUMBER;
-                } catch (IllegalArgumentException ex) {
-                    throw new Exception("unknown keyword");
-                }
+
             }
         } else if (isDigit() || isPoint()) {
             for (i = position++; isDigit() || isPoint() || expression[position] == 'E'
@@ -263,9 +135,7 @@ public class Parser {
                 ;
 
             tokenValue = Double.parseDouble(new String(expression, i, position - i));
-            operator = OPERATOR.NUMBER;
-        } else {
-            throw new Exception("unknown symbol");
+            operator = Operator.NUMBER;
         }
 
     }
@@ -282,24 +152,18 @@ public class Parser {
         this.expression = (s + '\0').getBytes();
 
         getToken();
-        if (operator == OPERATOR.END) {
-            throw new Exception("unexpected end of expression");
-        }
+
         root = parse();
-        if (operator != OPERATOR.END) {
-            throw new Exception("end of expression expected");
-        }
+
 
     }
 
     private Node parse() throws Exception {
         Node node = parse1();
-        while (operator == OPERATOR.PLUS || operator == OPERATOR.MINUS) {
+        while (operator == Operator.PLUS || operator == Operator.MINUS) {
             node = new Node(operator, node);
             getToken();
-            if (operator == OPERATOR.PLUS || operator == OPERATOR.MINUS) {
-                throw new Exception("two operators in a row");
-            }
+
             node.right = parse1();
         }
         return node;
@@ -307,12 +171,10 @@ public class Parser {
 
     private Node parse1() throws Exception {
         Node node = parse2();
-        while (operator == OPERATOR.MULTIPLY || operator == OPERATOR.DIVIDE) {
+        while (operator == Operator.MULTIPLY || operator == Operator.DIVIDE) {
             node = new Node(operator, node);
             getToken();
-            if (operator == OPERATOR.PLUS || operator == OPERATOR.MINUS) {
-                throw new Exception("two operators in a row");
-            }
+
             node.right = parse2();
         }
         return node;
@@ -320,11 +182,11 @@ public class Parser {
 
     private Node parse2() throws Exception {
         Node node;
-        if (operator == OPERATOR.MINUS) {
+        if (operator == Operator.MINUS) {
             getToken();
-            node = new Node(OPERATOR.UNARY_MINUS, parse3());
+            node = new Node(Operator.UNARY_MINUS, parse3());
         } else {
-            if (operator == OPERATOR.PLUS) {
+            if (operator == Operator.PLUS) {
                 getToken();
             }
             node = parse3();
@@ -334,32 +196,28 @@ public class Parser {
 
     private Node parse3() throws Exception {
         Node node;
-        OPERATOR open;
+        Operator open;
 
-        if (operator.ordinal() >= OPERATOR.SIN.ordinal() && operator.ordinal() <= OPERATOR.MAX.ordinal()) {
+        if (operator.ordinal() >= Operator.SIN.ordinal() && operator.ordinal() <= Operator.MAX.ordinal()) {
             int arguments;
-            if (operator.ordinal() >= OPERATOR.POW.ordinal() && operator.ordinal() <= OPERATOR.MAX.ordinal()) {
+            if (operator.ordinal() >= Operator.POW.ordinal() && operator.ordinal() <= Operator.MAX.ordinal()) {
                 arguments = 2;
             } else {
-                arguments = operator == OPERATOR.RANDOM ? 0 : 1;
+                arguments = operator == Operator.RANDOM ? 0 : 1;
             }
 
             node = new Node(operator);
 
             getToken();
             open = operator;
-            if (operator != OPERATOR.LEFT_BRACKET && operator != OPERATOR.LEFT_SQUARE_BRACKET && operator != OPERATOR.LEFT_CURLY_BRACKET) {
-                throw new Exception("open bracket expected");
-            }
+
             getToken();
 
             if (arguments > 0) {
                 node.left = parse();
 
                 if (arguments == 2) {
-                    if (operator != OPERATOR.COMMA) {
-                        throw new Exception("comma expected");
-                    }
+
                     getToken();
                     node.right = parse();
                 }
@@ -391,12 +249,8 @@ public class Parser {
         return node;
     }
 
-    private void checkBracketBalance(OPERATOR open) throws Exception {
-        if (open == OPERATOR.LEFT_BRACKET && operator != OPERATOR.RIGHT_BRACKET ||
-                open == OPERATOR.LEFT_SQUARE_BRACKET && operator != OPERATOR.RIGHT_SQUARE_BRACKET ||
-                open == OPERATOR.LEFT_CURLY_BRACKET && operator != OPERATOR.RIGHT_CURLY_BRACKET) {
-            throw new Exception("close bracket expected or another type of close bracket");
-        }
+    private void checkBracketBalance(Operator open) throws Exception {
+
     }
 
     public double calculate(double[] x) throws Exception {
@@ -405,19 +259,13 @@ public class Parser {
     }
 
     public double calculate() throws Exception {
-        if (root == null) {
-            throw new Exception("using of calculate() without compile()");
-        }
+
         int length = argument == null ? 0 : argument.length;
-        if (length != arguments) {
-            throw new Exception("invalid number of expression arguments");
-        }
+
         return root.calculate();
     }
 
-    /**
-     * @return number of expression arguments
-     */
+
     public int getArguments() {
         return arguments;
     }
