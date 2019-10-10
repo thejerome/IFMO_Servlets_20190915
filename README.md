@@ -2,6 +2,9 @@
 [![from_flaxo with_♥](https://img.shields.io/badge/from_flaxo-with_♥-blue.svg)](https://github.com/tcibinan/flaxo)
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 4bee4d164ef9db7792be0eeb72cf258f3886956c
 Create a servlet, serving expression value calculating.
 
 It should serve `GET` requests.
@@ -18,7 +21,10 @@ All calculations are supposed to be integer.
 
 Other implementation restrictions are covered by unit tests. 
  
+<<<<<<< HEAD
 =======
 Some servlet examples.
 Switch to task-* branch to get exercies.
 >>>>>>> 1ae00de08547d5e3a2e3bf5def7bb410fbe705c2
+=======
+>>>>>>> 4bee4d164ef9db7792be0eeb72cf258f3886956c
