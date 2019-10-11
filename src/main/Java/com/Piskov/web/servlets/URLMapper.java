@@ -1,4 +1,4 @@
-package com.Piskov.web.servlet;
+package com.Piskov.web.servlets;
 
 import java.util.Map;
 
