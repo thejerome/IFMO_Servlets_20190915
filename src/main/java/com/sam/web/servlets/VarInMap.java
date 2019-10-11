@@ -4,16 +4,16 @@ import java.util.Map;
 
 public class VarInMap {
     public static String inMap(Map<String, String[]> var, String equation){
-
-        while (isLetters(equation)) {
-            for (int i = 0; i < equation.length(); i++) {
-                char symbol = equation.charAt(i);
+        String eq = equation;
+        while (isLetters(eq)) {
+            for (int i = 0; i < eq.length(); i++) {
+                char symbol = eq.charAt(i);
                 if (symbol >= 'a' && symbol <= 'z') {
-                    equation = equation.replace(String.valueOf(symbol), String.valueOf(var.get(String.valueOf(symbol))[0]));
+                    eq = eq.replace(String.valueOf(symbol), String.valueOf(var.get(String.valueOf(symbol))[0]));
                 }
             }
         }
-        return(equation);
+        return(eq);
     }
 
     private static boolean isLetters(String str) {

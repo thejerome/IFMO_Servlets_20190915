@@ -56,7 +56,7 @@ public class ParserUtils {
 
     public static Integer answerMthd(String prsexp){
         Stack<Integer> stack = new Stack<>();
-        String operand = new String();
+        String operand = "";
         for (int i = 0; i < prsexp.length( ); i++){
             if(prsexp.charAt(i) == ' ')
                 continue;
@@ -67,7 +67,7 @@ public class ParserUtils {
                         break; //дошли до конца
                 }
                 stack.push(Integer.parseInt(operand));
-                operand = new String();
+                operand ="";
             }
             if (priorityMthd(prsexp.charAt(i)) > 1){
                 Integer a = stack.pop(),
