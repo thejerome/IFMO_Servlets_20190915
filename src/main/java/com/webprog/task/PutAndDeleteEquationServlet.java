@@ -20,7 +20,7 @@ public class PutAndDeleteEquationServlet extends HttpServlet {
         BufferedReader reader = req.getReader();
         PrintWriter writer = resp.getWriter();
         String body = reader.readLine();
-        if (session == null){
+        if (session == null) {
             session = req.getSession();
         }
         if (isGoodFormatted(body)) {
@@ -39,11 +39,11 @@ public class PutAndDeleteEquationServlet extends HttpServlet {
     }
 
     private boolean isGoodFormatted(String body) {
-        for (int i = 0; i<body.length(); ++i){
-            if (body.charAt(i) >= 'a' && body.charAt(i) <= 'z'){
-                if (i<body.length()-1 && (body.charAt(i+1) >= 'a' && body.charAt(i+1) <= 'z')){
-                        return false;
-                }
+        for (int i = 0; i < body.length(); ++i) {
+            if (body.charAt(i) >= 'a' && body.charAt(i) <= 'z' &&
+                    i < body.length() - 1 &&
+                    (body.charAt(i + 1) >= 'a' && body.charAt(i + 1) <= 'z')) {
+                return false;
             }
         }
         return true;
@@ -53,7 +53,7 @@ public class PutAndDeleteEquationServlet extends HttpServlet {
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) {
         resp.setStatus(204);
         HttpSession session = req.getSession(false);
-        if (session != null){
+        if (session != null) {
             session.removeAttribute("equation");
         }
     }
