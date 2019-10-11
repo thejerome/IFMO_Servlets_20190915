@@ -52,7 +52,7 @@ public class CalcServlet extends HttpServlet {
             else {
                 j = i;
                 while (j < str.length() && !isOperator(str.charAt(j))) j++;
-                subs = str.substring(i, j - 1);
+                subs = str.substring(i, j);
             }
             if (!isNumber(subs)) getVar(req,subs);
             if (j == str.length()) {
