@@ -11,7 +11,7 @@ import java.util.Map;
 import javafx.util.Pair;
 
 @WebServlet(
-        name = "calc",
+        name = "CalcServlet",
         urlPatterns = ("/calc")
 )
 
@@ -107,7 +107,7 @@ public class CalcServlet extends HttpServlet {
         return ValueOfOperation;
     }
     private Pair<String,Boolean> doFirstOperations(int startIndex,
-                              int endIndex,
+                              int e,
                               int operationType,
                               String equ,
                               HashMap<String, Integer> vertexes,
@@ -115,16 +115,16 @@ public class CalcServlet extends HttpServlet {
         String equation = equ;
         int j = startIndex;
         if (operationType == 1) {
-            while (j < endIndex &&
+            while (j < e &&
                     equation.charAt(j) != '*' &&
                     equation.charAt(j) != '/') j++;
         }else{
-            while (j < endIndex &&
+            while (j < e &&
                     equation.charAt(j) != '+' &&
                     equation.charAt(j) != '-') j++;
         }
         boolean operationFind = false;
-        if (j < endIndex) {
+        if (j < e) {
             operationFind = true;
             Pair<Integer, Integer> leftElem = findElem(j, equation, -1);
             int left = leftElem.getValue() + 1;
@@ -159,7 +159,7 @@ public class CalcServlet extends HttpServlet {
         return new Pair<>(equation, operationFind);
     }
     private Pair<String, Integer> doAllOperations(int startIndex,
-                                                  int endIndex,
+                                                  int e,
                                                   String equ,
                                                   HashMap<String, Integer> vertexes,
                                                   HttpServletRequest req){
@@ -167,7 +167,7 @@ public class CalcServlet extends HttpServlet {
         Pair<String,Boolean> p = new Pair<>("",true);
         while (p.getValue()){
             p = doFirstOperations(startIndex,
-                    endIndex,
+                    e,
                     1,
                     equation,
                     vertexes,
@@ -175,14 +175,14 @@ public class CalcServlet extends HttpServlet {
             if (p.getValue()) {
                 equation = p.getKey();
                 nomberOfRes++;
-                endIndex = equation.indexOf(')', startIndex);
-                if (endIndex == -1) endIndex = equation.length();
+                e = equation.indexOf(')', startIndex);
+                if (e == -1) e = equation.length();
             }
         }
         p = new Pair<>("",true);
         while (p.getValue()) {
             p = doFirstOperations(startIndex,
-                    endIndex,
+                    e,
                     2,
                     equation,
                     vertexes,
@@ -190,8 +190,8 @@ public class CalcServlet extends HttpServlet {
             equation = p.getKey();
             if (p.getValue()) {
                 nomberOfRes++;
-                endIndex = equation.indexOf(')', startIndex);
-                if (endIndex == -1) endIndex = equation.length();
+                e = equation.indexOf(')', startIndex);
+                if (e == -1) e = equation.length();
             }
         }
         return new Pair<>(equation, vertexes.get("res" + (nomberOfRes - 1)));
