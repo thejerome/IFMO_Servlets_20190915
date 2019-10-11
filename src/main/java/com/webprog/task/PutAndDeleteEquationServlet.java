@@ -1,6 +1,5 @@
 package com.webprog.task;
 
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -42,8 +41,7 @@ public class PutAndDeleteEquationServlet extends HttpServlet {
     private boolean isGoodFormatted(String body) {
         for (int i = 0; i<body.length(); ++i){
             if (body.charAt(i) >= 'a' && body.charAt(i) <= 'z'){
-                if (i<body.length()-1){
-                    if (body.charAt(i+1) >= 'a' && body.charAt(i+1) <= 'z')
+                if (i<body.length()-1 && (body.charAt(i+1) >= 'a' && body.charAt(i+1) <= 'z')){
                         return false;
                 }
             }

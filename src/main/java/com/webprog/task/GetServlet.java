@@ -103,10 +103,10 @@ public class GetServlet extends HttpServlet {
                 rpn.append(token);
                 rpn.append('.');
             }
-            if (token.equals("(")) {
+            if ("(".equals(token)) {
                 opStack.push(token);
             }
-            if (token.equals(")")) {
+            if (")".equals(token)) {
                 while (!Objects.equals(opStack.peek(), "(")) {
                     String op = opStack.pop();
                     rpn.append(op);
@@ -147,14 +147,14 @@ public class GetServlet extends HttpServlet {
                 return String.valueOf(lhs * rhs);
             case '/':
                 return String.valueOf(lhs / rhs);
+            default:
+                return "";
         }
-        return "";
     }
 
     private boolean isNumberOrVar(String str) {
         for (int i = 0; i < str.length(); i++) {
-            if (!Character.isDigit(str.charAt(i))) {
-                if (!(str.charAt(i) >= 'a' && str.charAt(i) <= 'z'))
+            if (!Character.isDigit(str.charAt(i)) && !(str.charAt(i) >= 'a' && str.charAt(i) <= 'z')) {
                     return false;
             }
         }
