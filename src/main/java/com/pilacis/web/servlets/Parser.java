@@ -5,15 +5,16 @@ import java.util.*;
 
 public class Parser {
 
+    private Stack<String> stack = new Stack<String>();
+    private ArrayList<String> list = new ArrayList<String>();
+    private HashMap<Character, Integer> operators = new HashMap<Character, Integer>();
+    private String expression;
+    //////////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////////
 
-    public Parser(String expression){
-        this.expression = expression;
-        this.operators.put('+', 0); this.operators.put('-', 0);
-        this.operators.put('*', 1); this.operators.put('/', 1);
-        this.operators.put('(', 4); this.operators.put(')', 4);
-
-    }
-    public Parser(Map<String, String[]> valuables, String equation){
+    public Parser(Map<String, String[]> valuables, String expression){
+        String equation = expression;
         equation = equation.replace(" ", "");
         for (int i = 0; i < 10; i++) {
             for (String key : valuables.keySet()) {
@@ -27,22 +28,8 @@ public class Parser {
         this.operators.put('(', 4); this.operators.put(')', 4);
 
     }
-    ////////////////////////////////////////////////////////////
-    private Stack<String> stack = new Stack<String>();
-    private ArrayList<String> list = new ArrayList<String>();
-    private HashMap<Character, Integer> operators = new HashMap<Character, Integer>();
-    private String expression;
-    //////////////////////////////////////////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////
 
-
-    public static void main(String[] args) {
-        Parser parser = new Parser("(61 + 32)*(354 - 19)/61");
-        parser.Parse();
-        parser.evaluate();
-        System.out.println(parser.evaluate());
-    }
     public String getToken(){
         int i = 0;
         boolean isFind = false;
@@ -64,7 +51,7 @@ public class Parser {
         return result.toString();
     }
 
-    public void Parse(){
+    public void parse(){
         while(this.expression.compareTo("") != 0){
 
             String token = this.getToken();
@@ -123,6 +110,8 @@ public class Parser {
                     case('/'):
                         buffer.push(leftOperand/rightOperand);
                         break;
+                    default:
+                        break;
                 }
             }
             else{
@@ -149,7 +138,7 @@ public class Parser {
         return result;
     }
     public String getListInfo(){
-        String result = new String("");
+        String result = "";
         for (String str: this.list){
             result += str + " | ";
         }
