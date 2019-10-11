@@ -24,7 +24,7 @@ public class Calculator extends HttpServlet {
         String equation = req.getParameter("equation");
         Map<String, String[]> prmts = req.getParameterMap();
         equation = VarInMap.inMap(prmts, equation);
-        out.print(Parser.answer_mthd(Parser.parse(equation)));
+        out.print(ParserUtils.answerMthd(ParserUtils.parse(equation)));
         out.flush();
         out.close();
     }
