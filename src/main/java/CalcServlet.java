@@ -27,7 +27,7 @@ public class CalcServlet extends HttpServlet {
     public String calculation(HttpServletRequest req, String str) {
         int res = 0, tmpres = 0;
         String operators = "+ ";
-        for (int i=0; i<str.length(); i++) {
+        for (int i=1; i<str.length(); i++) {
             String subs;
             int j;
             if (str.charAt(i) == '(') {
@@ -54,7 +54,7 @@ public class CalcServlet extends HttpServlet {
                 while (j < str.length() && !isOperator(str.charAt(j))) j++;
                 subs = str.substring(i, j - 1);
             }
-            //if (!isNumber(subs)) getVar(req,subs);
+            if (!isNumber(subs)) getVar(req,subs);
             if (j == str.length()) {
                 switch (operators.charAt(1)) {
                     case ('*'):
@@ -140,8 +140,7 @@ public class CalcServlet extends HttpServlet {
     }
 
     public String getVar(HttpServletRequest requ, String var) {
-        String s = requ.getParameter(var);
-        while (!isNumber(s)) s = requ.getParameter(s);
-        return s;
+        while (!isNumber(var)) var = requ.getParameter(var);
+        return var;
     }
 }
