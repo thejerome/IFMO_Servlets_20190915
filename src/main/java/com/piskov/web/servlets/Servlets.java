@@ -1,13 +1,13 @@
-package com.piskov.web.servlets;
+        package com.piskov.web.servlets;
 
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.Map;
-import java.util.Stack;
+        import javax.servlet.annotation.WebServlet;
+        import javax.servlet.http.HttpServlet;
+        import javax.servlet.http.HttpServletRequest;
+        import javax.servlet.http.HttpServletResponse;
+        import java.io.IOException;
+        import java.io.PrintWriter;
+        import java.util.Map;
+        import java.util.Stack;
 
 @WebServlet(
         name = "Servlets",
@@ -19,25 +19,24 @@ public class Servlets extends HttpServlet {
             throws  IOException {
 
         PrintWriter out = resp.getWriter();
-        String equation = map(req.getParameterMap(),req.getParameter("equation"));
-        out.print (calculate(equation));
+        String equation = Map(req.getParameterMap(),req.getParameter("equation"));
+        out.print (Calculate(equation));
         out.flush();
         out.close();
     }
-    private static String map(Map<String, String[]> variables, String equation){
-        //equation = equation.replaceAll("\\s+", "");
+    private static String Map(Map<String, String[]> variables, String equation){
         while (consistOfLetters(equation)){
             for (char symbol: equation.toCharArray()) {
                 if (symbol >= 'a' && symbol <= 'z') {
-                    equation =  equation.replace(String.valueOf(symbol), String.valueOf(variables.get(String.valueOf(symbol))[0]));
+                    equation = equation.replace(String.valueOf(symbol), String.valueOf(variables.get(String.valueOf(symbol))[0]));
                 }
             }
         }
         return equation;
     }
     private static boolean consistOfLetters(String expression) {
-        for (char symbol: expression.toCharArray()) {
-            if ('a' <= expression.charAt(symbol) && 'z' >= expression.charAt(symbol)) return true;
+        for (int i = 0; i < expression.length(); i++) {
+            if ('a' <= expression.charAt(i) && 'z' >= expression.charAt(i)) return true;
         }
         return false;
     }
@@ -82,8 +81,7 @@ public class Servlets extends HttpServlet {
                 operand = new StringBuilder();
             }
             if (getPriority(rpn.charAt(i)) > 1) {
-                Integer a = stack.pop();
-                Integer b = stack.pop();
+                Integer a = stack.pop(), b = stack.pop();
 
                 if (rpn.charAt(i) == '+') stack.push(b + a);
                 else if (rpn.charAt(i) == '-') stack.push(b - a);
@@ -103,7 +101,7 @@ public class Servlets extends HttpServlet {
         else return 0;
     }
 
-    private static String calculate(String Expression){
+    private static String Calculate(String Expression){
         return String.valueOf(answer(expressionParser(Expression)));
     }
 }
