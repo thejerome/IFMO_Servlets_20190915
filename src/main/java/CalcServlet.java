@@ -11,7 +11,7 @@ import java.util.Map;
 import javafx.util.Pair;
 
 @WebServlet(
-        name = "ala",
+        name = "calc",
         urlPatterns = ("/calc")
 )
 
@@ -25,7 +25,7 @@ public class CalcServlet extends HttpServlet {
         HashMap<String, Integer> vertexes = new HashMap<>();
         Map<String,String[]> args = req.getParameterMap();
         for (String key : args.keySet()){
-            if (!(key.equals("equation"))){
+            if (!"equation".equals(key)){
                 getValueOfVert(key,vertexes,req);
             }
         }
@@ -106,24 +106,25 @@ public class CalcServlet extends HttpServlet {
         }
         return ValueOfOperation;
     }
-    private Pair<String,Boolean> doFirstOperations(int startI,
-                              int endI,
+    private Pair<String,Boolean> doFirstOperations(int startIndex,
+                              int endIndex,
                               int operationType,
-                              String equation,
+                              String equ,
                               HashMap<String, Integer> vertexes,
                               HttpServletRequest req) {
-        int j = startI;
+        String equation = equ;
+        int j = startIndex;
         if (operationType == 1) {
-            while (j < endI &&
+            while (j < endIndex &&
                     equation.charAt(j) != '*' &&
                     equation.charAt(j) != '/') j++;
         }else{
-            while (j < endI &&
+            while (j < endIndex &&
                     equation.charAt(j) != '+' &&
                     equation.charAt(j) != '-') j++;
         }
         boolean operationFind = false;
-        if (j < endI) {
+        if (j < endIndex) {
             operationFind = true;
             Pair<Integer, Integer> leftElem = findElem(j, equation, -1);
             int left = leftElem.getValue() + 1;
@@ -157,15 +158,16 @@ public class CalcServlet extends HttpServlet {
         }
         return new Pair<>(equation, operationFind);
     }
-    private Pair<String, Integer> doAllOperations(int startI,
-                                                  int endI,
-                                                  String equation,
+    private Pair<String, Integer> doAllOperations(int startIndex,
+                                                  int endIndex,
+                                                  String equ,
                                                   HashMap<String, Integer> vertexes,
                                                   HttpServletRequest req){
+        String equation = equ;
         Pair<String,Boolean> p = new Pair<>("",true);
         while (p.getValue()){
-            p = doFirstOperations(startI,
-                    endI,
+            p = doFirstOperations(startIndex,
+                    endIndex,
                     1,
                     equation,
                     vertexes,
@@ -173,14 +175,14 @@ public class CalcServlet extends HttpServlet {
             if (p.getValue()) {
                 equation = p.getKey();
                 nomberOfRes++;
-                endI = equation.indexOf(')', startI);
-                if (endI == -1) endI = equation.length();
+                endIndex = equation.indexOf(')', startIndex);
+                if (endIndex == -1) endIndex = equation.length();
             }
         }
         p = new Pair<>("",true);
         while (p.getValue()) {
-            p = doFirstOperations(startI,
-                    endI,
+            p = doFirstOperations(startIndex,
+                    endIndex,
                     2,
                     equation,
                     vertexes,
@@ -188,8 +190,8 @@ public class CalcServlet extends HttpServlet {
             equation = p.getKey();
             if (p.getValue()) {
                 nomberOfRes++;
-                endI = equation.indexOf(')', startI);
-                if (endI == -1) endI = equation.length();
+                endIndex = equation.indexOf(')', startIndex);
+                if (endIndex == -1) endIndex = equation.length();
             }
         }
         return new Pair<>(equation, vertexes.get("res" + (nomberOfRes - 1)));

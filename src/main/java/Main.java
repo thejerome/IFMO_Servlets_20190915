@@ -6,10 +6,9 @@ import org.apache.catalina.webresources.StandardRoot;
 
 import java.io.File;
 
-public class main {
+public class Main {
     public static void main(String[] args) throws Exception{
         int port = 8080;
-
         Tomcat tomcat = new Tomcat();
         tomcat.setPort(port);
 
