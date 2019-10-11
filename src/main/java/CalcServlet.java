@@ -1,11 +1,11 @@
 import javax.servlet.ServletException;
-import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.*;
 
 @WebServlet(
         name = "CalcServlet",
@@ -14,7 +14,7 @@ import java.io.PrintWriter;
 
 public class CalcServlet extends HttpServlet {
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         PrintWriter out = resp.getWriter();
         String equation = req.getParameter("equation");
         equation = equation.replaceAll("\\s+", "");
@@ -54,7 +54,7 @@ public class CalcServlet extends HttpServlet {
                 while (j < str.length() && !isOperator(str.charAt(j))) j++;
                 subs = str.substring(i, j - 1);
             }
-            if (!isNumber(subs)) getVar(req,subs);
+            //if (!isNumber(subs)) getVar(req,subs);
             if (j == str.length()) {
                 switch (operators.charAt(1)) {
                     case ('*'):
