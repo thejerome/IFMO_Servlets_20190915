@@ -43,9 +43,6 @@ public class Parser {
         parser.evaluate();
         System.out.println(parser.evaluate());
     }
-    public String getExpression(){
-        return this.expression;
-    }
     public String getToken(){
         int i = 0;
         boolean isFind = false;
