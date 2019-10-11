@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 @WebServlet(
         name = "CalcServlet",
@@ -14,7 +15,7 @@ import java.io.IOException;
 public class CalcServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        ServletOutputStream out = resp.getOutputStream();
+        PrintWriter out = resp.getWriter();
         String equation = req.getParameter("equation");
         equation = equation.replaceAll("\\s+", "");
         out.println(calculation(req, equation));
@@ -28,10 +29,24 @@ public class CalcServlet extends HttpServlet {
         for (int i=0; i<str.length(); i++) {
             String subs;
             int j;
-            if (i == '(') {
-                int endIndex = str.lastIndexOf(')');
-                subs = calculation(req, str.substring(i,endIndex));
-                j = endIndex+1;
+            if (str.charAt(i) == '(') {
+                int endIndex = i+1;
+                int cnt = 1;
+                while (cnt != 0) {
+                    switch (str.charAt(endIndex)) {
+                        case('('):
+                            cnt++;
+                            break;
+                        case(')'):
+                            cnt--;
+                            break;
+                        default:
+                            break;
+                    }
+                    endIndex++;
+                }
+                subs = calculation(req, str.substring(i,endIndex-1));
+                j = endIndex;
             }
             else {
                 j = i;
@@ -39,6 +54,31 @@ public class CalcServlet extends HttpServlet {
                 subs = str.substring(i, j - 1);
             }
             if (!isNumber(subs)) getVar(req,subs);
+            if (j == str.length()) {
+                switch (operators.charAt(1)) {
+                    case ('*'):
+                        tmpres *= StrtoNum(subs);
+                        break;
+                    case ('/'):
+                        tmpres /= StrtoNum(subs);
+                        break;
+                    case (' '):
+                        tmpres = StrtoNum(subs);
+                        break;
+                }
+                switch (operators.charAt(0)) {
+                    case('+'):
+                        res += tmpres;
+                        break;
+                    case('-'):
+                        res -= tmpres;
+                        break;
+                    case (' '):
+                        break;
+                }
+                i=j;
+                continue;
+            }
             if (operators.charAt(1) == '*' || operators.charAt(1) == '/') {
                 switch (operators.charAt(1)) {
                     case('*'):
@@ -60,22 +100,23 @@ public class CalcServlet extends HttpServlet {
                     tmpres = 0;
                     operators = str.charAt(j) + " ";
                 }
-                else operators.replace(operators.charAt(1),str.charAt(j));
+                else operators = operators.replace(operators.charAt(1),str.charAt(j));
             }
             else {
                 if (str.charAt(j) == '*' || str.charAt(j) == '/') {
                     tmpres += StrtoNum(subs);
-                    operators.replace(operators.charAt(1),str.charAt(j));
+                    operators = operators.replace(operators.charAt(1),str.charAt(j));
                 }
                 else {
-                    if (str.charAt(j) == '+') res += StrtoNum(subs);
+                    if (operators.charAt(0) == '+') res += StrtoNum(subs);
                     else res -= StrtoNum(subs);
-                    operators.replace(operators.charAt(0),str.charAt(j));
+                    operators = operators.replace(operators.charAt(0),str.charAt(j));
+
                 }
             }
             i=j;
         }
-        return Integer.toString(res);
+        return String.valueOf(res);
     }
 
     public boolean isNumber(String n) {
@@ -102,4 +143,3 @@ public class CalcServlet extends HttpServlet {
         return var;
     }
 }
-
