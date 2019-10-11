@@ -95,16 +95,4 @@ public class Equation {
         else
             throw new IllegalArgumentException();
     }
-
-    private String placeValues(String eq, Map<String, String[]> vars) {
-        for (int i=0; i < eq.length(); i++) {
-            if (eq.charAt(i) >= 'a' && eq.charAt(i) <= 'z') {
-                eq = eq.replace(
-                        String.valueOf(eq.charAt(i)),
-                        vars.get( String.valueOf(eq.charAt(i)) )[0]
-                );
-            }
-        }
-        return eq;
-    }
 }
