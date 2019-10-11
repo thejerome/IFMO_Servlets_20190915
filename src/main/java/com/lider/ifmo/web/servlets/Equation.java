@@ -4,7 +4,7 @@ import java.util.Map;
 import java.util.Stack;
 
 public class Equation {
-    Map<String, String[]> variables;
+    private Map<String, String[]> variables;
 
     public Equation(Map<String, String[]> variables) {
         this.variables = variables;
