@@ -1,18 +1,16 @@
-import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.*;
 
 @WebServlet(
         name = "CalculatorServlet",
         urlPatterns = {"/calc"}
 )
-public class CalculatorServlet extends HttpServlet {
+public class CalcServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String equation = request.getParameter("equation");
@@ -32,7 +30,7 @@ public class CalculatorServlet extends HttpServlet {
         }
         equation = stringBuilder.toString();
         ServletOutputStream out = response.getOutputStream();
-        out.write(Integer.toString(Calculator.calc(equation)).getBytes());
+        out.write(Integer.toString(CalcHelper.answer(equation)).getBytes());
         out.flush();
         out.close();
     }
