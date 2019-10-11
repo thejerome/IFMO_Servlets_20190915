@@ -1,7 +1,5 @@
 package com.web.task;
 
-
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -29,6 +27,7 @@ public class Servlet1 extends HttpServlet{
         int var1 = var.pop();
         int var2 = var.pop();
         switch (oper.pop()) {
+
             case '+':
                 var.push(var1+var2);
                 break;
@@ -41,16 +40,18 @@ public class Servlet1 extends HttpServlet{
             case '/':
                 var.push(var2/var1);
                 break;
+
             default: break;
         }
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String equation = req.getParameter("equation");
         PrintWriter writer = resp.getWriter();
         Map<Character, Integer> normalMap = new HashMap<>();
         final Map<String, String[]> parameterMap = req.getParameterMap();
+
         for (Map.Entry<String, String[]> parameterEntry : parameterMap.entrySet()) {
             if (!(parameterEntry.getKey().equals("equation"))) {
                 String val = parameterEntry.getValue()[0];
