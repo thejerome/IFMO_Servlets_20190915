@@ -132,7 +132,7 @@ public class Calculator extends HttpServlet{
         return result;
     }
 
-    private int Counting(String input)
+    public int Counting(String input)
     {
         int result = 0;
         Stack<Integer> stack = new Stack<>();
