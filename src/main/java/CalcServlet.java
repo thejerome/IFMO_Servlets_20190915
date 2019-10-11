@@ -164,10 +164,11 @@ public class CalcServlet extends HttpServlet {
                                                   HashMap<String, Integer> vertexes,
                                                   HttpServletRequest req){
         String equation = equ;
+        int endI = e;
         Pair<String,Boolean> p = new Pair<>("",true);
         while (p.getValue()){
             p = doFirstOperations(startIndex,
-                    e,
+                    endI,
                     1,
                     equation,
                     vertexes,
@@ -175,14 +176,14 @@ public class CalcServlet extends HttpServlet {
             if (p.getValue()) {
                 equation = p.getKey();
                 nomberOfRes++;
-                e = equation.indexOf(')', startIndex);
-                if (e == -1) e = equation.length();
+                endI = equation.indexOf(')', startIndex);
+                if (endI == -1) endI = equation.length();
             }
         }
         p = new Pair<>("",true);
         while (p.getValue()) {
             p = doFirstOperations(startIndex,
-                    e,
+                    endI,
                     2,
                     equation,
                     vertexes,
@@ -190,8 +191,8 @@ public class CalcServlet extends HttpServlet {
             equation = p.getKey();
             if (p.getValue()) {
                 nomberOfRes++;
-                e = equation.indexOf(')', startIndex);
-                if (e == -1) e = equation.length();
+                endI = equation.indexOf(')', startIndex);
+                if (endI == -1) endI = equation.length();
             }
         }
         return new Pair<>(equation, vertexes.get("res" + (nomberOfRes - 1)));
