@@ -1,7 +1,5 @@
 package com.web.task;
 
-
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -46,7 +44,7 @@ public class Servlet1 extends HttpServlet{
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String equation = req.getParameter("equation");
         PrintWriter writer = resp.getWriter();
         Map<Character, Integer> normalMap = new HashMap<>();
