@@ -140,7 +140,8 @@ public class CalcServlet extends HttpServlet {
     }
 
     public String getVar(HttpServletRequest requ, String var) {
-        while (!isNumber(var)) var = requ.getParameter(var);
-        return var;
+        s = requ.getParameter(var);
+        while (!isNumber(s)) s = requ.getParameter(s);
+        return s;
     }
 }
