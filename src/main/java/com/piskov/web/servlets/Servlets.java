@@ -19,25 +19,25 @@ public class Servlets extends HttpServlet {
             throws  IOException {
 
         PrintWriter out = resp.getWriter();
-        String equation = Map(req.getParameterMap(),req.getParameter("equation"));
-        out.print (Calculate(equation));
+        String equation = map(req.getParameterMap(),req.getParameter("equation"));
+        out.print (calculate(equation));
         out.flush();
         out.close();
     }
-    private static String Map(Map<String, String[]> variables, String equation){
+    private static String map(Map<String, String[]> variables, String equation){
         //equation = equation.replaceAll("\\s+", "");
         while (consistOfLetters(equation)){
             for (char symbol: equation.toCharArray()) {
                 if (symbol >= 'a' && symbol <= 'z') {
-                    equation = equation.replace(String.valueOf(symbol), String.valueOf(variables.get(String.valueOf(symbol))[0]));
+                    return  equation.replace(String.valueOf(symbol), String.valueOf(variables.get(String.valueOf(symbol))[0]));
                 }
             }
         }
         return equation;
     }
     private static boolean consistOfLetters(String expression) {
-        for (int i = 0; i < expression.length(); i++) {
-            if ('a' <= expression.charAt(i) && 'z' >= expression.charAt(i)) return true;
+        for (char symbol: expression.toCharArray()) {
+            if ('a' <= expression.charAt(symbol) && 'z' >= expression.charAt(symbol)) return true;
         }
         return false;
     }
@@ -82,7 +82,8 @@ public class Servlets extends HttpServlet {
                 operand = new StringBuilder();
             }
             if (getPriority(rpn.charAt(i)) > 1) {
-                Integer a = stack.pop(), b = stack.pop();
+                Integer a = stack.pop();
+                Integer b = stack.pop();
 
                 if (rpn.charAt(i) == '+') stack.push(b + a);
                 else if (rpn.charAt(i) == '-') stack.push(b - a);
@@ -102,7 +103,7 @@ public class Servlets extends HttpServlet {
         else return 0;
     }
 
-    private static String Calculate(String Expression){
+    private static String calculate(String Expression){
         return String.valueOf(answer(expressionParser(Expression)));
     }
 }
