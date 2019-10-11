@@ -1,7 +1,8 @@
 package com.efimchick.ifmo.web.servlets;
-import javax.servlet.annotation.*;
-import javax.servlet.http.*;
-import javax.servlet.*;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 import java.io.*;
 
@@ -13,7 +14,7 @@ public class Servlet1 extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
+            throws IOException {
 
         PrintWriter out = resp.getWriter();
         String equation = req.getParameter("equation");
@@ -84,7 +85,7 @@ public class Servlet1 extends HttpServlet {
 
             if (token == ')') {
                 top = operStack.peekLast();
-                while (!top.equals("(")) {
+                while (!"(".equals(top)) {
                     postfix.offerLast(operStack.pollLast());
                     top = operStack.peekLast();
                 }
@@ -122,25 +123,25 @@ public class Servlet1 extends HttpServlet {
             if (elem.length() == 1 && isOper(elem.charAt(0))) {
                 operand2 = result.pollLast();
                 operand1 = result.pollLast();
-                if (elem.equals("+")) {
+                if ("+".equals(elem)) {
                     value = operand1 + operand2;
                     result.offerLast(value);
                 }
-                if (elem.equals("-")) {
+                if ("-".equals(elem)) {
                     value = operand1 - operand2;
                     result.offerLast(value);
                 }
-                if (elem.equals("*")) {
+                if ("*".equals(elem)) {
                     value = operand1 * operand2;
                     result.offerLast(value);
                 }
-                if (elem.equals("/")) {
+                if ("/".equals(elem)) {
                     value = operand1 / operand2;
                     result.offerLast(value);
                 }
             }
             else {
-                if (!elem.equals("")) {
+                if (!"".equals(elem)) {
                     result.offerLast(Integer.valueOf(elem));
                 }
             }
