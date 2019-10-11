@@ -18,7 +18,8 @@ public class CalcServlet extends HttpServlet {
         PrintWriter out = resp.getWriter();
         String equation = req.getParameter("equation");
         equation = equation.replaceAll("\\s+", "");
-        out.println(calculation(req, equation));
+        equation = " " + equation;
+        out.write(calculation(req, equation));
         out.flush();
         out.close();
     }
