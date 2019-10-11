@@ -16,7 +16,7 @@ import java.io.PrintWriter;
 )
 public class PutAndDeleteEquationServlet extends HttpServlet {
     @Override
-    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         HttpSession session = req.getSession(false);
         BufferedReader reader = req.getReader();
         PrintWriter writer = resp.getWriter();
@@ -24,7 +24,7 @@ public class PutAndDeleteEquationServlet extends HttpServlet {
         if (session == null){
             session = req.getSession();
         }
-        if (isGoodFormated(body)) {
+        if (isGoodFormatted(body)) {
             if (session.getAttribute("equation") == null)
                 resp.setStatus(201);
             else
@@ -32,20 +32,27 @@ public class PutAndDeleteEquationServlet extends HttpServlet {
             session.setAttribute("equation", body);
         } else {
             resp.setStatus(400);
-            writer.write("BAD FORMAAAT");
+            writer.write("Bad formatted equation");
         }
         writer.flush();
         writer.close();
         reader.close();
     }
 
-    private boolean isGoodFormated(String body) {
-        /// trololololololololo
-        return !body.equals("bad format");
+    private boolean isGoodFormatted(String body) {
+        for (int i = 0; i<body.length(); ++i){
+            if (body.charAt(i) >= 'a' && body.charAt(i) <= 'z'){
+                if (i<body.length()-1){
+                    if (body.charAt(i+1) >= 'a' && body.charAt(i+1) <= 'z')
+                        return false;
+                }
+            }
+        }
+        return true;
     }
 
     @Override
-    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) {
         resp.setStatus(204);
         HttpSession session = req.getSession(false);
         if (session != null){

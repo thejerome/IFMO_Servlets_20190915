@@ -2,7 +2,6 @@ package com.webprog.task;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
-import javax.servlet.Filter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -11,6 +10,27 @@ import java.io.PrintWriter;
 import java.util.ArrayDeque;
 import java.util.Objects;
 import java.util.StringTokenizer;
+
+/*
+import javax.servlet.Filter;
+
+public class WebFilter implements Filter {
+
+    @Override
+    public void init(FilterConfig filterConfig) throws ServletException {
+
+    }
+
+    @Override
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+    }
+
+    @Override
+    public void destroy() {
+
+    }
+}
+*/
 
 @WebServlet(
         name = "GetServlet",
@@ -22,38 +42,35 @@ public class GetServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         HttpSession session = req.getSession(false);
         PrintWriter writer = resp.getWriter();
+        String result = "";
         if (session == null) {
             resp.setStatus(409);
-            writer.write("BAD FORMAT");
         } else {
             String equation = (String) session.getAttribute("equation");
             if (equation == null) {
                 resp.setStatus(409);
-                writer.write("BAD FORMAT");
             } else {
                 equation = equation.replaceAll("\\s","");
                 String RPN = getReversePolishNotation(equation);
-                String result = "";
                 try {
                     result = getResult(req, RPN);
                 } catch (IllegalArgumentException e) {
                     resp.setStatus(409);
-                    writer.write("BAD FORMAT");
                 }
-                if (resp.getStatus() != 409) {
-                    resp.setStatus(200);
-                    writer.write(result);
-                } else {
-                    writer.write("BAD FORMAT!");
-                }
-                writer.flush();
-                writer.close();
             }
         }
+        if (resp.getStatus() != 409) {
+            resp.setStatus(200);
+            writer.write(result);
+        } else {
+            writer.write("BAD FORMAT!");
+        }
+        writer.flush();
+        writer.close();
     }
 
     private String getResult(HttpServletRequest req, String RPN) {
-        StringTokenizer st = new StringTokenizer(RPN.toString(), ".");
+        StringTokenizer st = new StringTokenizer(RPN, ".");
         ArrayDeque<String> calc = new ArrayDeque<>();
         while (st.hasMoreTokens()) {
             String token = st.nextToken();
@@ -68,7 +85,6 @@ public class GetServlet extends HttpServlet {
                 continue;
             }
             if (isOperator(token)) {
-                if (calc.size() < 2) throw new AssertionError();
                 String rhs = calc.pop();
                 String lhs = calc.pop();
                 calc.push(calcSimpleEquation(Integer.parseInt(lhs), Integer.parseInt(rhs), token));

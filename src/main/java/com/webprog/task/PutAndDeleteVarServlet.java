@@ -16,7 +16,7 @@ import java.io.PrintWriter;
 )
 public class PutAndDeleteVarServlet extends HttpServlet {
     @Override
-    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         HttpSession session = req.getSession(false);
         String requestURI = req.getRequestURI();
         BufferedReader reader = req.getReader();
@@ -25,7 +25,7 @@ public class PutAndDeleteVarServlet extends HttpServlet {
         if (session == null){
             session = req.getSession();
         }
-        if (isGoodFormated(body)) {
+        if (isGoodFormatted(body)) {
             String val = String.valueOf(requestURI.charAt(requestURI.length() - 1));
             if (session.getAttribute(val) == null)
                 resp.setStatus(201);
@@ -41,15 +41,14 @@ public class PutAndDeleteVarServlet extends HttpServlet {
         reader.close();
     }
 
-    private boolean isGoodFormated(String body) {
-        if (body.charAt(0) >= 'a' && body.charAt(0) <= 'z')
+    private boolean isGoodFormatted(String body) {
+        if (body.charAt(0) >= 'a' && body.charAt(0) <= 'z' && body.length() == 1)
             return true;
         return Integer.parseInt(body) >= -10000 && Integer.parseInt(body) <= 10000;
     }
 
-
     @Override
-    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp)  {
         resp.setStatus(204);
         String requestURI = req.getRequestURI();
         HttpSession session = req.getSession(false);
