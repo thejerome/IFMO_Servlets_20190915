@@ -21,10 +21,10 @@ public class Calculator extends HttpServlet {
         PrintWriter out = resp.getWriter();
 
         //getting parameter
-        String expression = req.getParameter("equation");
+        String equation = req.getParameter("equation");
         Map<String, String[]> prmts = req.getParameterMap();
-        expression = VarInMap.inMap(prmts, expression);
-        out.print(Parser.answer_mthd(Parser.parse(expression)));
+        equation = VarInMap.inMap(prmts, equation);
+        out.print(Parser.answer_mthd(Parser.parse(equation)));
         out.flush();
         out.close();
     }
