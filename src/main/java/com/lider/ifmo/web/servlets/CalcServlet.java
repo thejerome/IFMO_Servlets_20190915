@@ -28,7 +28,7 @@ public class CalcServlet extends HttpServlet {
         System.out.println(eq_str);
 
         Equation equation = new Equation(variables);
-        out.print(equation.Calculate(eq_str));
+        out.print(equation.calculate(eq_str));
         System.out.println(eq_str);
 
         out.flush();

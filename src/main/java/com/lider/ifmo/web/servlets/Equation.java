@@ -10,10 +10,10 @@ public class Equation {
         this.variables = variables;
     }
 
-    public Integer Calculate(String s) {
-        s = s.replace(" ", "");
+    public Integer calculate(String str) {
+        String strWithoutSpaces = str.replace(" ", "");
 
-        String RPN = ExpressionToRPN(s);
+        String RPN = expressionToRPN(strWithoutSpaces);
         System.out.println(RPN);
 
         Stack<Integer> result = new Stack<Integer>();
@@ -37,7 +37,7 @@ public class Equation {
         return Integer.parseInt(value);
     }
 
-    private int Priority(Character c) {
+    private int priority(Character c) {
         if (c.equals('*')) { return 3;}
         if (c.equals('/')) { return 3;}
         if (c.equals('+') || c.equals('-')) { return 2;}
@@ -46,16 +46,16 @@ public class Equation {
         else return 0; //symbols from 0 to 9 and latin lowercase letters
     }
 
-    private String ExpressionToRPN(String str) {
+    private String expressionToRPN(String str) {
         StringBuilder current = new StringBuilder();
         Stack<Character> operators = new Stack<Character>();
 
         for (int i=0; i < str.length(); i++) {
-            if (Priority(str.charAt(i)) == 0) { current.append(str.charAt(i)); }
+            if (priority(str.charAt(i)) == 0) { current.append(str.charAt(i)); }
             else if (str.charAt(i) == '(') { operators.push(str.charAt(i)); }
 
-            else if (Priority(str.charAt(i)) >= 2) {
-                if (!(operators.isEmpty()) && Priority(operators.peek()) >= Priority(str.charAt(i))) {
+            else if (priority(str.charAt(i)) >= 2) {
+                if (!(operators.isEmpty()) && priority(operators.peek()) >= priority(str.charAt(i))) {
                     current.append(operators.pop());
                 }
                 operators.push(str.charAt(i));
@@ -77,9 +77,7 @@ public class Equation {
     }
 
     private boolean isOperator(char c) {
-        if (c == '+' || c == '-' || c == '*' || c == '/')
-            return true;
-        return false;
+        return (c == '+' || c == '-' || c == '*' || c == '/');
     }
     private boolean isVariable(Object element) {
         return variables.containsKey(String.valueOf(element)) || (element instanceof Integer);
