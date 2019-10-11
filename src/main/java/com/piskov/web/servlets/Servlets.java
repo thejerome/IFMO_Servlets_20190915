@@ -29,7 +29,7 @@ public class Servlets extends HttpServlet {
         while (consistOfLetters(equation)){
             for (char symbol: equation.toCharArray()) {
                 if (symbol >= 'a' && symbol <= 'z') {
-                    return  equation.replace(String.valueOf(symbol), String.valueOf(variables.get(String.valueOf(symbol))[0]));
+                    equation =  equation.replace(String.valueOf(symbol), String.valueOf(variables.get(String.valueOf(symbol))[0]));
                 }
             }
         }
