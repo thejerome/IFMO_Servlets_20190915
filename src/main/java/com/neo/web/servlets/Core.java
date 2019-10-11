@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.Stack;
 import java.util.regex.Pattern;
 
+
 @WebServlet(
         name = "Core",
         urlPatterns = "/calc"
@@ -32,19 +33,18 @@ public class Core extends HttpServlet
         while (!Pattern.matches("^[0-9*+-/()]+$", equation))
             for (Map.Entry<String, String[]> parameterEntry : parameterMap.entrySet())
                 equation = equation.replace(parameterEntry.getKey(), parameterEntry.getValue()[0]);
+
         ArrayList test = new ArrayList();
         test = inputCleaner(equation);
 
         try {
-            out.println(infixCalculator(test));
-        } catch (SyntaxErrorException e) {
-            e.printStackTrace();
-        }
+            String a = infixCalculator(test);
+            out.println(a);
 
-
+        } catch (SyntaxErrorException e) {e.printStackTrace();}
+        input = new ArrayList<String>();
         out.flush();
         out.close();
-
     }
 
     private static Stack<Integer> operandStack = new Stack<Integer>();
@@ -202,7 +202,7 @@ public class Core extends HttpServlet
         }
     }
 
-    public static String infixCalculator(ArrayList<String> expressions) throws SyntaxErrorException {
+    public static String infixCalculator(ArrayList<String> expressions) throws SyntaxErrorException  {
         for (String expression : expressions) {
             if (OPERATORS.indexOf(expression) == -1) {
                 operandStack.push(Integer.parseInt(expression));
