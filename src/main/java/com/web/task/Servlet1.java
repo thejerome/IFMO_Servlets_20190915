@@ -1,3 +1,6 @@
+package com.web.task;
+
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -22,7 +25,7 @@ public class Servlet1 extends HttpServlet{
     private static boolean isVariable (char oper) {
         return oper >= 'a' && oper <= 'z';
     }
-    private static void Operation (Stack<Integer> var, Stack<Character> oper) {
+    private static void operation (Stack<Integer> var, Stack<Character> oper) {
         int var1 = var.pop();
         int var2 = var.pop();
         switch (oper.pop()) {
@@ -38,6 +41,7 @@ public class Servlet1 extends HttpServlet{
             case '/':
                 var.push(var2/var1);
                 break;
+            default: break;
         }
     }
 
@@ -59,7 +63,7 @@ public class Servlet1 extends HttpServlet{
                 }
                 int valInt = Integer.parseInt(val);
                 normalMap.put(parameterEntry.getKey().charAt(0), valInt);
-                }
+            }
         }
 
         Stack<Character> stackOperators = new Stack<>();
@@ -70,13 +74,13 @@ public class Servlet1 extends HttpServlet{
                 stackVars.push(normalMap.get(eqChar));
             else if (isSecondaryOperator(eqChar)) {
                 while ((!stackOperators.empty()) && (isSecondaryOperator(stackOperators.peek()) || isPriorityOperator(stackOperators.peek()))) {
-                    Operation(stackVars, stackOperators);
+                    operation(stackVars, stackOperators);
                 }
                 stackOperators.push(eqChar);
             }
             else if (isPriorityOperator(eqChar)) {
                 while ((!stackOperators.empty()) && (isPriorityOperator(stackOperators.peek()))) {
-                    Operation(stackVars, stackOperators);
+                    operation(stackVars, stackOperators);
                 }
                 stackOperators.push(eqChar);
             }
@@ -85,15 +89,14 @@ public class Servlet1 extends HttpServlet{
             }
             else if (eqChar == ')') {
                 while (stackOperators.peek() != '(') {
-                    Operation(stackVars, stackOperators);
+                    operation(stackVars, stackOperators);
                 }
                 stackOperators.pop();
             }
-            if (i == equation.length() - 1) {
-                while (!stackOperators.isEmpty())
-                    Operation(stackVars, stackOperators);
-            }
+
         }
+        while (!stackOperators.isEmpty())
+            operation(stackVars, stackOperators);
 
         writer.println(stackVars.pop());
         writer.flush();
