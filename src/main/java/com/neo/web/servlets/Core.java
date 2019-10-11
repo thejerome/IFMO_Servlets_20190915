@@ -41,6 +41,7 @@ public class Core extends HttpServlet
             e.printStackTrace();
         }
 
+
         out.flush();
         out.close();
 
