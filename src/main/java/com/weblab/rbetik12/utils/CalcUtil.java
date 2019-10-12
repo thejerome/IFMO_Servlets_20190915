@@ -19,20 +19,21 @@ public class CalcUtil {
     }
 
     private static String replaceVars(Map<String, Object> varsMap, String expr) {
+        String equation = expr;
         for (Map.Entry<String, Object> var : varsMap.entrySet()) {
             Object value = var.getValue();
             if (value instanceof Integer) {
-                expr = expr.replaceAll(var.getKey(), var.getValue().toString());
+                equation = equation.replaceAll(var.getKey(), var.getValue().toString());
             } else {
-                expr = expr.replaceAll(var.getKey(), (String) var.getValue());
+                equation = equation.replaceAll(var.getKey(), (String) var.getValue());
             }
 
         }
-        Matcher matcher = Pattern.compile("[a-z]").matcher(expr);
+        Matcher matcher = Pattern.compile("[a-z]").matcher(equation);
         if (matcher.find()) {
-            return replaceVars(varsMap, expr);
+            return replaceVars(varsMap, equation);
         }
-        return expr;
+        return equation;
     }
 
     private static ArrayList<String> buildTokensList(String expression) {

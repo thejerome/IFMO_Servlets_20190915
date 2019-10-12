@@ -20,6 +20,7 @@ import java.util.regex.Pattern;
 public class InputFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) {
+        //Should be empty
     }
 
     @Override
@@ -60,5 +61,6 @@ public class InputFilter implements Filter {
 
     @Override
     public void destroy() {
+        //Should be empty as well
     }
 }
