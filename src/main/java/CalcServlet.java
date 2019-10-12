@@ -19,6 +19,17 @@ public class CalcServlet extends HttpServlet {
         String equation = req.getParameter("equation");
         equation = equation.replaceAll("\\s+", "");
         equation = " " + equation;
+        for (int i=0; i<equation.length(); i++) {
+            if (!isOperator(equation.charAt(i))) {
+                int j = i;
+                String subs1, subs2;
+                while (j < equation.length() && !isOperator(equation.charAt(j))) j++;
+                subs1 = equation.substring(i, j);
+                if (!isNumber(subs1)) subs2 = req.getParameter(subs1);
+                equation.replaceAll(subs1, subs2);
+                i=j;
+            }
+        }
         out.write(calculation(req, equation));
         out.flush();
         out.close();
@@ -54,7 +65,6 @@ public class CalcServlet extends HttpServlet {
                 while (j < str.length() && !isOperator(str.charAt(j))) j++;
                 subs = str.substring(i, j);
             }
-            if (!isNumber(subs)) getVar(req,subs);
             if (j == str.length()) {
                 switch (operators.charAt(1)) {
                     case ('*'):
