@@ -22,20 +22,20 @@ public class CalcServlet extends HttpServlet {
         for (int i=0; i<equation.length(); i++) {
             if (!isOperator(equation.charAt(i))) {
                 int j = i;
-                String subs1, subs2;
+                String subs1, subs2="";
                 while (j < equation.length() && !isOperator(equation.charAt(j))) j++;
                 subs1 = equation.substring(i, j);
                 if (!isNumber(subs1)) subs2 = req.getParameter(subs1);
-                equation.replaceAll(subs1, subs2);
+                equation = equation.replaceAll(subs1, subs2);
                 i=j;
             }
         }
-        out.write(calculation(req, equation));
+        out.write(calculation(equation));
         out.flush();
         out.close();
     }
 
-    public String calculation(HttpServletRequest req, String str) {
+    public String calculation(String str) {
         int res = 0, tmpres = 0;
         String operators = "+ ";
         for (int i=1; i<str.length(); i++) {
@@ -57,7 +57,7 @@ public class CalcServlet extends HttpServlet {
                     }
                     endIndex++;
                 }
-                subs = calculation(req, str.substring(i,endIndex-1));
+                subs = calculation(str.substring(i,endIndex-1));
                 j = endIndex;
             }
             else {
@@ -147,10 +147,5 @@ public class CalcServlet extends HttpServlet {
             result = result*10 + Character.getNumericValue(stn.charAt(i));
         }
         return result;
-    }
-
-    public String getVar(HttpServletRequest requ, String var) {
-        while (!isNumber(var)) var = requ.getParameter(var);
-        return var;
     }
 }
