@@ -1,6 +1,11 @@
 package com.weblab.rbetik12.utils;
 
-import javax.servlet.*;
+import javax.servlet.Filter;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,7 +20,6 @@ import java.util.regex.Pattern;
 public class InputFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) {
-
     }
 
     @Override
@@ -24,7 +28,7 @@ public class InputFilter implements Filter {
         HttpServletResponse res = (HttpServletResponse) response;
         String reqURL = req.getRequestURI().substring(6);
         boolean error = false;
-        if (reqURL.equals("equation")) {
+        if ("equation".equals(reqURL)) {
             String equation = req.getReader().readLine();
             Matcher matcher = Pattern.compile("[A-Z]+").matcher(equation);
             Matcher matcher1 = Pattern.compile("[-+*/]").matcher(equation);
@@ -34,7 +38,7 @@ public class InputFilter implements Filter {
                 error = true;
             }
             req.getReader().reset();
-        } else if (Pattern.matches("[a-z]", reqURL) && !reqURL.equals("result")) {
+        } else if (Pattern.matches("[a-z]", reqURL) && !"result".equals(reqURL)) {
             try {
                 String reqBody = req.getReader().readLine();
                 int value = Integer.parseInt(reqBody);
@@ -56,6 +60,5 @@ public class InputFilter implements Filter {
 
     @Override
     public void destroy() {
-
     }
 }

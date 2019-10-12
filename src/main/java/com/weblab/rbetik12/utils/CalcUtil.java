@@ -1,5 +1,6 @@
 package com.weblab.rbetik12.utils;
 
+import java.security.InvalidParameterException;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -7,11 +8,11 @@ import java.util.stream.Collectors;
 
 public class CalcUtil {
 
-    public static int parse(String expr, Map<String, Object> vars) throws Exception {
+    public static int parse(String expr, Map<String, Object> vars) {
         return solve(tokenize(expr, vars));
     }
 
-    private static String[] tokenize(String expr, Map<String, Object> varsMap) throws Exception {
+    private static String[] tokenize(String expr, Map<String, Object> varsMap) {
         checkVarsMap(varsMap, expr);
         String replacedExpr = replaceVars(varsMap, expr);
         return buildPostfix(buildTokensList(replacedExpr));
@@ -142,14 +143,14 @@ public class CalcUtil {
         return Integer.parseInt(stack.pop());
     }
 
-    private static void checkVarsMap(Map<String, Object> varsMap, String expr) throws Exception {
+    private static void checkVarsMap(Map<String, Object> varsMap, String expr) {
         List<Character> vars = expr.chars()
                 .mapToObj(i -> (char) i)
                 .filter(Character::isAlphabetic)
                 .collect(Collectors.toList());
         for (char var : vars) {
             if (varsMap.get(String.valueOf(var)) == null) {
-                throw new Exception("Incorrect vars map");
+                throw new InvalidParameterException("Incorrect vars map");
             }
         }
     }
