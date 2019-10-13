@@ -18,14 +18,14 @@ public class Servlet extends HttpServlet {
         String equation = req.getParameter("equation").replaceAll("\\s+", "");
         StringBuilder opn = rPn(equation);
         ArrayDeque<String> cal = new ArrayDeque<>();
-        calculation(opn, cal);
+        calculation(req, opn, cal);
         PrintWriter writer = resp.getWriter();
-        writer.write(calc.getFirst());
+        writer.write(cal.getFirst());
         writer.flush();
         writer.close();
     }
         
-    private void calculation(StringBuilder rpn, ArrayDeque<String> calc){
+    private void calculation(HttpServletRequest req,StringBuilder rpn, ArrayDeque<String> calc){
         StringTokenizer st = new StringTokenizer(rpn.toString(), ".");
         while (st.hasMoreTokens()) {
             String token = st.nextToken();
