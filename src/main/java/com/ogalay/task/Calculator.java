@@ -40,6 +40,7 @@ public class Calculator extends HttpServlet{
         String exit = getExpression(equation);
         out.println(counting(exit));
         out.flush();
+            
         out.close();
     }
 
