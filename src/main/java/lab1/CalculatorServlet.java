@@ -1,3 +1,5 @@
+package lab1;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -28,7 +30,7 @@ public class CalculatorServlet extends HttpServlet {
             }
         }
         equation = sb.toString();
-        writer.println(Calculator.deci(equation));
+        writer.println(CalculatorUtils.deci(equation));
         writer.flush();
         writer.close();
     }
