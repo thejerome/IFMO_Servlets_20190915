@@ -17,6 +17,7 @@ import javafx.util.Pair;
 
 public class CalcServlet extends HttpServlet {
     private int nomberOfRes = 0;
+        
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
