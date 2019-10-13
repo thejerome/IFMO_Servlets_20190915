@@ -28,13 +28,14 @@ public class CalcServlet extends HttpServlet {
                 equation = equation.replaceAll(Character.toString(equation.charAt(i)), sub);
             }
         }
-        writ.write(calculation(equation));
+        writ.write(calc(equation));
         writ.flush();
         writ.close();
     }
 
-    private String calculation(String str) {
-        int res = 0, tmpres = 0;
+    private String calc(String str) {
+        int res = 0;
+        int tmpres = 0;
         String operators = "+ ";
         for (int i=1; i<str.length(); i++) {
             String subs;
@@ -55,7 +56,7 @@ public class CalcServlet extends HttpServlet {
                     }
                     endIndex++;
                 }
-                subs = calculation(str.substring(i,endIndex-1));
+                subs = calc(str.substring(i,endIndex-1));
                 j = endIndex;
             }
             else {
@@ -74,6 +75,8 @@ public class CalcServlet extends HttpServlet {
                     case (' '):
                         tmpres = StrtoNum(subs);
                         break;
+                    default:
+                        break;
                 }
                 switch (operators.charAt(0)) {
                     case('+'):
@@ -83,6 +86,8 @@ public class CalcServlet extends HttpServlet {
                         res -= tmpres;
                         break;
                     case (' '):
+                        break;
+                    default:
                         break;
                 }
                 i=j;
@@ -96,6 +101,8 @@ public class CalcServlet extends HttpServlet {
                     case('/'):
                         tmpres /= StrtoNum(subs);
                         break;
+                    default:
+                        break;
                 }
                 if (str.charAt(j) == '+' || str.charAt(j) == '-') {
                     switch (str.charAt(j)) {
@@ -104,6 +111,8 @@ public class CalcServlet extends HttpServlet {
                             break;
                         case('-'):
                             res -= tmpres;
+                            break;
+                        default:
                             break;
                     }
                     tmpres = 0;
@@ -135,8 +144,7 @@ public class CalcServlet extends HttpServlet {
     }
 
     private boolean isOperator(char c) {
-        if (c == '+' || c == '-' || c == '*' || c == '/' || c == '(' || c == ')') return false;
-        return true;
+        return (c == '+' || c == '-' || c == '*' || c == '/' || c == '(' || c == ')');
     }
 
     private int StrtoNum(String stn) {
@@ -147,9 +155,8 @@ public class CalcServlet extends HttpServlet {
         return result;
     }
 
-    private boolean isChar(char c) {
-        c = Character.toLowerCase(c);
-        if (c < 'a' || c > 'z') return false;
-        return true;
+    private boolean isChar(char ch) {
+        ch = Character.toLowerCase(ch);
+        return (ch < 'a' || ch > 'z');
     }
 }
