@@ -2,7 +2,6 @@ package com.ogalay.task;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -39,7 +38,7 @@ public class Calculator extends HttpServlet{
 
         equation = stringBuilder.toString();
         String exit = getExpression(equation);
-        out.println(Counting(exit));
+        out.println(counting(exit));
         out.flush();
         out.close();
     }
@@ -100,7 +99,6 @@ public class Calculator extends HttpServlet{
                     operators.push(input.charAt(i));
                 else if (input.charAt(i) == ')')
                 {
-
                     char s = operators.pop();
 
                     while (s != '(')
@@ -111,10 +109,9 @@ public class Calculator extends HttpServlet{
                 }
                 else
                 {
-                    if (operators.size() > 0) //смотрим на приоритет оператора и на основе этого добавляем в стек
-                        if (getPriority(input.charAt(i)) <= getPriority(operators.peek())) {
+                    if (operators.size() > 0 && getPriority(input.charAt(i)) <= getPriority(operators.peek())) {
                             output += (operators.pop().toString() + " ");
-                        }
+                    }
                     operators.push(input.charAt(i));
 
                 }
@@ -132,7 +129,7 @@ public class Calculator extends HttpServlet{
         return result;
     }
 
-    public int Counting(String input)
+    public int counting(String input)
     {
         int result = 0;
         Stack<Integer> stack = new Stack<>();
