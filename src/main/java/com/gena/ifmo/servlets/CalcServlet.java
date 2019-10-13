@@ -1,3 +1,4 @@
+package com.gena.ifmo.servlets;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -11,7 +12,7 @@ import java.util.Map;
 import javafx.util.Pair;
 
 @WebServlet(
-        name = "CalcServlet",
+        name = "com.gena.ifmo.servlets.CalcServlet",
         urlPatterns = ("/calc")
 )
 
