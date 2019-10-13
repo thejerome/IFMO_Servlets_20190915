@@ -1,6 +1,6 @@
 package org.mrkaschenko.helpers;
 
-public class Helper {
+public class EvalHelper {
 
     public static boolean isInteger(String stringToCheck) {
         try {

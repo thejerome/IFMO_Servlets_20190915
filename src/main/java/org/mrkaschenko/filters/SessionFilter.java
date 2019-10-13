@@ -1,17 +1,21 @@
 package org.mrkaschenko.filters;
 
-import javax.servlet.*;
+import javax.servlet.ServletException;
+import javax.servlet.ServletResponse;
+import javax.servlet.ServletRequest;
+import javax.servlet.FilterChain;
 import javax.servlet.Filter;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import javax.servlet.http.HttpSession;
+import javax.servlet.FilterConfig;
 
 
 public class SessionFilter implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-
+        //Should be empty
     }
 
     @Override
@@ -32,6 +36,6 @@ public class SessionFilter implements Filter {
 
     @Override
     public void destroy() {
-
+        //Should be empty
     }
 }

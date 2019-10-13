@@ -4,12 +4,11 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.*;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import org.mrkaschenko.helpers.Helper;
+import org.mrkaschenko.helpers.EvalHelper;
 
 
 public class ResultServlet extends HttpServlet {
@@ -22,7 +21,7 @@ public class ResultServlet extends HttpServlet {
         for (int i = 0; i < infix.length(); i++) {
             c = infix.charAt(i);
 
-            if (Helper.isOperand(c)) {
+            if (EvalHelper.isOperand(c)) {
                 postfix.append(c);
             } else if (c == '(') {
                 stack.push(c);
@@ -34,9 +33,9 @@ public class ResultServlet extends HttpServlet {
                     return null;
                 else if(!stack.isEmpty())
                     stack.pop();
-                } else if (Helper.isOperator(c)) {
+                } else if (EvalHelper.isOperator(c)) {
                     if (!stack.isEmpty() &&
-                        Helper.getPrecedence(c) <= Helper.getPrecedence(stack.peek())) {
+                        EvalHelper.getPrecedence(c) <= EvalHelper.getPrecedence(stack.peek())) {
                         postfix.append(stack.pop());
                     }
                     stack.push(c);
@@ -80,7 +79,7 @@ public class ResultServlet extends HttpServlet {
         Stack<Integer> stack = new Stack<Integer>();
 
         for (String a : arrOfStr) {
-            if (Helper.isInteger(a)) {
+            if (EvalHelper.isInteger(a)) {
                 stack.push(Integer.parseInt(a));
             } else {
                 int rightOperand = stack.pop();

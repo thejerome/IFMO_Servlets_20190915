@@ -4,11 +4,16 @@ import javax.servlet.*;
 import javax.servlet.Filter;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletException;
+import javax.servlet.FilterChain;
 import java.io.IOException;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 import java.io.BufferedReader;
-import org.mrkaschenko.helpers.Helper;
+import javax.servlet.FilterConfig;
+import org.mrkaschenko.helpers.EvalHelper;
 
 
 public class ValidValueFilter implements Filter {
@@ -22,7 +27,7 @@ public class ValidValueFilter implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-
+        //Should be empty
     }
 
     @Override
@@ -37,9 +42,9 @@ public class ValidValueFilter implements Filter {
         HttpServletRequest req = (HttpServletRequest) request;
         String method = req.getMethod();
 
-        if (method.equals("DELETE")){
+        if ("DELETE".equals(method)){
             chain.doFilter(request, response);
-        } else if (Helper.isInteger(requestBody)) {
+        } else if (EvalHelper.isInteger(requestBody)) {
             if (Integer.parseInt(requestBody) > 10000 || Integer.parseInt(requestBody) < -10000) {
                 HttpServletResponse resp = (HttpServletResponse) response;
                 resp.sendError(403, "bad value");
@@ -60,6 +65,6 @@ public class ValidValueFilter implements Filter {
 
     @Override
     public void destroy() {
-
+        //Should be empty
     }
 }

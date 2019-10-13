@@ -1,19 +1,22 @@
 package org.mrkaschenko.filters;
 
-import javax.servlet.*;
 import javax.servlet.Filter;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
-import org.mrkaschenko.helpers.Helper;
+import javax.servlet.ServletResponse;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletException;
+import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
 
 
 public class ValidUrlFilter implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-
+        //Should be empty
     }
 
     @Override
@@ -31,7 +34,6 @@ public class ValidUrlFilter implements Filter {
 
         Pattern pattern = Pattern.compile("^calc/[a-z]$");
         Matcher matcher = pattern.matcher(urlToCheck);
-        RequestDispatcher rdObj = null;
 
         if(matcher.matches()) {
             chain.doFilter(request, response);
@@ -40,6 +42,6 @@ public class ValidUrlFilter implements Filter {
 
     @Override
     public void destroy() {
-
+        //Should be empty
     }
 }

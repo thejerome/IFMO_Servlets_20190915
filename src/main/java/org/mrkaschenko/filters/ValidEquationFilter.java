@@ -1,13 +1,17 @@
 package org.mrkaschenko.filters;
 
-import javax.servlet.*;
+import javax.servlet.ServletException;
 import javax.servlet.Filter;
+import javax.servlet.ServletResponse;
+import javax.servlet.ServletRequest;
+import javax.servlet.FilterChain;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 import java.io.BufferedReader;
+import javax.servlet.FilterConfig;
 
 
 public class ValidEquationFilter implements Filter {
@@ -20,7 +24,7 @@ public class ValidEquationFilter implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-
+        //Should be empty
     }
 
     @Override
@@ -49,6 +53,6 @@ public class ValidEquationFilter implements Filter {
 
     @Override
     public void destroy() {
-
+        //Should be empty
     }
 }
