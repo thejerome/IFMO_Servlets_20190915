@@ -19,6 +19,7 @@ public class Servlet extends HttpServlet {
         ArrayDeque<String> opStack = new ArrayDeque<>();
         StringTokenizer st = new StringTokenizer(equation, "+-*/()", true);
         while (st.hasMoreTokens()) {
+                
             String token = st.nextToken();
             if (isNumberOrVar(token)) {
                 rpn.append(token);
