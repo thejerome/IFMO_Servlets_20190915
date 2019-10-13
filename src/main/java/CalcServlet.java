@@ -22,6 +22,7 @@ public class CalcServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
         PrintWriter out = resp.getWriter();
+            
         String equation = req.getParameter("equation");
         HashMap<String, Integer> vertexes = new HashMap<>();
         Map<String,String[]> args = req.getParameterMap();
