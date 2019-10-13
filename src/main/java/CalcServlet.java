@@ -4,7 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-
+import java.util.Map;
 
 @WebServlet(
         name = "CalcServlet",
@@ -18,13 +18,14 @@ public class CalcServlet extends HttpServlet {
         String equation = req.getParameter("equation");
         equation = equation.replaceAll("\\s+", "");
         equation = " " + equation;
+        Map<String, String[]> equationMap = req.getParameterMap();
         for (int i=0; i<equation.length(); i++) {
             if (isOperator(equation.charAt(i))) {
                 int j = i;
                 String subs1, subs2="";
                 while (j < equation.length() && isOperator(equation.charAt(j))) j++;
                 subs1 = equation.substring(i, j);
-                if (!isNumber(subs1)) subs2 = req.getParameter(subs1);
+                if (!isNumber(subs1)) subs2 = equationMap.get(subs1)[0];
                 equation = equation.replaceAll(subs1, subs2);
                 i=j;
             }
