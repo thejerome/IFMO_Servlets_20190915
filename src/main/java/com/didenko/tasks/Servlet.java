@@ -52,6 +52,7 @@ public class Servlet extends HttpServlet {
         StringTokenizer st = new StringTokenizer(equation, "+-*/()", true);
         while (st.hasMoreTokens()) {
             String token = st.nextToken();
+            
             if (isNumberOrVar(token)) {
                 rpn.append(token);
                 rpn.append('.');
@@ -101,7 +102,7 @@ public class Servlet extends HttpServlet {
             case '/':
                 return String.valueOf(lhs / rhs);
             default:
-                return "Aaaaaaaaaaaaaaaaa";
+                return "aaa";
         }
     }
 
