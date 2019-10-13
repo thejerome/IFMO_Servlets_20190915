@@ -101,7 +101,7 @@ public class Servlet extends HttpServlet {
             case '/':
                 return String.valueOf(lhs / rhs);
             default:
-                return new String("");
+                return "Aaaaaaaaaaaaaaaaa";
         }
     }
 
