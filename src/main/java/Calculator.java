@@ -1,6 +1,7 @@
 import java.util.LinkedList;
 import java.util.Scanner;
 
+
 public class Calculator {
     public static void main(String[] ars) {
         Scanner Scanner = new Scanner(System.in);
