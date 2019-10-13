@@ -1,4 +1,4 @@
-package com.leomissing.ifmo.web.servlets;
+package com.leomissing.web.servlets;
 
 
 
