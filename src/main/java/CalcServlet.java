@@ -149,10 +149,15 @@ public class CalcServlet extends HttpServlet {
 
     private int StrtoNum(String stn) {
         int result = 0;
+        int minus = 1;
+        if (stn.charAt(0) == '-') {
+            minus = -1;
+            stn = stn.replace('-', '0');
+        }
         for (int i=0; i<stn.length(); i++) {
             result = result*10 + Character.getNumericValue(stn.charAt(i));
         }
-        return result;
+        return result*minus;
     }
 
     private boolean isChar(char ch) {
