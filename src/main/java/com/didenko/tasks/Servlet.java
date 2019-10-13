@@ -1,4 +1,5 @@
-import javax.servlet.ServletException;
+package com.didenko.tasks;
+
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -15,6 +16,37 @@ public class Servlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String equation = req.getParameter("equation").replaceAll("\\s+", "");
+        StringBuilder opn = rPn(equation);
+        ArrayDeque<String> cal = new ArrayDeque<>();
+        calculation(opn, cal);
+        PrintWriter writer = resp.getWriter();
+        writer.write(calc.getFirst());
+        writer.flush();
+        writer.close();
+    }
+        
+    private void calculation(StringBuilder rpn, ArrayDeque<String> calc){
+        StringTokenizer st = new StringTokenizer(rpn.toString(), ".");
+        while (st.hasMoreTokens()) {
+            String token = st.nextToken();
+            if (isNumber(token)) {
+                calc.push(token);
+                continue;
+            }
+            if (isVar(token)) {
+                String valueOfVar = getValueOfVar(req, token);
+                calc.push(valueOfVar);
+                continue;
+            }
+            if (isOperator(token)) {
+                String rhs = calc.pop();
+                String lhs = calc.pop();
+                calc.push(calculate(Integer.parseInt(lhs), Integer.parseInt(rhs), token));
+            }
+        }
+    }
+        
+    private StringBuilder rPn(String equation){
         StringBuilder rpn = new StringBuilder();
         ArrayDeque<String> opStack = new ArrayDeque<>();
         StringTokenizer st = new StringTokenizer(equation, "+-*/()", true);
@@ -25,10 +57,10 @@ public class Servlet extends HttpServlet {
                 rpn.append(token);
                 rpn.append('.');
             }
-            if (token.equals("(")) {
+            if ("(".equals(token)) {
                 opStack.push(token);
             }
-            if (token.equals(")")) {
+            if (")".equals(token)) {
                 while (!Objects.equals(opStack.peek(), "(")) {
                     String op = opStack.pop();
                     rpn.append(op);
@@ -55,30 +87,7 @@ public class Servlet extends HttpServlet {
             rpn.append('.');
         }
         rpn.setLength(rpn.length() - 1);
-        st = new StringTokenizer(rpn.toString(), ".");
-        ArrayDeque<String> calc = new ArrayDeque<>();
-        while (st.hasMoreTokens()) {
-            String token = st.nextToken();
-            if (isNumber(token)) {
-                calc.push(token);
-                continue;
-            }
-            if (isVar(token)) {
-                String valueOfVar = getValueOfVar(req, token);
-                calc.push(valueOfVar);
-                continue;
-            }
-            if (isOperator(token)) {
-                if (calc.size() < 2) throw new AssertionError();
-                String rhs = calc.pop();
-                String lhs = calc.pop();
-                calc.push(calculate(Integer.parseInt(lhs), Integer.parseInt(rhs), token));
-            }
-        }
-        PrintWriter writer = resp.getWriter();
-        writer.write(calc.getFirst());
-        writer.flush();
-        writer.close();
+        
     }
 
     private String calculate(int lhs, int rhs, String op) {
@@ -92,16 +101,17 @@ public class Servlet extends HttpServlet {
                 return String.valueOf(lhs * rhs);
             case '/':
                 return String.valueOf(lhs / rhs);
+            default:
+                return new String("");
         }
-        return "";
     }
 
     private boolean isNumberOrVar(String str) {
         for (int i = 0; i < str.length(); i++) {
-            if (!Character.isDigit(str.charAt(i))) {
-                if (!(str.charAt(i) >= 'a' && str.charAt(i) <= 'z'))
+            
+                if (!Character.isDigit(str.charAt(i)) && !(str.charAt(i) >= 'a' && str.charAt(i) <= 'z'))
                     return false;
-            }
+           
         }
         return true;
     }
