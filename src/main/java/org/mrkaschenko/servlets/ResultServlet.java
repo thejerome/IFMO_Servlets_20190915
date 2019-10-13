@@ -8,14 +8,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpSession;
 import org.mrkaschenko.helpers.Helper;
 
 
-// @WebServlet(
-//     name = "ResultServlet",
-//     urlPatterns = {"/calc/result"}
-// )
 public class ResultServlet extends HttpServlet {
 
     public static String infixToPostfix(String infix) {
@@ -122,6 +118,7 @@ public class ResultServlet extends HttpServlet {
                 numEquation.append(equation.charAt(i));
             }
         }
+        System.out.println(numEquation.toString());
         return numEquation.toString();
     }
 
@@ -132,14 +129,17 @@ public class ResultServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
         Map<String, String> map = new HashMap<String, String>();
 
-        Cookie[] cookies = request.getCookies();
+        HttpSession session = request.getSession(false);
+        Enumeration e = session.getAttributeNames();
 
-        if(cookies != null) {
-            for (int i = 0; i < cookies.length; i++) {
-            map.put(cookies[i].getName(), cookies[i].getValue());
+        if(e.hasMoreElements()) {
+            while (e.hasMoreElements()) {
+                String name = (String) e.nextElement();
+                map.put(name, (String) session.getAttribute(name));
             }
         } else {
             response.sendError(409, "no values");
+	    return;
         }
 
         String equation = map.get("equation");
@@ -148,6 +148,7 @@ public class ResultServlet extends HttpServlet {
         String numEquation = getNumericEquation(postfixEquation, map);
         if (numEquation == null) {
             response.sendError(409, "lack of data");
+	    return;
         }
         int result = evaluate(numEquation);
         out.print(result);

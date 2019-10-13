@@ -1,17 +1,14 @@
 package org.mrkaschenko.filters;
 
 import javax.servlet.*;
-import javax.servlet.annotation.WebFilter;
-import javax.servlet.annotation.WebInitParam;
+import javax.servlet.Filter;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.RequestDispatcher;
 import java.io.IOException;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 import org.mrkaschenko.helpers.Helper;
 
-// @WebFilter(filterName = "ValidUrlFilter",
-//            urlPatterns = {"/calc/*"})
+
 public class ValidUrlFilter implements Filter {
 
     @Override
@@ -25,7 +22,9 @@ public class ValidUrlFilter implements Filter {
         ServletResponse response,
         FilterChain chain) throws IOException, ServletException {
 
-        String url = ((HttpServletRequest)request).getRequestURI().toString();
+        HttpServletRequest req = (HttpServletRequest) request;
+        String url = req.getRequestURI().toString();
+
         System.out.print(url + "  ");
         String[] urlParts = url.split("/");
         String urlToCheck = urlParts[urlParts.length-2] + "/" + urlParts[urlParts.length-1];
@@ -35,24 +34,8 @@ public class ValidUrlFilter implements Filter {
         RequestDispatcher rdObj = null;
 
         if(matcher.matches()) {
-            System.out.print("setValue or delValue via put or delete");
-            System.out.print("-----------------------------------------");
             chain.doFilter(request, response);
         }
-        System.out.print("Valid Url filter ended");
-
-        // final HttpSession session = request.getSession(false);
-        // if (session == null) {
-        //
-        // }
-
-        // final String name = request.getParameter("name");
-        // if (name == null) {
-        //     request.getRequestDispatcher("/not_polite")
-        //         .forward(request, response);
-        // }
-
-
     }
 
     @Override

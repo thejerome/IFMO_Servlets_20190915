@@ -29,6 +29,8 @@ public class Helper {
     }
 
     public static boolean isOperand(char ch) {
-        return (ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z');
+        return (ch >= 'a' && ch <= 'z') ||
+               (ch >= 'A' && ch <= 'Z') ||
+               (ch >= '0' && ch <='9');
     }
 }

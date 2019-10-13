@@ -38,6 +38,27 @@
     </servlet-mapping>
 
 
+    <filter>
+        <filter-name>SessionFilter</filter-name>
+        <filter-class>org.mrkaschenko.filters.SessionFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>SessionFilter</filter-name>
+        <servlet-name>ValueServlet</servlet-name>
+        <servlet-name>EquationServlet</servlet-name>
+        <servlet-name>ResultServlet</servlet-name>
+    </filter-mapping>
+
+    <filter>
+        <filter-name>ValidEquationFilter</filter-name>
+        <filter-class>org.mrkaschenko.filters.ValidEquationFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>ValidEquationFilter</filter-name>
+        <servlet-name>EquationServlet</servlet-name>
+    </filter-mapping>
 
     <filter>
         <filter-name>ValidUrlFilter</filter-name>

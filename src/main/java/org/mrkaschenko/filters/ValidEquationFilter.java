@@ -8,17 +8,15 @@ import java.io.IOException;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 import java.io.BufferedReader;
-import org.mrkaschenko.helpers.Helper;
 
 
-public class ValidValueFilter implements Filter {
+public class ValidEquationFilter implements Filter {
 
-    private static boolean isValid(String value) {
-        Pattern pattern = Pattern.compile("^[a-z]$");
-        Matcher matcher = pattern.matcher(value);
+    private static boolean isExpression(String s) {
+        Pattern pattern = Pattern.compile("^[(]*[a-z0-9]?([-+/*][(]*[a-z0-9][)]*)*$");
+        Matcher matcher = pattern.matcher(s);
         return matcher.matches();
     }
-
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -33,27 +31,18 @@ public class ValidValueFilter implements Filter {
 
         BufferedReader in = request.getReader();
         String requestBody = in.readLine();
+        requestBody = requestBody.replaceAll("\\s","");
 
         HttpServletRequest req = (HttpServletRequest) request;
         String method = req.getMethod();
 
         if (method.equals("DELETE")){
             chain.doFilter(request, response);
-        } else if (Helper.isInteger(requestBody)) {
-            if (Integer.parseInt(requestBody) > 10000 || Integer.parseInt(requestBody) < -10000) {
-                HttpServletResponse resp = (HttpServletResponse) response;
-                resp.sendError(403, "bad value");
-                return;
-            } else {
-                request.setAttribute("value", requestBody);
-                chain.doFilter(request, response);
-            }
-        } else if (!isValid(requestBody)) {
+        } else if(!isExpression(requestBody)) {
             HttpServletResponse resp = (HttpServletResponse) response;
-            resp.sendError(403, "bad value");
-            return;
+            resp.sendError(400, "equation bad format");
         } else {
-            request.setAttribute("value", requestBody);
+            request.setAttribute("equation", requestBody);
             chain.doFilter(request, response);
         }
     }
