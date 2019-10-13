@@ -1,7 +1,5 @@
 package com.graf.ifmo.web.servlets;
 
-
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -19,23 +17,22 @@ import java.util.regex.Pattern;
 
 public class Servzim extends HttpServlet {
 
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
-        PrintWriter out = resp.getWriter();
+    //VARS:
+    private final Stack<Character> stack = new Stack<>();
+    private Queue<String> output;
 
-        final String equation = req.getParameter("equation");
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        PrintWriter out = resp.getWriter();
         final Map<String, String[]> parameterMap = req.getParameterMap();
 
         String normEquation = TruthSeeker(parameterMap);
 
-        //  out.print(parameterMap.get(("equation"))[0] + "  ||  " + normEquation);
 
 
         transform(normEquation);
         Queue<String> polishEquation = getNewNotation();
 
-        // out.print("  ||  " + polishEquation);
 
         int ans = doParse(polishEquation);
         out.print(ans);
@@ -46,7 +43,7 @@ public class Servzim extends HttpServlet {
     }
 
 
-    String TruthSeeker(Map<String, String[]> parameterMap) {
+    private String TruthSeeker(Map<String, String[]> parameterMap) {
 
         Map<String, Integer> solved = new HashMap<>();
         String normEquation = "(" + parameterMap.get("equation")[0] + ")";
@@ -71,12 +68,10 @@ public class Servzim extends HttpServlet {
         return normEquation.replaceAll(" ", "");
     }
 
-    //VARS:
-    Stack<Character> stack = new Stack<>();
-    Queue<String> output;
+
 
     //преобразует обычную запись в обратную польскую нотацию
-    public void transform(String line) {
+    private void transform(String line) {
 
         output = new ArrayDeque<>();
 
@@ -99,7 +94,7 @@ public class Servzim extends HttpServlet {
                     stack.push(el);
                     break;
                 case ')':
-                    gotParen(el);
+                    gotParen();
                     break;
                 default:
                     String chislo = "";
@@ -128,7 +123,7 @@ public class Servzim extends HttpServlet {
                 stack.push(opTop);
                 break;
             } else {
-                int oldPriority = -1;
+                int oldPriority;
                 if (opTop == '+' || opTop == '-') oldPriority = 1;
                 else oldPriority = 2;
 
@@ -141,7 +136,7 @@ public class Servzim extends HttpServlet {
         stack.push(currentOp);
     }
 
-    private void gotParen(char el1) {
+    private void gotParen() {
 
         while (!stack.isEmpty()) {
             char elx = stack.pop();
@@ -150,12 +145,11 @@ public class Servzim extends HttpServlet {
         }
     }
 
-    public Queue<String> getNewNotation() {
+    private Queue<String> getNewNotation() {
         return output;
     }
 
-
-    public int doParse(Queue<String> queue) {
+    private int doParse(Queue<String> queue) {
 
         Stack<Integer> polStack = new Stack<>();
         while (!queue.isEmpty()) {
@@ -163,6 +157,7 @@ public class Servzim extends HttpServlet {
             if (Pattern.matches("^[0-9]+$", q)) {
                 polStack.push(Integer.parseInt(q));
             } else {
+                assert queue.peek() != null;
                 char op = queue.peek().charAt(0);
                 int b = polStack.pop();
                 int a = polStack.pop();
