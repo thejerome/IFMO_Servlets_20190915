@@ -87,7 +87,7 @@ public class Servlet extends HttpServlet {
             rpn.append('.');
         }
         rpn.setLength(rpn.length() - 1);
-        
+        return rpn;        
     }
 
     private String calculate(int lhs, int rhs, String op) {
