@@ -45,7 +45,7 @@ public class CalcServlet extends HttpServlet {
                 int cnt = 1;
                 while (cnt != 0) {
                     if (str.charAt(endIndex) == '(') cnt++;
-                    if (str.charAt(endIndex) == ')') cnt++;
+                    else if (str.charAt(endIndex) == ')') cnt--;
                     endIndex++;
                 }
                 subs = calc(str.substring(i,endIndex-1));
@@ -58,19 +58,19 @@ public class CalcServlet extends HttpServlet {
             }
             if (j == str.length()) {
                 if (operators.charAt(1) == '*') tmpres *= StrtoNum(subs);
-                if (operators.charAt(1) == '/') tmpres /= StrtoNum(subs);
-                if (operators.charAt(1) == ' ') tmpres = StrtoNum(subs);
+                else if (operators.charAt(1) == '/') tmpres /= StrtoNum(subs);
+                else if (operators.charAt(1) == ' ') tmpres = StrtoNum(subs);
                 if (operators.charAt(0) == '+') res += tmpres;
-                if (operators.charAt(0) == '-') res -= tmpres;
+                else if (operators.charAt(0) == '-') res -= tmpres;
                 i=j;
                 continue;
             }
             if (operators.charAt(1) == '*' || operators.charAt(1) == '/') {
                 if (operators.charAt(1) == '*') tmpres *= StrtoNum(subs);
-                if (operators.charAt(1) == '/') tmpres /= StrtoNum(subs);
+                else if (operators.charAt(1) == '/') tmpres /= StrtoNum(subs);
                 if (str.charAt(j) == '+' || str.charAt(j) == '-') {
                     if (str.charAt(j) == '+') res += tmpres;
-                    if (str.charAt(j) == '-') res -= tmpres;
+                    else if (str.charAt(j) == '-') res -= tmpres;
                     tmpres = 0;
                     operators = str.charAt(j) + " ";
                 }
