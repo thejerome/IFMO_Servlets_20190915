@@ -57,6 +57,7 @@ public class CalcServlet extends HttpServlet {
             }
         }
         equation = equation.replace(" ", "");
+        equation = equation.replace("-", "+-");
         StringJoiner sJoiner = new StringJoiner("");
         String[] elements = equation.split("");
         for (int i = 0; i < elements.length; i++) {
@@ -91,7 +92,7 @@ public class CalcServlet extends HttpServlet {
             if (firstDiv != -1) i = (firstMul < firstDiv) ? firstMul : firstDiv;
         } else {
             if (firstDiv != -1) i = firstDiv;
-        }
+        }/*
         if (i == -1) {
             int firstPlus = partOfEquation.indexOf('+');
             int firstMinus = partOfEquation.indexOf('-');
@@ -101,7 +102,8 @@ public class CalcServlet extends HttpServlet {
             } else {
                 if (firstMinus != -1) i = firstMinus;
             }
-        }
+        }*/
+        if (i == -1) i = partOfEquation.indexOf('+');
         return i;
     }
 
@@ -109,13 +111,13 @@ public class CalcServlet extends HttpServlet {
         int l = i - 1;
         while ( partOfEquation.charAt(l) != '(' &&
                 partOfEquation.charAt(l) != '+' &&
-                partOfEquation.charAt(l) != '-' &&
+                //partOfEquation.charAt(l) != '-' &&
                 partOfEquation.charAt(l) != '*' &&
                 partOfEquation.charAt(l) != '/') l--;
         int r = i + 1;
         while ( partOfEquation.charAt(r) != ')' &&
                 partOfEquation.charAt(r) != '+' &&
-                partOfEquation.charAt(r) != '-' &&
+                //partOfEquation.charAt(r) != '-' &&
                 partOfEquation.charAt(r) != '*' &&
                 partOfEquation.charAt(r) != '/') r++;
         return new Pair<>(l, r);
@@ -129,7 +131,7 @@ public class CalcServlet extends HttpServlet {
         if (partOfEquation.charAt(i) == '*') result *= rightValue;
         else if (partOfEquation.charAt(i) == '/') result /= rightValue;
         else if (partOfEquation.charAt(i) == '+') result += rightValue;
-        else if (partOfEquation.charAt(i) == '-') result -= rightValue;
+        //else if (partOfEquation.charAt(i) == '-') result -= rightValue;
         return result;
     }
 }
