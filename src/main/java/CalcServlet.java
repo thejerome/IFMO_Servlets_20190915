@@ -44,16 +44,8 @@ public class CalcServlet extends HttpServlet {
                 int endIndex = i+1;
                 int cnt = 1;
                 while (cnt != 0) {
-                    switch (str.charAt(endIndex)) {
-                        case('('):
-                            cnt++;
-                            break;
-                        case(')'):
-                            cnt--;
-                            break;
-                        default:
-                            break;
-                    }
+                    if (str.charAt(endIndex) == '(') cnt++;
+                    if (str.charAt(endIndex) == ')') cnt++;
                     endIndex++;
                 }
                 subs = calc(str.substring(i,endIndex-1));
@@ -65,56 +57,20 @@ public class CalcServlet extends HttpServlet {
                 subs = str.substring(i, j);
             }
             if (j == str.length()) {
-                switch (operators.charAt(1)) {
-                    case ('*'):
-                        tmpres *= StrtoNum(subs);
-                        break;
-                    case ('/'):
-                        tmpres /= StrtoNum(subs);
-                        break;
-                    case (' '):
-                        tmpres = StrtoNum(subs);
-                        break;
-                    default:
-                        break;
-                }
-                switch (operators.charAt(0)) {
-                    case('+'):
-                        res += tmpres;
-                        break;
-                    case('-'):
-                        res -= tmpres;
-                        break;
-                    case (' '):
-                        break;
-                    default:
-                        break;
-                }
+                if (operators.charAt(1) == '*') tmpres *= StrtoNum(subs);
+                if (operators.charAt(1) == '/') tmpres /= StrtoNum(subs);
+                if (operators.charAt(1) == ' ') tmpres = StrtoNum(subs);
+                if (operators.charAt(0) == '+') res += tmpres;
+                if (operators.charAt(0) == '-') res -= tmpres;
                 i=j;
                 continue;
             }
             if (operators.charAt(1) == '*' || operators.charAt(1) == '/') {
-                switch (operators.charAt(1)) {
-                    case('*'):
-                        tmpres *= StrtoNum(subs);
-                        break;
-                    case('/'):
-                        tmpres /= StrtoNum(subs);
-                        break;
-                    default:
-                        break;
-                }
+                if (operators.charAt(1) == '*') tmpres *= StrtoNum(subs);
+                if (operators.charAt(1) == '/') tmpres /= StrtoNum(subs);
                 if (str.charAt(j) == '+' || str.charAt(j) == '-') {
-                    switch (str.charAt(j)) {
-                        case('+'):
-                            res += tmpres;
-                            break;
-                        case('-'):
-                            res -= tmpres;
-                            break;
-                        default:
-                            break;
-                    }
+                    if (str.charAt(j) == '+') res += tmpres;
+                    if (str.charAt(j) == '-') res -= tmpres;
                     tmpres = 0;
                     operators = str.charAt(j) + " ";
                 }
@@ -147,9 +103,10 @@ public class CalcServlet extends HttpServlet {
         return !(c == '+' || c == '-' || c == '*' || c == '/' || c == '(' || c == ')');
     }
 
-    private int StrtoNum(String stn) {
+    private int StrtoNum(String sn) {
         int result = 0;
         int minus = 1;
+        String stn = sn;
         if (stn.charAt(0) == '-') {
             minus = -1;
             stn = stn.replace('-', '0');
@@ -161,7 +118,7 @@ public class CalcServlet extends HttpServlet {
     }
 
     private boolean isChar(char ch) {
-        ch = Character.toLowerCase(ch);
+        Character c = Character.toLowerCase(ch);
         return !(ch < 'a' || ch > 'z');
     }
 }
