@@ -57,20 +57,16 @@ public class CalcServlet extends HttpServlet {
                 subs = str.substring(i, j);
             }
             if (j == str.length()) {
-                if (operators.charAt(1) == '*') tmpres *= StrtoNum(subs);
-                else if (operators.charAt(1) == '/') tmpres /= StrtoNum(subs);
-                else if (operators.charAt(1) == ' ') tmpres = StrtoNum(subs);
-                if (operators.charAt(0) == '+') res += tmpres;
-                else if (operators.charAt(0) == '-') res -= tmpres;
+                if (operators.charAt(1) == ' ') tmpres = StN(subs);
+                else tmpres = solveNPath(operators.charAt(1), tmpres, StN(subs));
+                res = solveNPath(operators.charAt(0), res, tmpres);
                 i=j;
                 continue;
             }
             if (operators.charAt(1) == '*' || operators.charAt(1) == '/') {
-                if (operators.charAt(1) == '*') tmpres *= StrtoNum(subs);
-                else if (operators.charAt(1) == '/') tmpres /= StrtoNum(subs);
+                tmpres = solveNPath(operators.charAt(1), tmpres, StN(subs));
                 if (str.charAt(j) == '+' || str.charAt(j) == '-') {
-                    if (str.charAt(j) == '+') res += tmpres;
-                    else if (str.charAt(j) == '-') res -= tmpres;
+                    res = solveNPath(str.charAt(j), res, tmpres);
                     tmpres = 0;
                     operators = str.charAt(j) + " ";
                 }
@@ -78,12 +74,12 @@ public class CalcServlet extends HttpServlet {
             }
             else {
                 if (str.charAt(j) == '*' || str.charAt(j) == '/') {
-                    tmpres += StrtoNum(subs);
+                    tmpres += StN(subs);
                     operators = operators.replace(operators.charAt(1),str.charAt(j));
                 }
                 else {
-                    if (operators.charAt(0) == '+') res += StrtoNum(subs);
-                    else res -= StrtoNum(subs);
+                    if (operators.charAt(0) == '+') res += StN(subs);
+                    else res -= StN(subs);
                     operators = operators.replace(operators.charAt(0),str.charAt(j));
 
                 }
@@ -91,6 +87,27 @@ public class CalcServlet extends HttpServlet {
             i=j;
         }
         return String.valueOf(res);
+    }
+
+    private int solveNPath(char op, int op1, int op2) {
+        int result = 0;
+        switch (op) {
+            case('+'):
+                result = op1 + op2;
+                break;
+            case('-'):
+                result = op1 - op2;
+                break;
+            case('*'):
+                result = op1 * op2;
+                break;
+            case('/'):
+                result = op1 / op2;
+                break;
+            default:
+                break;
+        }
+        return result;
     }
 
     private boolean isNumber(String n) {
@@ -103,7 +120,7 @@ public class CalcServlet extends HttpServlet {
         return !(c == '+' || c == '-' || c == '*' || c == '/' || c == '(' || c == ')');
     }
 
-    private int StrtoNum(String sn) {
+    private int StN(String sn) {
         int result = 0;
         int minus = 1;
         String stn = sn;
@@ -119,6 +136,6 @@ public class CalcServlet extends HttpServlet {
 
     private boolean isChar(char ch) {
         Character c = Character.toLowerCase(ch);
-        return !(ch < 'a' || ch > 'z');
+        return !(c < 'a' || c > 'z');
     }
 }
