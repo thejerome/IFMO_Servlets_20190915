@@ -14,25 +14,23 @@ import java.util.Map;
 public class CalcServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        PrintWriter out = resp.getWriter();
+        PrintWriter writ = resp.getWriter();
         String equation = req.getParameter("equation");
         equation = equation.replaceAll("\\s+", "");
         equation = " " + equation;
         Map<String, String[]> equationMap = req.getParameterMap();
-        for (int i=0; i<equation.length(); i++) {
-            if (isOperator(equation.charAt(i))) {
-                int j = i;
-                String subs1, subs2="";
-                while (j < equation.length() && isOperator(equation.charAt(j))) j++;
-                subs1 = equation.substring(i, j);
-                if (!isNumber(subs1)) subs2 = equationMap.get(subs1)[0];
-                equation = equation.replaceAll(subs1, subs2);
-                i=j;
+        for (int i=1; i<equation.length(); i++) {
+            if (isChar(equation.charAt(i))) {
+                String sub = equationMap.get(Character.toString(equation.charAt(i)))[0];
+                while (!isNumber(sub)) sub = equationMap.get(sub)[0];
+                if (isNumber(Character.toString(equation.charAt(i-1)))) sub = "*" + sub;
+                if (i<equation.length()-1 && isNumber(Character.toString(equation.charAt(i+1)))) sub = sub + "*";
+                equation = equation.replaceAll(Character.toString(equation.charAt(i)), sub);
             }
         }
-        out.write(calculation(equation));
-        out.flush();
-        out.close();
+        writ.write(calculation(equation));
+        writ.flush();
+        writ.close();
     }
 
     private String calculation(String str) {
@@ -147,5 +145,11 @@ public class CalcServlet extends HttpServlet {
             result = result*10 + Character.getNumericValue(stn.charAt(i));
         }
         return result;
+    }
+
+    private boolean isChar(char c) {
+        c = Character.toLowerCase(c);
+        if (c < 'a' || c > 'z') return false;
+        return true;
     }
 }
