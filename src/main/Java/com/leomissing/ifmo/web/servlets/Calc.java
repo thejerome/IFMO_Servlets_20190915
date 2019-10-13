@@ -13,10 +13,10 @@ import java.util.Stack;
 
 
 @WebServlet(
-        name = "calc",
+        name = "Calc",
         urlPatterns = {"/calc"}
 )
-public class calc extends HttpServlet{
+public class Calc extends HttpServlet{
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -24,9 +24,9 @@ public class calc extends HttpServlet{
         String qtn = req.getParameter("equation");
         Map<String, String[]> vars = req.getParameterMap();
         for (String key:vars.keySet()
-             ) {
+        ) {
             String var = vars.get(key)[0];
-            if (var != qtn) {
+            if (!var.equals(qtn)) {
                 if (1 == var.length() && (var.charAt(0) >= 'a' && var.charAt(0) <= 'z')){
                     var = vars.get(var)[0];
                 }
@@ -73,10 +73,7 @@ public class calc extends HttpServlet{
         return valve.pop();
     }
     private static boolean priorty(char coin1, char coin2){
-        if (coin2 == '(' || coin2 == ')') {
-            return false;
-        }
-        if ((coin1 == '*' || coin1 == '/') && (coin2 == '+' || coin2 == '-')){
+        if ((coin2 == '(' || coin2 == ')') ||  ((coin1 == '*' || coin1 == '/') && (coin2 == '+' || coin2 == '-'))){
             return false;
         } else {
             return true;
