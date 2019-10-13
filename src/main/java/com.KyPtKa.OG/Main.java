@@ -1,4 +1,4 @@
-package com.KyPtKa.OG;
+package com.kyptka.og;
 
 import org.apache.catalina.WebResourceRoot;
 import org.apache.catalina.core.StandardContext;

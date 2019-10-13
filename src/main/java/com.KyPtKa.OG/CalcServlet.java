@@ -1,4 +1,4 @@
-package com.KyPtKa.OG;
+package com.kyptka.og;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;

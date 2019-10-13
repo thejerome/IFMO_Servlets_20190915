@@ -1,4 +1,4 @@
-package com.KyPtKa.OG;
+package com.kyptka.og;
 
 import java.util.HashMap;
 import java.util.Map;
