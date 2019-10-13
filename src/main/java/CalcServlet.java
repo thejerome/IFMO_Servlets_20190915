@@ -31,6 +31,8 @@ public class CalcServlet extends HttpServlet {
                 getValueOfVert(key,vertexes,req);
             }
         }
+            
+            
         //выолнить операции в скобках
         while (equation.indexOf('(') != -1){
             int leftparentheses = equation.lastIndexOf('(');
