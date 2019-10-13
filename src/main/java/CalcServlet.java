@@ -1,11 +1,10 @@
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.*;
+
 
 @WebServlet(
         name = "CalcServlet",
@@ -20,10 +19,10 @@ public class CalcServlet extends HttpServlet {
         equation = equation.replaceAll("\\s+", "");
         equation = " " + equation;
         for (int i=0; i<equation.length(); i++) {
-            if (!isOperator(equation.charAt(i))) {
+            if (isOperator(equation.charAt(i))) {
                 int j = i;
                 String subs1, subs2="";
-                while (j < equation.length() && !isOperator(equation.charAt(j))) j++;
+                while (j < equation.length() && isOperator(equation.charAt(j))) j++;
                 subs1 = equation.substring(i, j);
                 if (!isNumber(subs1)) subs2 = req.getParameter(subs1);
                 equation = equation.replaceAll(subs1, subs2);
@@ -35,7 +34,7 @@ public class CalcServlet extends HttpServlet {
         out.close();
     }
 
-    public String calculation(String str) {
+    private String calculation(String str) {
         int res = 0, tmpres = 0;
         String operators = "+ ";
         for (int i=1; i<str.length(); i++) {
@@ -62,7 +61,7 @@ public class CalcServlet extends HttpServlet {
             }
             else {
                 j = i;
-                while (j < str.length() && !isOperator(str.charAt(j))) j++;
+                while (j < str.length() && isOperator(str.charAt(j))) j++;
                 subs = str.substring(i, j);
             }
             if (j == str.length()) {
@@ -130,18 +129,18 @@ public class CalcServlet extends HttpServlet {
         return String.valueOf(res);
     }
 
-    public boolean isNumber(String n) {
+    private boolean isNumber(String n) {
         for (int i=0; i< n.length(); i++)
             if (n.charAt(i) < '0' || n.charAt(i) > '9') return false;
         return true;
     }
 
-    public boolean isOperator(char c) {
-        if (c == '+' || c == '-' || c == '*' || c == '/' || c == '(' || c == ')') return true;
-        return false;
+    private boolean isOperator(char c) {
+        if (c == '+' || c == '-' || c == '*' || c == '/' || c == '(' || c == ')') return false;
+        return true;
     }
 
-    public int StrtoNum(String stn) {
+    private int StrtoNum(String stn) {
         int result = 0;
         for (int i=0; i<stn.length(); i++) {
             result = result*10 + Character.getNumericValue(stn.charAt(i));
