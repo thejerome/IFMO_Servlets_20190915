@@ -41,6 +41,7 @@ public class Calculator extends HttpServlet{
         String exit = getExpression(equation);
         out.println(Counting(exit));
         out.flush();
+            
         out.close();
     }
 
