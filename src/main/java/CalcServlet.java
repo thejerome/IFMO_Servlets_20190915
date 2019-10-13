@@ -144,7 +144,7 @@ public class CalcServlet extends HttpServlet {
     }
 
     private boolean isOperator(char c) {
-        return (c == '+' || c == '-' || c == '*' || c == '/' || c == '(' || c == ')');
+        return !(c == '+' || c == '-' || c == '*' || c == '/' || c == '(' || c == ')');
     }
 
     private int StrtoNum(String stn) {
@@ -157,6 +157,6 @@ public class CalcServlet extends HttpServlet {
 
     private boolean isChar(char ch) {
         ch = Character.toLowerCase(ch);
-        return (ch < 'a' || ch > 'z');
+        return !(ch < 'a' || ch > 'z');
     }
 }
