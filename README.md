@@ -17,7 +17,5 @@ All calculations are supposed to be integer.
 
 Other implementation restrictions are covered by unit tests. 
  
-=======
 Some servlet examples.
 Switch to task-* branch to get exercies.
-=======
