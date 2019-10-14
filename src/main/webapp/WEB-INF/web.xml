@@ -7,7 +7,7 @@
     <!-- add servlet -->
     <servlet>
         <servlet-name>calc</servlet-name>
-        <servlet-class>org.gradle.myPack.CalcServlet</servlet-class>
+        <servlet-class>org.gradle.servlet.CalcServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
