@@ -59,7 +59,8 @@ public class Calculator {
                 return num1 * num2;
             case '/':
                 return num2 / num1;
+            default:
+                return 0;
         }
-        return 0;
     }
 }

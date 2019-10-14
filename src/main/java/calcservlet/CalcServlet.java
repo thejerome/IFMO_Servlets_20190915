@@ -1,3 +1,5 @@
+package calcservlet;
+
 import calculator.Calculator;
 
 import javax.servlet.annotation.WebServlet;
@@ -9,7 +11,7 @@ import java.io.PrintWriter;
 import java.util.*;
 
 
-@WebServlet(name = "CalcServlet", urlPatterns = "/calc")
+@WebServlet(name = "calcservlet.CalcServlet", urlPatterns = "/calc")
 
 public class CalcServlet extends HttpServlet {
 
@@ -19,7 +21,7 @@ public class CalcServlet extends HttpServlet {
         Map<String, String[]> params = request.getParameterMap();
         for (String key : params.keySet()) {
             String var = params.get(key)[0];
-            if (!key.equals("equation")) {
+            if (!"equation".equals(key)) {
                 if (1 == var.length() && (var.charAt(0) >= 'a' && var.charAt(0) <= 'z')) {
                     var = params.get(var)[0];
                 }
