@@ -5,8 +5,6 @@ import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import java.io.IOException;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 import javax.servlet.ServletResponse;
 import javax.servlet.FilterChain;
 import javax.servlet.annotation.WebFilter;
