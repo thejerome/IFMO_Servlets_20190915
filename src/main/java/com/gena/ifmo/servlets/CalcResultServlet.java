@@ -1,33 +1,53 @@
+package com.gena.ifmo.servlets;
+
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.StringJoiner;
+import java.util.regex.Pattern;
 
 import javafx.util.Pair;
 
 @WebServlet(
-        name = "CalcServlet",
-        urlPatterns = ("/calc")
+        name = "CalcResultServlet",
+        urlPatterns = ("/calc/result")
 )
 
-public class CalcServlet extends HttpServlet {
+public class CalcResultServlet extends HttpServlet {
+
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-            throws IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         PrintWriter out = resp.getWriter();
-        out.println(calculate(req));
+
+        HttpSession session = req.getSession(false);
+        if (session != null){
+            HashMap<String, String> p = new HashMap<>();
+            Enumeration<String> namesAr = session.getAttributeNames();
+            while (namesAr.hasMoreElements()){
+                String nameAr = namesAr.nextElement();
+                p.put(nameAr, (String)session.getAttribute(nameAr));
+            }
+            String ans = calculate(p);
+            if ("problems in calculate".equals(ans)){
+                resp.setStatus(409);
+            }
+            out.print(ans);
+        }
     }
 
-    private String calculate(HttpServletRequest req) {
-        Map<String, String[]> p = req.getParameterMap();
-
+    private String calculate(HashMap<String, String> p) {
         String equation = toNormForm(p);
+        if (Pattern.matches(".*[a-zA-Z].*", equation)){
+            return "problems in calculate";
+        }
 
         while (equation.indexOf('(') != -1) {
             int leftBorder = equation.lastIndexOf('(');
@@ -44,16 +64,16 @@ public class CalcServlet extends HttpServlet {
     }
 
 
-    private String toNormForm(Map<String, String[]> p) {
+    private String toNormForm(Map<String, String> p) {
         HashMap<String, String> variables = new HashMap<>();
         String equation = "";
         for (String k : p.keySet()) {
             if ("equation".equals(k)) {
-                equation = p.get(k)[0];
-            } else if (variables.containsKey(p.get(k)[0])) {
-                variables.put(k, variables.get(p.get(k)[0]));
+                equation = p.get(k);
+            } else if (variables.containsKey(p.get(k))) {
+                variables.put(k, variables.get(p.get(k)));
             } else {
-                variables.put(k, p.get(k)[0]);
+                variables.put(k, p.get(k));
             }
         }
         equation = equation.replace(" ", "");
@@ -92,17 +112,7 @@ public class CalcServlet extends HttpServlet {
             if (firstDiv != -1) i = (firstMul < firstDiv) ? firstMul : firstDiv;
         } else {
             if (firstDiv != -1) i = firstDiv;
-        }/*
-        if (i == -1) {
-            int firstPlus = partOfEquation.indexOf('+');
-            int firstMinus = partOfEquation.indexOf('-');
-            if (firstPlus != -1) {
-                i = firstPlus;
-                if (firstMinus != -1) i = (firstPlus < firstMinus) ? firstPlus : firstMinus;
-            } else {
-                if (firstMinus != -1) i = firstMinus;
-            }
-        }*/
+        }
         if (i == -1) i = partOfEquation.indexOf('+');
         return i;
     }
@@ -111,13 +121,11 @@ public class CalcServlet extends HttpServlet {
         int l = i - 1;
         while ( partOfEquation.charAt(l) != '(' &&
                 partOfEquation.charAt(l) != '+' &&
-                //partOfEquation.charAt(l) != '-' &&
                 partOfEquation.charAt(l) != '*' &&
                 partOfEquation.charAt(l) != '/') l--;
         int r = i + 1;
         while ( partOfEquation.charAt(r) != ')' &&
                 partOfEquation.charAt(r) != '+' &&
-                //partOfEquation.charAt(r) != '-' &&
                 partOfEquation.charAt(r) != '*' &&
                 partOfEquation.charAt(r) != '/') r++;
         return new Pair<>(l, r);
@@ -131,8 +139,6 @@ public class CalcServlet extends HttpServlet {
         if (partOfEquation.charAt(i) == '*') result *= rightValue;
         else if (partOfEquation.charAt(i) == '/') result /= rightValue;
         else if (partOfEquation.charAt(i) == '+') result += rightValue;
-        //else if (partOfEquation.charAt(i) == '-') result -= rightValue;
         return result;
     }
 }
-
