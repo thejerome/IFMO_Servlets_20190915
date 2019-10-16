@@ -1,7 +1,11 @@
 package com.gena.ifmo.servlets;
 
-import javax.servlet.*;
 import javax.servlet.Filter;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.ServletException;
+import javax.servlet.FilterChain;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;
@@ -13,7 +17,9 @@ import java.util.regex.Pattern;
 )
 public class ArgumentsFilter implements Filter {
     @Override
-    public void init(FilterConfig filterConfig){}
+    public void init(FilterConfig filterConfig){
+
+    }
 
     @Override
     public void doFilter(
@@ -66,5 +72,7 @@ public class ArgumentsFilter implements Filter {
     }
 
     @Override
-    public void destroy(){}
+    public void destroy(){
+
+    }
 }
