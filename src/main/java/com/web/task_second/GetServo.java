@@ -1,8 +1,6 @@
 package com.web.task_second;
 
 
-
-
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -30,79 +28,6 @@ import java.net.URL;
 )
 public class GetServo extends HttpServlet {
 
-    boolean alphanummeric(String str) {
-        return str.matches("[A-Za-z0-9]+");
-    }
-
-    public static String insertString(
-            String originalString,
-            String stringToBeInserted,
-            int index) {
-
-        // Create a new string
-        String newString = new String();
-
-        for (int i = 0; i < originalString.length(); i++) {
-
-            // Insert the original string character
-            // into the new string
-            newString += originalString.charAt(i);
-
-            if (i == index) {
-
-                // Insert the string to be inserted
-                // into the new string
-                newString += stringToBeInserted;
-            }
-        }
-
-        // return the modified String
-        return newString;
-    }
-
-    String findleftdivpart(String str) {
-        char[] carr = str.toCharArray();
-        int index = str.length() - 2;
-        boolean brace = false, closed = true;
-        int braces = 0;
-        for (int x = str.length() - 1; x >= 0; x--) {
-            if (alphanummeric(String.valueOf(carr[x]))) {
-                continue;
-            } else if ((x == 0 || carr[x] == '+' || carr[x] == '-') && braces <= 0) {
-                index = x;
-                break;
-            } else if (carr[x] == ')') braces++;
-            else if (carr[x] == '(') braces--;
-            if (braces <= 0) {
-                index = x;
-                break;
-            }
-        }
-        str = insertString(str, "Math.floor(", index);
-        return str;
-    }
-
-    String findrightdivpart(String str) {
-        char[] carr = str.toCharArray();
-        int index = str.length() - 2;
-        boolean brace = false, closed = true;
-        int braces = 0;
-        for (int x = 0; x <= str.length() - 1; x--) {
-            if (alphanummeric(String.valueOf(carr[x]))) {
-                continue;
-            } else if ((x == 0 || carr[x] == '+' || carr[x] == '-') && braces <= 0) {
-                index = x;
-                break;
-            } else if (carr[x] == ')') braces++;
-            else if (carr[x] == '(') braces--;
-            if (braces <= 0) {
-                index = x;
-                break;
-            }
-        }
-        str = insertString(str, "Math.floor(", index);
-        return str;
-    }
 
     boolean checkhasalpha(String str) {
         char[] buff = str.toCharArray();
@@ -119,7 +44,7 @@ public class GetServo extends HttpServlet {
             System.out.println(str);
             // https://github.com/thomasfire/actix-pythoneer - не баньте меня, здесь нету плагиата
             // да, тут куча всего осталось с ресерча, но мне лень это чистить
-            URL url = new URL("http://ec2-13-48-42-108.eu-north-1.compute.amazonaws.com:52280/calc/"+str); // вебовые проблемы требуют вебовых решений
+            URL url = new URL("http://ec2-13-48-42-108.eu-north-1.compute.amazonaws.com:52280/calc/" + str); // вебовые проблемы требуют вебовых решений
             HttpURLConnection con = (HttpURLConnection) url.openConnection();                                   // а вообще, это же новое, инновационное решение проблем
             con.setRequestMethod("GET");                                                                        // ведь сейчас всё в облаках, вот и я запилил в облака
             int status = con.getResponseCode();
@@ -147,15 +72,15 @@ public class GetServo extends HttpServlet {
             for (char x = 'a'; x <= 'z'; x++) {
                 str = str.replaceAll(String.valueOf(x), "(" + (String) s.getAttribute(String.valueOf(x)) + ")");
             }
-            limit --;
+            limit--;
         }
         System.out.println(str);
         //str = "parseInt(" + str + ")";
         str = str.replaceAll("[/]", "div")
-                .replaceAll( "[(]", "opb") // open bracket
-                .replaceAll( "[)]", "clb") // close bracket
-                .replaceAll( "[*]", "mul")
-                .replaceAll( "[+]", "add")
+                .replaceAll("[(]", "opb") // open bracket
+                .replaceAll("[)]", "clb") // close bracket
+                .replaceAll("[*]", "mul")
+                .replaceAll("[+]", "add")
                 .replaceAll("[-]", "sub");
 
         String solved = solveit(str);
@@ -166,7 +91,7 @@ public class GetServo extends HttpServlet {
             System.out.println(sw);
 
         int code = (int) Integer.parseInt(response[0]);
-        String content =  response[1];
+        String content = response[1];
 
         if (code == 409) {
             throw new IllegalArgumentException();
