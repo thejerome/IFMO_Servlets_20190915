@@ -10,8 +10,6 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @WebFilter (
         filterName = "ReqFilter",
@@ -21,7 +19,7 @@ import java.util.regex.Pattern;
 public class ReqFilter implements Filter {
     @Override
     public void init(FilterConfig con) {
-
+        //codacy doesn't want to see the empty method
     }
 
     @Override
@@ -54,7 +52,7 @@ public class ReqFilter implements Filter {
     }
 
     public void destroy(){
-
+        //codacy doesn't want to see the empty method
     }
 
 }

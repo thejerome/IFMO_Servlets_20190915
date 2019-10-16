@@ -6,7 +6,6 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.List;
 
-import static jdk.nashorn.internal.runtime.JSType.isNumber;
 
 public class Calculate {
 
