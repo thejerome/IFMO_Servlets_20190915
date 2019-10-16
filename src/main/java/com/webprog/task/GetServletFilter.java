@@ -20,7 +20,7 @@ public class GetServletFilter implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig)  {
-
+        // omg it is empty we should do something immediately
     }
 
     @Override
@@ -54,7 +54,7 @@ public class GetServletFilter implements Filter {
 
     @Override
     public void destroy() {
-
+        // omg it is empty we should do something immediately
     }
 
 }
