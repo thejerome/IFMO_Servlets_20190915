@@ -29,7 +29,7 @@ import java.net.URL;
 public class GetServo extends HttpServlet {
 
 
-    boolean checkhasalpha(String str) {
+    private boolean checkhasalpha(String str) {
         char[] buff = str.toCharArray();
         for (char x : buff) {
             if (x <= 'z' && x >= 'a')
@@ -39,7 +39,8 @@ public class GetServo extends HttpServlet {
     }
 
 
-    String solveit(String str) {
+    private String solveit(String str) {
+
         try {
             System.out.println(str);
             // https://github.com/thomasfire/actix-pythoneer - не баньте меня, здесь нету плагиата
@@ -66,7 +67,8 @@ public class GetServo extends HttpServlet {
 
     }
 
-    String calcit(String str, HttpSession s) {
+    private String calcit(String str2, HttpSession s) {
+        String str = str2;
         int limit = 5;
         while (checkhasalpha(str) && limit > 0) {
             for (char x = 'a'; x <= 'z'; x++) {

@@ -14,7 +14,7 @@ import java.io.PrintWriter;
         urlPatterns = {"/calc/*"}
 )
 public class VarServo extends HttpServlet {
-    boolean propervar(String str) throws NumberFormatException {
+    private boolean propervar(String str) throws NumberFormatException {
         if (str.matches("[a-zA-Z]") && str.length() == 1)
             return true;
         int res = Integer.parseInt(str);

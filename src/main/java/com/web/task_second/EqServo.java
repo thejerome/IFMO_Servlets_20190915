@@ -16,13 +16,10 @@ import java.util.regex.Pattern;
         urlPatterns = {"/calc/equation"}
 )
 public class EqServo extends HttpServlet {
-    boolean properequation(String req) {
+    private boolean properequation(String req) {
         Matcher matcher = Pattern.compile("[A-Z]+").matcher(req);
         Matcher matcher1 = Pattern.compile("[-+*/]").matcher(req);
-        if (matcher.find() || !matcher1.find()) {
-            return false;
-        }
-        return true;
+        return !matcher.find() && matcher1.find();
     }
 
     @Override
