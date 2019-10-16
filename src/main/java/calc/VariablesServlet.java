@@ -20,7 +20,6 @@ public class VariablesServlet extends HttpServlet {
         HttpSession session = req.getSession();
         String value = req.getReader().readLine();
         String var = req.getRequestURI().substring(6);
-        //resp.getWriter().println(var + '=' + value);
         if (!Check.isVarGood(value)) {
             resp.setStatus(403);
             resp.getWriter().println("not up standards");
