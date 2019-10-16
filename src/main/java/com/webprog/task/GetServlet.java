@@ -11,27 +11,6 @@ import java.util.ArrayDeque;
 import java.util.Objects;
 import java.util.StringTokenizer;
 
-/*
-import javax.servlet.Filter;
-
-public class WebFilter implements Filter {
-
-    @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
-
-    }
-
-    @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-    }
-
-    @Override
-    public void destroy() {
-
-    }
-}
-*/
-
 @WebServlet(
         name = "GetServlet",
         urlPatterns = {"/calc/result"}
@@ -40,30 +19,22 @@ public class GetServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        HttpSession session = req.getSession(false);
+        HttpSession session = req.getSession();
         PrintWriter writer = resp.getWriter();
         String result = "";
-        if (session == null) {
+        String equation = (String) session.getAttribute("equation");
+        equation = equation.replaceAll("\\s", "");
+        String RPN = getReversePolishNotation(equation);
+        try {
+            result = getResult(req, RPN);
+        } catch (IllegalArgumentException e) {
             resp.setStatus(409);
-        } else {
-            String equation = (String) session.getAttribute("equation");
-            if (equation == null) {
-                resp.setStatus(409);
-            } else {
-                equation = equation.replaceAll("\\s","");
-                String RPN = getReversePolishNotation(equation);
-                try {
-                    result = getResult(req, RPN);
-                } catch (IllegalArgumentException e) {
-                    resp.setStatus(409);
-                }
-            }
         }
         if (resp.getStatus() != 409) {
             resp.setStatus(200);
             writer.write(result);
         } else {
-            writer.write("BAD FORMAT!");
+            writer.write("bad format");
         }
         writer.flush();
         writer.close();
@@ -155,7 +126,7 @@ public class GetServlet extends HttpServlet {
     private boolean isNumberOrVar(String str) {
         for (int i = 0; i < str.length(); i++) {
             if (!Character.isDigit(str.charAt(i)) && !(str.charAt(i) >= 'a' && str.charAt(i) <= 'z')) {
-                    return false;
+                return false;
             }
         }
         return true;
