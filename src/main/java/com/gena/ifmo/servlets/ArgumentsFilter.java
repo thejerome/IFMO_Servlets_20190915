@@ -16,9 +16,10 @@ import java.util.regex.Pattern;
         urlPatterns = "/calc/*"
 )
 public class ArgumentsFilter implements Filter {
+
     @Override
     public void init(FilterConfig filterConfig){
-
+        // lalala
     }
 
     @Override
@@ -72,7 +73,7 @@ public class ArgumentsFilter implements Filter {
     }
 
     @Override
-    public void destroy(){
-
+    public void destroy() {
+        // lalala
     }
 }
