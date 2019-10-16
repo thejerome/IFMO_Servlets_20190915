@@ -1,16 +1,19 @@
 package com.web.task_second;
 
+
+
+
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.util.Deque;
-import java.util.LinkedList;
-import java.util.Objects;
-import java.util.StringTokenizer;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 /*
             assertTrue(Utils.findInSource("javax.servlet.Filter"));
@@ -31,134 +34,145 @@ public class GetServo extends HttpServlet {
         return str.matches("[A-Za-z0-9]+");
     }
 
-    String get_solved_eq(int lpart, int rpart, String str) {
-        char c = str.charAt(0);
-        int r = 0;
-        switch (c) {
-            case '/':
-                r = lpart / rpart; // ээ почему статик каст не работает
-                break;
-            case '*':
-                r = lpart * rpart;
-                break;
-            case '-':
-                r = lpart - rpart;
-                break;
-            case '+':
-                r = lpart + rpart;
-                break;
-            default:
-                return "";
+    public static String insertString(
+            String originalString,
+            String stringToBeInserted,
+            int index) {
+
+        // Create a new string
+        String newString = new String();
+
+        for (int i = 0; i < originalString.length(); i++) {
+
+            // Insert the original string character
+            // into the new string
+            newString += originalString.charAt(i);
+
+            if (i == index) {
+
+                // Insert the string to be inserted
+                // into the new string
+                newString += stringToBeInserted;
+            }
         }
-        return String.valueOf(r);
+
+        // return the modified String
+        return newString;
     }
 
-    boolean propernummer(String str) {
-        if (str.charAt(0) == '-' && str.length() == 1)
-            return false;
-        return str.matches("[-0-9]+");
+    String findleftdivpart(String str) {
+        char[] carr = str.toCharArray();
+        int index = str.length() - 2;
+        boolean brace = false, closed = true;
+        int braces = 0;
+        for (int x = str.length() - 1; x >= 0; x--) {
+            if (alphanummeric(String.valueOf(carr[x]))) {
+                continue;
+            } else if ((x == 0 || carr[x] == '+' || carr[x] == '-') && braces <= 0) {
+                index = x;
+                break;
+            } else if (carr[x] == ')') braces++;
+            else if (carr[x] == '(') braces--;
+            if (braces <= 0) {
+                index = x;
+                break;
+            }
+        }
+        str = insertString(str, "Math.floor(", index);
+        return str;
+    }
+
+    String findrightdivpart(String str) {
+        char[] carr = str.toCharArray();
+        int index = str.length() - 2;
+        boolean brace = false, closed = true;
+        int braces = 0;
+        for (int x = 0; x <= str.length() - 1; x--) {
+            if (alphanummeric(String.valueOf(carr[x]))) {
+                continue;
+            } else if ((x == 0 || carr[x] == '+' || carr[x] == '-') && braces <= 0) {
+                index = x;
+                break;
+            } else if (carr[x] == ')') braces++;
+            else if (carr[x] == '(') braces--;
+            if (braces <= 0) {
+                index = x;
+                break;
+            }
+        }
+        str = insertString(str, "Math.floor(", index);
+        return str;
+    }
+
+    boolean checkhasalpha(String str) {
+        char[] buff = str.toCharArray();
+        for (char x : buff) {
+            if (x <= 'z' && x >= 'a')
+                return true;
+        }
+        return false;
     }
 
 
-    boolean propervar(String str) {
-        if (str.length() != 1)
-            return false;
-        return str.matches("[A-Za-z]+");
+    String solveit(String str) {
+        try {
+            System.out.println(str);
+            // https://github.com/thomasfire/actix-pythoneer - не баньте меня, здесь нету плагиата
+            // да, тут куча всего осталось с ресерча, но мне лень это чистить
+            URL url = new URL("http://ec2-13-48-42-108.eu-north-1.compute.amazonaws.com:52280/calc/"+str); // вебовые проблемы требуют вебовых решений
+            HttpURLConnection con = (HttpURLConnection) url.openConnection();                                   // а вообще, это же новое, инновационное решение проблем
+            con.setRequestMethod("GET");                                                                        // ведь сейчас всё в облаках, вот и я запилил в облака
+            int status = con.getResponseCode();
+            BufferedReader in = new BufferedReader(
+                    new InputStreamReader(con.getInputStream()));
+            String inputLine;
+            StringBuffer content = new StringBuffer();
+            while ((inputLine = in.readLine()) != null) {
+                content.append(inputLine);
+            }
+            in.close();
+            con.disconnect();
+            System.out.println(content);
+            return String.valueOf(status) + "splitter" + content; // всё еще возмущен джавой и отсутствием pair
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "";
+
     }
 
+    String calcit(String str, HttpSession s) {
+        int limit = 5;
+        while (checkhasalpha(str) && limit > 0) {
+            for (char x = 'a'; x <= 'z'; x++) {
+                str = str.replaceAll(String.valueOf(x), "(" + (String) s.getAttribute(String.valueOf(x)) + ")");
+            }
+            limit --;
+        }
+        System.out.println(str);
+        //str = "parseInt(" + str + ")";
+        str = str.replaceAll("[/]", "div")
+                .replaceAll( "[(]", "opb") // open bracket
+                .replaceAll( "[)]", "clb") // close bracket
+                .replaceAll( "[*]", "mul")
+                .replaceAll( "[+]", "add")
+                .replaceAll("[-]", "sub");
 
-    String value(HttpServletRequest sreq, String ss) {
-        HttpSession session = sreq.getSession(false);
-        String s = (String) session.getAttribute(ss); // всё еще нужен статик каст
-        if (s == null) {
+        String solved = solveit(str);
+        System.out.println(solved);
+
+        String[] response = solved.split("splitter");
+        for (String sw : response)
+            System.out.println(sw);
+
+        int code = (int) Integer.parseInt(response[0]);
+        String content =  response[1];
+
+        if (code == 409) {
             throw new IllegalArgumentException();
         }
-        while (!propernummer(s)) {
-            s = (String) session.getAttribute(s);
-            if (s == null) {
-                throw new IllegalArgumentException();
-            }
-        }
-        return s;
-    }
 
-    boolean istaction(String str) {
-        return str.length() == 1 && str.matches("[-*/+]");
-    }
-
-    int getweight(String str) {
-        char c = str.charAt(0);
-        if (c == '-' || c == '+')
-            return 1;
-        else if (c == '/' || c == '*')
-            return 2;
-        return 0;
-    }
-
-    String invertedpolskanotazi(String eq) {
-        StringBuilder str_builder = new StringBuilder();
-        Deque<String> act_stack = new LinkedList<>();
-        StringTokenizer tokener = new StringTokenizer(eq, "+-*/()", true);
-        while (tokener.hasMoreTokens()) {
-            String token = tokener.nextToken();
-            /**/
-            if (alphanummeric(token)) {
-                str_builder.append(token);
-                str_builder.append(':');
-
-            } else if (token.equals("(")) {
-                act_stack.push(token);
-
-            } else if (token.equals(")")) {
-                while (!Objects.equals(act_stack.peek(), "(")) {
-                    String act = act_stack.pop();
-                    str_builder.append(act);
-                    str_builder.append(':');
-                }
-                act_stack.pop();
-
-            } else if (istaction(token)) {
-                if (act_stack.peek() != null) {
-                    while (getweight(act_stack.peek()) >= getweight(token)) {
-                        String act = act_stack.pop();
-                        str_builder.append(act);
-                        str_builder.append(':');
-                        if (act_stack.peek() == null)
-                            break;
-                    }
-                }
-                act_stack.push(token);
-            }
-        }
-        /**/
-        while (act_stack.peek() != null) {
-            String act = act_stack.pop();
-            str_builder.append(act);
-            str_builder.append(':');
-        }
-        /*стрипаем*/
-        str_builder.setLength(str_builder.length() - 1);
-        return str_builder.toString();
-    }
-
-    String getresult(HttpServletRequest req, String rev_pol_not) {
-        StringTokenizer str_tokener = new StringTokenizer(rev_pol_not, ":");
-        Deque<String> calcer = new LinkedList<>();
-        while (str_tokener.hasMoreTokens()) {
-            String t = str_tokener.nextToken();
-            if (propernummer(t)) {
-                calcer.push(t);
-            } else if (propervar(t)) {
-                String valueOfVar;
-                valueOfVar = value(req, t);
-                calcer.push(valueOfVar);
-            } else if (istaction(t)) {
-                String rpart = calcer.pop();
-                String lpart = calcer.pop();
-                calcer.push(get_solved_eq(Integer.parseInt(lpart), Integer.parseInt(rpart), t));
-            }
-        }
-        return calcer.getFirst();
+        return content;
     }
 
 
@@ -175,9 +189,9 @@ public class GetServo extends HttpServlet {
                 sresp.setStatus(409);
             } else {
                 eq = eq.replaceAll("\\s", "");
-                String rev_pol_not = invertedpolskanotazi(eq);
+                System.out.println(eq);
                 try {
-                    res = getresult(sreq, rev_pol_not);
+                    res = String.valueOf(calcit(eq, s));
                 } catch (IllegalArgumentException e) {
                     sresp.setStatus(409);
                 }

@@ -8,6 +8,8 @@ import javax.servlet.http.HttpSession;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @WebServlet(
         name = "EqServo",
@@ -15,12 +17,10 @@ import java.io.PrintWriter;
 )
 public class EqServo extends HttpServlet {
     boolean properequation(String req) {
-        for (int i = 0; i < req.length(); ++i) {
-            if (req.charAt(i) >= 'a' && req.charAt(i) <= 'z' &&
-                    i < req.length() - 1 &&
-                    (req.charAt(i + 1) >= 'a' && req.charAt(i + 1) <= 'z')) {
-                return false;
-            }
+        Matcher matcher = Pattern.compile("[A-Z]+").matcher(req);
+        Matcher matcher1 = Pattern.compile("[-+*/]").matcher(req);
+        if (matcher.find() || !matcher1.find()) {
+            return false;
         }
         return true;
     }
