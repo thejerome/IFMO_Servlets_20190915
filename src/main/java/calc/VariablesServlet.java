@@ -1,6 +1,6 @@
 package calc;
 
-import util.Checker;
+import util.Check;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -21,7 +21,7 @@ public class VariablesServlet extends HttpServlet {
         String value = req.getReader().readLine();
         String var = req.getRequestURI().substring(6);
         //resp.getWriter().println(var + '=' + value);
-        if (!Checker.isVarGood(value)) {
+        if (!Check.isVarGood(value)) {
             resp.setStatus(403);
             resp.getWriter().println("not up standards");
         } else {

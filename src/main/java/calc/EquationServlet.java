@@ -1,6 +1,6 @@
 package calc;
 
-import util.Checker;
+import util.Check;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -23,7 +23,7 @@ public class EquationServlet extends HttpServlet {
         //resp.getWriter().println(session.getAttribute("equation"));
         resp.getWriter().println(546254);
 
-        if (Checker.isEquationGood(eq)) {
+        if (Check.isEquationGood(eq)) {
             resp.setStatus(400);
             resp.getWriter().println("not up standards");
         } else {

@@ -1,6 +1,6 @@
 package util;
 
-public class Checker {
+public class Check {
 
     public static boolean isEquationGood(String s) {
         for (int i = 0; i < s.length()-1; i++) {
