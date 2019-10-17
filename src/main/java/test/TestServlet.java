@@ -16,7 +16,7 @@ import java.util.regex.Pattern;
 )
 public class TestServlet extends HttpServlet {
 
-    private String priorityList [][] = {{"*","/"}, {"+","-"}};
+    private String priorityList [][] = {{"*","/"}, {"+"}};
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -34,8 +34,14 @@ public class TestServlet extends HttpServlet {
             }
         }
 
-        String parsedData = equation;
+        out.println(evaluate(equation));
 
+        out.flush();
+        out.close();
+    }
+
+    private Integer evaluate(String parsedData){
+        parsedData = parsedData.replace("-","+-");
 
         while (parsedData.contains("(")){
             int start = parsedData.lastIndexOf("(");
@@ -46,14 +52,11 @@ public class TestServlet extends HttpServlet {
             parsedData = parsedData.replace(temp, countMicro(temp.replace("(","").replace(")","")).toString());
         }
 
-        out.println(countMicro(parsedData));
-
-        out.flush();
-        out.close();
+        return (countMicro(parsedData));
     }
 
     private boolean containsOperation(String data){
-        return data.contains("+") || data.contains("-") || data.contains("/") || data.contains("*");
+        return data.contains("+") || data.contains("/") || data.contains("*");
     }
 
     protected Integer countMicro(String data){
@@ -125,9 +128,6 @@ public class TestServlet extends HttpServlet {
         }
         if (ts.contains("+")){
             val = v1 + v2;
-        }
-        if (ts.contains("-")){
-            val = v1 - v2;
         }
 
         return val;
