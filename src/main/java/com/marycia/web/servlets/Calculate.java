@@ -9,7 +9,7 @@ import java.util.List;
 
 public class Calculate {
 
-    public static Integer calculateResult (HttpServletRequest req, HttpServletResponse resp) {
+    public static int calculateResult (HttpServletRequest req, HttpServletResponse resp) {
         HttpSession session = req.getSession(false);
         String equation = String.valueOf(session.getAttribute("equation"));
         equation = equation.replaceAll("\\s+", "");
