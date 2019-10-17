@@ -40,8 +40,9 @@ public class TestServlet extends HttpServlet {
         out.close();
     }
 
-    private Integer evaluate(String parsedData){
-        parsedData = parsedData.replace("-","+-");
+    private Integer evaluate(String data){
+
+        String parsedData = data.replace("-","+-");
 
         while (parsedData.contains("(")){
             int start = parsedData.lastIndexOf("(");
