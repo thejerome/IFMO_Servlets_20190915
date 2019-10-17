@@ -1,0 +1,81 @@
+package com.piskov.web.servlets;
+
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.*;
+
+@WebServlet(
+        name = "GetServlet",
+        urlPatterns = {"/calc/result"}
+)
+
+public class GetServlet extends HttpServlet {
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        HttpSession session = req.getSession(false);
+        PrintWriter writer = resp.getWriter();
+        String result = "";
+
+        writer.print(result);
+        if (session == null) {
+            resp.setStatus(409);
+        } else {
+            String equation = (String) session.getAttribute("equation");
+            if (equation == null) {
+                resp.setStatus(409);
+            } else {
+                String expression = map(session);
+                try {
+                    result =Calculator.calculate(expression);
+                    System.out.println(result);
+                } catch (IllegalArgumentException e) {
+                    resp.setStatus(409);
+                }
+            }
+        }
+        if (resp.getStatus() != 409) {
+            resp.setStatus(200);
+            writer.write(result);
+        } else {
+            writer.write("BAD FORMAT!");
+        }
+        writer.flush();
+        writer.close();
+    }
+
+
+    private static String map(HttpSession session /*Map<String, String[]> variables, String equation*/){
+        String equation = (String) session.getAttribute("equation");
+        HashMap<String,String> variables = new HashMap();
+        Enumeration<String> list = session.getAttributeNames();
+        while (list.hasMoreElements()){
+            String buffer = list.nextElement();
+            if (buffer.compareTo("equation") !=0)
+                variables.put(buffer,(String) session.getAttribute(buffer));
+        }
+
+        String expression = equation;
+        while (consistOfLetters(expression)){
+            for (char symbol: expression.toCharArray()) {
+                if (symbol >= 'a' && symbol <= 'z') {
+                    expression = expression.replace(String.valueOf(symbol), String.valueOf(variables.get(String.valueOf(symbol))));
+                }
+            }
+        }
+        System.out.println(expression);
+        return expression;
+    }
+
+    private static boolean consistOfLetters(String expression) {
+        for (int i = 0; i < expression.length(); i++) {
+            if ('a' <= expression.charAt(i) && 'z' >= expression.charAt(i)) return true;
+        }
+        return false;
+    }
+}
