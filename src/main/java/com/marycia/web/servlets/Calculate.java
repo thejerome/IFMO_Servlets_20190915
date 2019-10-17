@@ -9,7 +9,7 @@ import java.util.List;
 
 public class Calculate {
 
-    public static String calculateResult (HttpServletRequest req, HttpServletResponse resp) {
+    public static Integer calculateResult (HttpServletRequest req, HttpServletResponse resp) {
         HttpSession session = req.getSession(false);
         String equation = String.valueOf(session.getAttribute("equation"));
         equation = equation.replaceAll("\\s+", "");
@@ -43,7 +43,7 @@ public class Calculate {
 
         result = calc(expression);
     }
-        return result;
+        return Integer.valueOf(result);
     }
 
     private static String calc(List<String> postfix) {
