@@ -10,9 +10,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.*;
 import java.util.regex.Pattern;
-/**
- * Created by EE on 2018-11-01.
- */
 
 @WebServlet(
         name = "test",
