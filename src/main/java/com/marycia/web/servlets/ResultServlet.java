@@ -22,7 +22,7 @@ public class ResultServlet extends HttpServlet {
 
         if (session.getAttribute("equation") != null) {
             try {
-                out.print(Calculate.calculateResult(req,resp));
+                out.write(Calculate.calculateResult(req,resp));
             } catch (IllegalArgumentException e) {
                 resp.setStatus(409);
             }
