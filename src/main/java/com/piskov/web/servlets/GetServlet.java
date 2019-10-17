@@ -33,7 +33,6 @@ public class GetServlet extends HttpServlet {
                 String expression = map(session);
                 try {
                     result =Calculator.calculate(expression);
-                    System.out.println(result);
                 } catch (IllegalArgumentException e) {
                     resp.setStatus(409);
                 }
@@ -56,7 +55,7 @@ public class GetServlet extends HttpServlet {
         Enumeration<String> list = session.getAttributeNames();
         while (list.hasMoreElements()){
             String buffer = list.nextElement();
-            if (buffer.compareTo("equation") !=0)
+            if ((buffer.compareTo("equation") !=0) && (session.getAttribute(buffer) != null))
                 variables.put(buffer,(String) session.getAttribute(buffer));
         }
 

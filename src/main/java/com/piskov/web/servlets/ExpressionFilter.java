@@ -11,8 +11,7 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+
 
 @WebFilter(
         urlPatterns = "/calc/*"
@@ -29,32 +28,32 @@ public class ExpressionFilter implements Filter {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
         String reqURL = req.getRequestURI().substring(6);
-        boolean error = false;
+        boolean isError = false;
 
         if (reqURL.equals("equation")) {
             String equation = req.getReader().readLine();
+            req.getReader().reset();
             if (!isExpression(equation)) {
                 res.setStatus(400);
-                res.getWriter().write("Bad formatted");
-                error = true;
+                res.getWriter().write("Bad FORMAT");
+                isError = !isExpression(equation);
             }
             req.getReader().reset();
-        } else if (Pattern.matches("[a-z]", reqURL) && !"result".equals(reqURL)) {
+        } else if (!reqURL.equals("result")) {
             try {
-                String reqBody = req.getReader().readLine();
-                int value = Integer.parseInt(reqBody);
-                if (value > 10000 || value < -10000) {
+                int value = Integer.parseInt(req.getReader().readLine());
+                req.getReader().reset();
+                if (!isInRange(value)) {
                     res.setStatus(403);
-                    error = true;
+                    isError = !isInRange(value);
                 }
             } catch (NumberFormatException ignored) {
-            } finally {
-                req.getReader().reset();
             }
         }
+        req.getReader().reset();
 
 
-        if (!error) {
+        if (!isError) {
             chain.doFilter(request, response);
         }
     }
@@ -64,6 +63,10 @@ public class ExpressionFilter implements Filter {
             if ('*' <= expression.charAt(i) && '/' >= expression.charAt(i)) return true;
         }
         return false;
+    }
+
+    private static boolean isInRange(int value){
+        return (value <= 10000 && value >= -10000);
     }
 
     @Override

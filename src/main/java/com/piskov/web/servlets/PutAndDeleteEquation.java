@@ -19,15 +19,11 @@ public class PutAndDeleteEquation extends HttpServlet {
         final HttpSession session = req.getSession();
         final BufferedReader reader = req.getReader();
         final String equation = reader.readLine();
+        req.getReader().reset();
         System.out.println(equation);
-            if (session.getAttribute("equation") == null) {
-                System.out.println(201);
-                resp.setStatus(201);
-            } else {
-                System.out.println(200);
-                resp.setStatus(200);
-            }
-            session.setAttribute("equation", equation);
+        int status = (session.getAttribute("equation") == null) ? 201:200;
+        resp.setStatus(status);
+        session.setAttribute("equation", equation);
         }
 
 

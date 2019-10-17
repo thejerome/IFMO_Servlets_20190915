@@ -19,13 +19,11 @@ public class PutAndDeleteVariable extends HttpServlet {
             final String requestURI = req.getRequestURI();
             final BufferedReader reader = req.getReader();
             final String value = reader.readLine();
+            req.getReader().reset();
             final String name = String.valueOf(requestURI.charAt(6));
-                if (session.getAttribute(name) == null) {
-                    resp.setStatus(201);
-                } else {
-                    resp.setStatus(200);
-                }
-                session.setAttribute(name, value);
+            int status = (session.getAttribute(name) == null) ? 201:200;
+            resp.setStatus(status);
+            session.setAttribute(name, value);
 
         }
 
