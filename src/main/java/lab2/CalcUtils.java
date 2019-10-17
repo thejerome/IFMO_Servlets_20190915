@@ -1,4 +1,4 @@
-package Lab2;
+package lab2;
 
 import java.util.LinkedList;
 import java.util.Scanner;
@@ -47,17 +47,17 @@ public class CalcUtils {
         }
     }
 
-    static int deci(String rts) {
+    public static int deci(String rts) {
         LinkedList<Integer> numb = new LinkedList<>();
         LinkedList<Character> op = new LinkedList<>();
-        rts=rts.replaceAll("\\s+","");
-        if (rts.charAt(0)=='-')
+        String s=rts.replaceAll("\\s+","");
+        if (s.charAt(0)=='-')
             numb.add(0);
-        for (int i = 0; i < rts.length(); i++) {
-            char p = rts.charAt(i);
+        for (int i = 0; i < s.length(); i++) {
+            char p = s.charAt(i);
             if (p == '(') {
                 op.add('(');
-                if (rts.charAt(i+1)=='-')
+                if (s.charAt(i+1)=='-')
                     numb.add(0);
             }
             else if (p == ')') {
@@ -70,8 +70,8 @@ public class CalcUtils {
                 op.add(p);
             }  else {
                 StringBuilder number = new StringBuilder();
-                while (i < rts.length() && Character.isDigit(rts.charAt(i)))
-                    number.append(rts.charAt(i++));
+                while (i < s.length() && Character.isDigit(s.charAt(i)))
+                    number.append(s.charAt(i++));
                 --i;
                 numb.add(Integer.parseInt(number.toString()));
             }

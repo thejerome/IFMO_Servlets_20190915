@@ -1,4 +1,4 @@
-package Lab2;
+package lab2;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
