@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.*;
+
 
 @WebServlet(
         name = "GetServlet",
@@ -28,7 +28,6 @@ public class GetServlet extends HttpServlet {
             writer.write("BAD FORMAT!");
         } else {
             result = Calculator.calculate(expression);
-            resp.setStatus(200);
         }
         writer.write(result);
         writer.flush();
@@ -36,22 +35,13 @@ public class GetServlet extends HttpServlet {
     }
 
 
-    private static String map(HttpSession session /*Map<String, String[]> variables, String equation*/){
-        String equation = (String) session.getAttribute("equation");
-        HashMap<String, Object> variables = new HashMap<>();
-        Enumeration<String> list = session.getAttributeNames();
-        while (list.hasMoreElements()){
-            String buffer = list.nextElement();
-            if ((buffer.compareTo("equation") !=0))
-                variables.put(buffer, session.getAttribute(buffer));
-        }
-
-        String expression = equation;
-       for (int i = 0; i<variables.size();i++){
+    private static String map(HttpSession session){
+        String expression = (String) session.getAttribute("equation");
+       for (int i = 0; i<10;i++){
             for (char symbol: expression.toCharArray()) {
                 if (symbol >= 'a' && symbol <= 'z') {
-                    if (variables.get(String.valueOf(symbol)) != null)
-                        expression = expression.replace(String.valueOf(symbol), String.valueOf(variables.get(String.valueOf(symbol))));
+                    if  (session.getAttribute(String.valueOf(symbol)) != null)
+                        expression = expression.replace(String.valueOf(symbol), String.valueOf(session.getAttribute(String.valueOf(symbol))));
                     else break;
                 }
             }
