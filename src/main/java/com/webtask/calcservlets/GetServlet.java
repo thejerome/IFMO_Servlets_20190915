@@ -1,4 +1,4 @@
-package com.webtask.Servlets;
+package com.webtask.calcservlets;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
