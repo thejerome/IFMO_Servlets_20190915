@@ -1,6 +1,11 @@
 package com.sam.web.servlets;
 
-import javax.servlet.*;
+import javax.servlet.Filter;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.FilterChain;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -10,7 +15,7 @@ import static java.lang.Character.isLetter;
 
 @WebFilter(filterName = "ServletFilterVariable",
         urlPatterns = "/calc/*")
-public class VariableFilter implements javax.servlet.Filter {
+public class VariableFilter implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
