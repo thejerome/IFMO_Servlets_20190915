@@ -7,7 +7,7 @@ import static java.lang.Character.isLetter;
 
 public class ParserUtils {
 
-    public static String parse (String exp){
+    public static String parse(String exp){
         Stack<Character> stack = new Stack<>();
         String curr = "";
         int priority;
@@ -15,29 +15,32 @@ public class ParserUtils {
         for (int i = 0; i < exp.length(); i++) {
             priority = priorityMthd(exp.charAt(i));
 
-            if (priority == 0)
+            if (priority == 0) {
                 curr += exp.charAt(i);
-
-            if (priority == 1)
-                stack.push(exp.charAt(i));
-
-            if (priority > 1) {
-                curr += ' '; //чтобы символы не слипались
-                if ((i == 0) && (exp.charAt(i) == '-'))
-                    curr += "0 "; // унарный минус
-                while (!stack.empty()) {
-                    if (priorityMthd(stack.peek()) >= priority)
-                        curr += stack.pop();
-                    else break;
-                }
-                stack.push(exp.charAt(i));
             }
+            else if (priority == 1){
+                    stack.push(exp.charAt(i));
+            }
+            else if (priority > 1) {
+                    curr += ' '; //чтобы символы не слипались
+                    if ((i == 0) && (exp.charAt(i) == '-'))
+                        curr += "0 "; // унарный минус
+                    while (!stack.empty()) {
+                        if (priorityMthd(stack.peek()) >= priority)
+                            curr += stack.pop();
+                        else break;
+                    }
+                    stack.push(exp.charAt(i));
+            }
+            else {
 
-            if (priority == -1) {
-                curr += ' ';
-                while (priorityMthd(stack.peek()) != 1)
-                    curr += stack.pop();
-                stack.pop();
+
+                if (priority == -1) {
+                    curr += ' ';
+                    while (priorityMthd(stack.peek()) != 1)
+                        curr += stack.pop();
+                    stack.pop();
+                }
             }
         }
 

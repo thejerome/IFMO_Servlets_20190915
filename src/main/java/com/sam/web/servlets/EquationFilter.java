@@ -32,12 +32,10 @@ public class EquationFilter implements Filter {
         req.getReader().reset();
         String url = req.getRequestURI().substring(6);
         boolean notError = true;
-        if ("equation".equals(url)) {
-            if (!goodFormatEquation(equation)) {
+        if ("equation".equals(url) && (!goodFormatEquation(equation))) {
                 notError = false;
                 resp.setStatus(400);
                 resp.getWriter().write("Неверный формат");
-            }
         }
         req.getReader().reset();
         if (notError)
