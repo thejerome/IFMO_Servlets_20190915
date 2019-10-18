@@ -20,12 +20,12 @@ public class VariablesServlet extends HttpServlet {
         PrintWriter out = res.getWriter();
         String inputData = req.getReader().readLine();
 
-        if (!Extensions.checkVariable(inputData,-10000,10000)) {
+        if (!ExtensionsUtils.checkVariable(inputData,-10000,10000)) {
             res.setStatus(403);
             out.println("bad format");
         }
         else {
-            String variableKey = Extensions.getVariableKeyFromURI(req);
+            String variableKey = ExtensionsUtils.getVariableKeyFromURI(req);
             res.setStatus(session.getAttribute(variableKey) == null ? 201 : 200);
             session.setAttribute(variableKey, inputData);
         }
@@ -37,7 +37,7 @@ public class VariablesServlet extends HttpServlet {
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse res) {
         HttpSession sess = req.getSession();
-        sess.setAttribute(Extensions.getVariableKeyFromURI(req), null);
+        sess.setAttribute(ExtensionsUtils.getVariableKeyFromURI(req), null);
         res.setStatus(204);
     }
 }

@@ -3,7 +3,7 @@ package test;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
-public class Extensions {
+public class ExtensionsUtils {
     public static boolean containsOperation(String data){
         return data.contains("+") || data.contains("/") || data.contains("*");
     }
@@ -21,7 +21,7 @@ public class Extensions {
             return true;
         }
 
-        if (Extensions.isNumeric(data)){
+        if (ExtensionsUtils.isNumeric(data)){
             int parsed = Integer.parseInt(data);
 
             return parsed > min && parsed < max;

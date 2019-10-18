@@ -20,7 +20,7 @@ public class EquationPutServlet extends HttpServlet {
         PrintWriter out = res.getWriter();
         String inputData = req.getReader().readLine();
 
-        if (!Extensions.containsOperation(inputData) || Extensions.containsUnknown(inputData)){
+        if (!ExtensionsUtils.containsOperation(inputData) || ExtensionsUtils.containsUnknown(inputData)){
             res.setStatus(400);
             out.println("bad format");
         }

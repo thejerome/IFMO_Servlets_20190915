@@ -9,7 +9,6 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.*;
-import java.util.regex.Pattern;
 
 @WebServlet(
         name = "ServletCalculator",
@@ -39,7 +38,7 @@ public class ServletCalculator extends HttpServlet {
             while (NameVars.hasMoreElements()) {
                 String key = NameVars.nextElement();
                 String val = (String)session.getAttribute(key);
-                if (key == "equation"){
+                if (key.equals("equation")){
                     equation = val;
                 }else{
                     temp.put(key,val);
@@ -48,19 +47,10 @@ public class ServletCalculator extends HttpServlet {
 
             equation = generateEquation(temp, equation).replaceAll(" ", "");
 
-            //String equation = req.getParameter("equation").replace(" ", "");
-
-            /*while (!Pattern.matches("^[0-9*+-/()]+$", equation)){
-                for (Map.Entry<String, String[]> parameterEntry : parameterMap.entrySet()){
-                    equation = equation.replace(parameterEntry.getKey(), parameterEntry.getValue()[0]);
-                }
-            }
-
-            */
-            if (equation == "error"){
+            if (equation.equals("error")){
                 resp.setStatus(409);
             }else {
-                out.print(evaluate(equation, out));
+                out.print(evaluate(equation));
             }
         }
 
@@ -68,7 +58,10 @@ public class ServletCalculator extends HttpServlet {
         out.close();
     }
 
-    private  String generateEquation(HashMap<String, String> temp, String equation){
+    private  String generateEquation(HashMap<String, String> temp, String data){
+
+        String equation = data;
+
         for (Map.Entry<String, String> entry: temp.entrySet()){
             equation = equation.replace(entry.getKey(), entry.getValue());
         }
@@ -78,7 +71,7 @@ public class ServletCalculator extends HttpServlet {
 
         for (int i=0;i<equation.length();i++){
             String t = Character.toString(equation.charAt(i));
-            if (Extensions.isSymbol(t)){
+            if (ExtensionsUtils.isSymbol(t)){
                 if (temp.containsKey(t)){
                     return generateEquation(temp, equation);
                 }else {
@@ -90,7 +83,7 @@ public class ServletCalculator extends HttpServlet {
         return equation;
     }
 
-    private Integer evaluate(String data, PrintWriter out ){
+    private Integer evaluate(String data){
 
         String parsedData = data.replaceAll("-","+-");
 
@@ -100,13 +93,13 @@ public class ServletCalculator extends HttpServlet {
 
             String temp = parsedData.substring(start, finish+1);
 
-            parsedData = parsedData.replace(temp, countMicro(temp.replace("(","").replace(")",""), out).toString());
+            parsedData = parsedData.replace(temp, countMicro(temp.replace("(","").replace(")","")).toString());
         }
 
-        return (countMicro(parsedData, out));
+        return (countMicro(parsedData));
     }
 
-    protected Integer countMicro(String data, PrintWriter out ){
+    protected Integer countMicro(String data){
         String temp = data;
 
         if (temp.charAt(0) == '+'){
@@ -115,7 +108,7 @@ public class ServletCalculator extends HttpServlet {
 
         int currentPriority = 0;
 
-        while (Extensions.containsOperation(temp)){
+        while (ExtensionsUtils.containsOperation(temp)){
             String t1 = "";
             String t2 = "";
             String t3 = "";
@@ -131,7 +124,7 @@ public class ServletCalculator extends HttpServlet {
                     }else{
                         t2 = curChar;
                     }
-                }else if(Extensions.containsOperation(curChar)){
+                }else if(ExtensionsUtils.containsOperation(curChar)){
                     if (t2.length() > 0){
                         temp = temp.replace(t1 + t2 + t3, countSome(t2,t1,t3).toString());
                     }else{
@@ -151,12 +144,12 @@ public class ServletCalculator extends HttpServlet {
                 temp = temp.replace(t1 + t2 + t3, countSome(t2,t1,t3).toString());
             }
 
-            if (!Extensions.equationContainsSome(temp, list)){
+            if (!ExtensionsUtils.equationContainsSome(temp, list)){
                 currentPriority++;
             }
 
             if (currentPriority >= priorityList.length){
-                if (Extensions.containsOperation(temp)){
+                if (ExtensionsUtils.containsOperation(temp)){
                     currentPriority = 0;
                 }else{
                     break;
