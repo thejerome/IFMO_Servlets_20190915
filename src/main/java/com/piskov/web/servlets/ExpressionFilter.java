@@ -21,6 +21,7 @@ public class ExpressionFilter implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) {
+        //null
     }
 
     @Override
@@ -29,7 +30,7 @@ public class ExpressionFilter implements Filter {
         HttpServletResponse res = (HttpServletResponse) response;
         String reqURL = req.getRequestURI().substring(6);
         int status=0;
-            if (reqURL.equals("equation")) {
+            if ("equation".equals(reqURL)) {
                 String equation = req.getReader().readLine();
                 req.getReader().reset();
                 if (isNotExpression(equation)) {
@@ -37,11 +38,10 @@ public class ExpressionFilter implements Filter {
                     res.getWriter().write("Bad FORMAT");
                 }
             }
-            else if (!reqURL.equals("result")) {
+            else if (!"result".equals(reqURL)) {
                 String value = req.getReader().readLine();
                 req.getReader().reset();
-                if(value != null)
-                    if (!isInRange(value)) {
+                    if (value != null &&!isInRange(value)) {
                         status = 403;
                     }
             }
@@ -70,5 +70,6 @@ public class ExpressionFilter implements Filter {
 
     @Override
     public void destroy() {
+        //null
     }
 }
