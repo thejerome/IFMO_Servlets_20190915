@@ -24,8 +24,6 @@ public class ReqFilter implements Filter {
     public void doFilter (ServletRequest sreq, ServletResponse sresp, FilterChain chain) throws IOException, ServletException {
 
         chain.doFilter(sreq,sresp);
-
-
     }
 
     public void destroy(){

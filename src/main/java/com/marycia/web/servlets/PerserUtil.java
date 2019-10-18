@@ -2,8 +2,7 @@ package com.marycia.web.servlets;
 import java.util.*;
 
 public class PerserUtil {
-    private static String operators = "+=*/";
-    private static String delimiters = "() " + operators;
+    private static String delimiters = "() +=*/";
 
     private static boolean isDelimiters (String tmp) {
         for (int i = 0; i < delimiters.length(); i++) {
@@ -16,15 +15,14 @@ public class PerserUtil {
     private static int priority (String tmp) {
         if ("(".equals(tmp)) return 1;
         if ("+".equals(tmp) || "-".equals(tmp)) return 2;
-        if ("*".equals(tmp) || "/".equals(tmp)) return 3;
-        return 4; //Подумать, нужно ли 4, можно ли обойтись тремя, у нас нет функций
+        return 3;
     }
 
     public static List<String> parse (String infix) {
-        List<String> postfix = new ArrayList<String>();
-        Deque<String> stack = new ArrayDeque<String>();
+        List<String> postfix = new ArrayList<>();
+        Deque<String> stack = new ArrayDeque<>();
         StringTokenizer tokenizer = new StringTokenizer(infix, delimiters, true);
-        String curr = "";
+        String curr;
         while (tokenizer.hasMoreTokens()) {
             curr = tokenizer.nextToken();
             if (isDelimiters(curr)) {

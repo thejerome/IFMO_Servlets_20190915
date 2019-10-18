@@ -10,7 +10,7 @@ import java.util.List;
 public class Calculate {
 
     public static String calculateResult (HttpServletRequest req, HttpServletResponse resp) {
-        HttpSession session = req.getSession(false);
+        HttpSession session = req.getSession();
         String equation = String.valueOf(session.getAttribute("equation"));
         equation = equation.replaceAll("\\s+", "");
         boolean error = false;

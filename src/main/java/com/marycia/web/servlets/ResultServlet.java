@@ -18,17 +18,12 @@ public class ResultServlet extends HttpServlet {
     protected void doGet (HttpServletRequest req, HttpServletResponse resp) throws IOException {
         PrintWriter out = resp.getWriter();
 
-        HttpSession session = req.getSession();
-
-        if (session.getAttribute("equation") != null) {
-            try {
-                out.print(Calculate.calculateResult(req,resp));
-                out.flush();
-            } catch (IllegalArgumentException e) {
-                resp.setStatus(409);
-            }
-        } else {
+        try {
+            out.print(Calculate.calculateResult(req,resp));
+            out.flush();
+        } catch (IllegalArgumentException e) {
             resp.setStatus(409);
         }
+
     }
 }
