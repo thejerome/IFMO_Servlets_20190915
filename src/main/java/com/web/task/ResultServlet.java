@@ -27,15 +27,14 @@ public class ResultServlet extends HttpServlet {
             writer.println("session is null");
         } else {
             String equation = (String) session.getAttribute("equation");
-            if (equation == null ) {
+            if (equation == null) {
                 resp.setStatus(409);
                 writer.println("equation is null");
             } else {
-                if (isAllVarsDefined(equation,session)) {
+                if (isAllVarsDefined(equation, session)) {
                     resp.setStatus(200);
-                    writer.print(Result(equation.replaceAll("\\s", ""), session));
-                }
-                else {
+                    writer.print(result(equation.replaceAll("\\s", ""), session));
+                } else {
                     resp.setStatus(409);
                     writer.println("some var is undefined");
                 }
@@ -45,10 +44,10 @@ public class ResultServlet extends HttpServlet {
         writer.close();
     }
 
-    private boolean isAllVarsDefined(String equation, HttpSession session){
-        for (int i = 0; i<equation.length(); ++i){
+    private boolean isAllVarsDefined(String equation, HttpSession session) {
+        for (int i = 0; i < equation.length(); ++i) {
             char c = equation.charAt(i);
-            if (c >= 'a' && c <= 'z'){
+            if (c >= 'a' && c <= 'z') {
                 String var = String.valueOf(c);
                 if (session.getAttribute(var) == null)
                     return false;
@@ -57,7 +56,7 @@ public class ResultServlet extends HttpServlet {
         return true;
     }
 
-    private int Result(String eq, HttpSession session) {
+    private int result(String eq, HttpSession session) {
         Map<String, String> attributes = new HashMap<>();
         Enumeration<String> en = session.getAttributeNames();
         while (en.hasMoreElements()) {
@@ -80,7 +79,10 @@ public class ResultServlet extends HttpServlet {
                 normalMap.put(attributesEntry.getKey().charAt(0), valInt);
             }
         }
+        return calc(eq, normalMap);
+    }
 
+        private int calc(String eq, Map<Character, Integer> normalMap) {
         Stack<Character> stackOperators = new Stack<>();
         Stack<Integer> stackVars = new Stack<>();
         for (int i = 0; i < eq.length(); i++) {
@@ -90,13 +92,13 @@ public class ResultServlet extends HttpServlet {
                 stackVars.push(normalMap.get(eqChar));
 
             else if (isSecondaryOperator(eqChar)) {
-                while ((stackVars.size()>1) && (!stackOperators.empty()) && (isSecondaryOperator(stackOperators.peek()) || isPriorityOperator(stackOperators.peek()))) {
+                while ((stackVars.size() > 1) && (!stackOperators.empty()) && (isSecondaryOperator(stackOperators.peek()) || isPriorityOperator(stackOperators.peek()))) {
                     operation(stackVars, stackOperators);
                 }
                 stackOperators.push(eqChar);
 
             } else if (isPriorityOperator(eqChar)) {
-                while ((stackVars.size()>1) && (!stackOperators.empty()) && (isPriorityOperator(stackOperators.peek()))) {
+                while ((stackVars.size() > 1) && (!stackOperators.empty()) && (isPriorityOperator(stackOperators.peek()))) {
                     operation(stackVars, stackOperators);
                 }
                 stackOperators.push(eqChar);
@@ -105,7 +107,7 @@ public class ResultServlet extends HttpServlet {
                 stackOperators.push(eqChar);
 
             } else if (eqChar == ')') {
-                while ( stackVars.size()>1 && stackOperators.peek() != '(') {
+                while (stackVars.size() > 1 && stackOperators.peek() != '(') {
 
                     operation(stackVars, stackOperators);
                 }
@@ -115,7 +117,7 @@ public class ResultServlet extends HttpServlet {
             }
         }
 
-        while (!stackOperators.isEmpty() && stackVars.size()>1)
+        while (!stackOperators.isEmpty() && stackVars.size() > 1)
             operation(stackVars, stackOperators);
 
         return stackVars.pop();
@@ -136,7 +138,6 @@ public class ResultServlet extends HttpServlet {
 
     private static void operation(Stack<Integer> var, Stack<Character> oper) {
         int var1 = var.pop();
-        if (!var.empty()) {
             int var2 = var.pop();
             switch (oper.pop()) {
                 case '+':
@@ -157,4 +158,3 @@ public class ResultServlet extends HttpServlet {
         }
     }
 
-}
