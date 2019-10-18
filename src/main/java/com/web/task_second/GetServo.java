@@ -110,28 +110,31 @@ public class GetServo extends HttpServlet {
         String res = "";
         if (s == null) {
             sresp.setStatus(409);
-        } else {
-            String eq = (String) s.getAttribute("equation");
-            if (eq == null) {
-                sresp.setStatus(409);
-            } else {
-                eq = eq.replaceAll("\\s", "");
-                System.out.println(eq);
-                try {
-                    res = String.valueOf(calcit(eq, s));
-                } catch (IllegalArgumentException e) {
-                    sresp.setStatus(409);
-                }
-            }
+            w.flush();
+            return;
         }
-        if (sresp.getStatus() != 409) {
+        String eq = (String) s.getAttribute("equation");
+        if (eq == null) {
+            sresp.setStatus(409);
+            w.write("Format error, try clang-format");
+            w.flush();
+            return;
+        }
+
+        eq = eq.replaceAll("\\s", "");
+        System.out.println(eq);
+        try {
+            res = String.valueOf(calcit(eq, s));
             sresp.setStatus(200);
             w.write(res);
-        } else {
-            w.write("Formation error");
+            w.flush();
+        } catch (IllegalArgumentException e) {
+            sresp.setStatus(409);
+            w.write("Format error, try clang-format");
+            w.flush();
+            //return; warning ^-^
         }
-        w.flush();
-        w.close();
+
     }
 
 

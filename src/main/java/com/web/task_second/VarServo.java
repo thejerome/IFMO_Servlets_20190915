@@ -39,22 +39,23 @@ public class VarServo extends HttpServlet {
         PrintWriter w = sresp.getWriter();
         String b = r.readLine();
         if (s == null) {
-            s = sreq.getSession();
+            s = sreq.getSession(true);
         }
-        if (propervar(b)) {
-            String x = String.valueOf(url.charAt(url.length() - 1));
-            if (s.getAttribute(x) != null)
-                sresp.setStatus(200);
-            else
-                sresp.setStatus(201);
-            s.setAttribute(x, b);
-        } else {
+        if (!propervar(b)) {
             sresp.setStatus(403);
-            w.write("Exceeding values");
+            w.write("Value overflow");
+            w.flush();
+            return;
         }
+
+        String x = String.valueOf(url.charAt(url.length() - 1));
+        if (s.getAttribute(x) == null)
+            sresp.setStatus(201);
+        else
+            sresp.setStatus(200);
+        s.setAttribute(x, b);
+
         w.flush();
-        w.close();
-        r.close();
     }
 
 

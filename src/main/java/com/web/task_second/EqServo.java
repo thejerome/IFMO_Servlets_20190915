@@ -26,9 +26,9 @@ public class EqServo extends HttpServlet {
     protected void doDelete(HttpServletRequest sreq, HttpServletResponse ans) {
         ans.setStatus(204);
         HttpSession s = sreq.getSession(false);
-        if (s != null) {
+        if (s != null)
             s.removeAttribute("equation");
-        }
+
     }
 
     @Override
@@ -40,19 +40,20 @@ public class EqServo extends HttpServlet {
         if (s == null) {
             s = sreq.getSession();
         }
-        if (properequation(b)) {
-            if (s.getAttribute("equation") == null)
-                sresp.setStatus(201);
-            else
-                sresp.setStatus(200);
-            s.setAttribute("equation", b);
-        } else {
+        if (!properequation(b)) {
             sresp.setStatus(400);
             w.write("Bad formatted equation");
+            w.flush();
+            return;
         }
+
+        if (s.getAttribute("equation") == null)
+            sresp.setStatus(201);
+        else
+            sresp.setStatus(200);
+
+        s.setAttribute("equation", b);
         w.flush();
-        w.close();
-        r.close();
     }
 
 
