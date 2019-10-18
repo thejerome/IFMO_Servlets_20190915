@@ -7,7 +7,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
@@ -40,7 +39,7 @@ public class Calculator extends HttpServlet {
                     prmtrs.put(buff, (String) thisSession.getAttribute(buff));
             }
             try {
-                equation = map(thisSession);
+                equation = ParserUtils.mapping(thisSession);
                 resp.getWriter().print(ParserUtils.answerMthd(ParserUtils.parse(equation)));
                 resp.setStatus(200);
             } catch (IllegalArgumentException e) {
@@ -48,17 +47,5 @@ public class Calculator extends HttpServlet {
             }
         }
     }
-    private static String map(HttpSession session){
-        String expression = (String) session.getAttribute("equation");
-        for (int i = 0; i<10;i++){
-            for (char symbol: expression.toCharArray()) {
-                if (symbol >= 'a' && symbol <= 'z') {
-                    if  (session.getAttribute(String.valueOf(symbol)) != null)
-                        expression = expression.replace(String.valueOf(symbol), String.valueOf(session.getAttribute(String.valueOf(symbol))));
-                    else break;
-                }
-            }
-        }
-        return expression;
-    }
+
 }
