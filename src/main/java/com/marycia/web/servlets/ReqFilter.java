@@ -24,12 +24,6 @@ public class ReqFilter implements Filter {
 
     @Override
     public void doFilter (ServletRequest sreq, ServletResponse sresp, FilterChain chain) throws IOException, ServletException {
-        HttpServletRequest req = (HttpServletRequest)sreq;
-        HttpServletResponse resp = (HttpServletResponse)sresp;
-        String reqURI = req.getRequestURI();
-        String value = reqURI.substring(6);
-        boolean GetError = false;
-
         /* if ("equation".equals(value)) {
             String key = req.getReader().readLine();
             boolean consistOfDel = false;
@@ -46,9 +40,8 @@ public class ReqFilter implements Filter {
             }
         } */
 
-        if (!GetError) {
-            chain.doFilter(sreq,sresp);
-        }
+        chain.doFilter(sreq,sresp);
+
 
     }
 
