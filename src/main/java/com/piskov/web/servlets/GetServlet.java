@@ -31,19 +31,18 @@ public class GetServlet extends HttpServlet {
                 resp.setStatus(409);
             } else {
                 String expression = map(session);
-                try {
-                    result =Calculator.calculate(expression);
-                } catch (IllegalArgumentException e) {
+
+                if(consistOfLetters(expression)){
                     resp.setStatus(409);
+                    writer.write("BAD FORMAT!");
+                }
+                else result =Calculator.calculate(expression);
+                resp.setStatus(200);
+                writer.write(result);
                 }
             }
-        }
-        if (resp.getStatus() != 409) {
-            resp.setStatus(200);
-            writer.write(result);
-        } else {
-            writer.write("BAD FORMAT!");
-        }
+
+
         writer.flush();
         writer.close();
     }
@@ -51,23 +50,26 @@ public class GetServlet extends HttpServlet {
 
     private static String map(HttpSession session /*Map<String, String[]> variables, String equation*/){
         String equation = (String) session.getAttribute("equation");
-        HashMap<String,String> variables = new HashMap();
+        HashMap<String, Object> variables = new HashMap<>();
         Enumeration<String> list = session.getAttributeNames();
         while (list.hasMoreElements()){
             String buffer = list.nextElement();
-            if ((buffer.compareTo("equation") !=0) && (session.getAttribute(buffer) != null))
-                variables.put(buffer,(String) session.getAttribute(buffer));
+
+            if ((buffer.compareTo("equation") !=0))
+
+                variables.put(buffer, session.getAttribute(buffer));
         }
 
         String expression = equation;
-        while (consistOfLetters(expression)){
+       for (int i = 0; i<10;i++){
             for (char symbol: expression.toCharArray()) {
                 if (symbol >= 'a' && symbol <= 'z') {
-                    expression = expression.replace(String.valueOf(symbol), String.valueOf(variables.get(String.valueOf(symbol))));
+                    if (variables.get(String.valueOf(symbol)) != null)
+                        expression = expression.replace(String.valueOf(symbol), String.valueOf(variables.get(String.valueOf(symbol))));
+                    else break;
                 }
             }
         }
-        System.out.println(expression);
         return expression;
     }
 
