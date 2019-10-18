@@ -17,7 +17,7 @@ public class PutAndDeleteVariable extends HttpServlet {
     public void doPut(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         HttpSession thisSession = req.getSession();
 
-        String name = req.getRequestURI().substring(6);
+        String name = String.valueOf(req.getRequestURI().charAt(6));
         String value = req.getReader().readLine();
         if (thisSession.getAttribute(name) != null) //сессия существует
             resp.setStatus(200);
@@ -30,7 +30,7 @@ public class PutAndDeleteVariable extends HttpServlet {
     @Override
     public void doDelete(HttpServletRequest req, HttpServletResponse resp){
         HttpSession thisSession = req.getSession();
-        String name = req.getRequestURI().substring(6);
+        String name = String.valueOf(req.getRequestURI().charAt(6));
         thisSession.setAttribute(name, null);
         resp.setStatus(204);
 

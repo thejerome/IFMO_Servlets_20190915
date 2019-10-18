@@ -14,6 +14,7 @@ public class EquationFilter implements javax.servlet.Filter {
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
+        //
     }
 
     @Override
@@ -23,8 +24,8 @@ public class EquationFilter implements javax.servlet.Filter {
         HttpServletRequest req = (HttpServletRequest) reqSer;
         HttpServletResponse resp = (HttpServletResponse) respSer;
         String equation = req.getReader().readLine();
-        String url = req.getRequestURI().substring(6);
         req.getReader().reset();
+        String url = req.getRequestURI().substring(6);
         boolean notError = true;
         if ("equation".equals(url)) {
             if (!goodFormatEquation(equation)) {
@@ -49,6 +50,7 @@ public class EquationFilter implements javax.servlet.Filter {
 
     @Override
     public void destroy() {
+        //
     }
 }
 

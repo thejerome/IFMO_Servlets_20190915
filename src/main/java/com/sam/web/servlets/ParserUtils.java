@@ -1,6 +1,9 @@
 package com.sam.web.servlets;
 
+import javax.servlet.http.HttpSession;
 import java.util.Stack;
+
+import static java.lang.Character.isLetter;
 
 public class ParserUtils {
 
@@ -82,5 +85,17 @@ public class ParserUtils {
         }
         return stack.pop();
     }
-
+    public static String mapping(HttpSession session){
+        String expression = (String) session.getAttribute("equation");
+        for (int i = 0; i<10;i++){
+            for (int j = 0; j < expression.length(); j++) {
+                if ((isLetter(expression.charAt(j))) &&
+                   (session.getAttribute(String.valueOf(expression.charAt(j))) != null))
+                {
+                    expression = expression.replace(String.valueOf(expression.charAt(j)), String.valueOf(session.getAttribute(String.valueOf(expression.charAt(j)))));
+                }
+            }
+        }
+        return expression;
+    }
 }

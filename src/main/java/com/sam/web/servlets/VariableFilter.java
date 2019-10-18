@@ -13,7 +13,10 @@ import static java.lang.Character.isLetter;
 public class VariableFilter implements javax.servlet.Filter {
 
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {}
+    public void init(FilterConfig filterConfig) throws ServletException {
+        //
+    }
+
 
     @Override
     public void doFilter(ServletRequest reqSer, ServletResponse respSer, FilterChain chain)
@@ -21,7 +24,7 @@ public class VariableFilter implements javax.servlet.Filter {
 
         HttpServletRequest req = (HttpServletRequest) reqSer;
         HttpServletResponse resp = (HttpServletResponse) respSer;
-        String url = req.getRequestURI().substring(6);
+        String url = String.valueOf(req.getRequestURI().charAt(6));
         req.getReader().reset();
         boolean notError = true;
 
@@ -38,21 +41,18 @@ public class VariableFilter implements javax.servlet.Filter {
             chain.doFilter(reqSer, respSer);
     }
     @Override
-    public void destroy() {}
+    public void destroy() {
+        //
+    }
 
-    static private boolean goodFormatValue(String value) {
+    private boolean goodFormatValue(String value) {
         Character symbol = value.charAt(0);
         if (isLetter(symbol) && value.length() == 1)
             return true;
         try {
             int a = Integer.parseInt(value);
-            if (a < -10000 || a > 10000){
-                return false;
-            }
-            else {
-                return true;
-            }
-        } catch (Exception e){
+            return Math.abs(a) <= 10000;
+        } catch (Exception exp){
             return true;
         }
     }
