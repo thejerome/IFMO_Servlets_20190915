@@ -27,6 +27,7 @@ public class FilterGet implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpSession session = ((HttpServletRequest)request).getSession();
         HttpServletResponse res = (HttpServletResponse) response;
+
         if (session == null){
             res.setStatus(409);
         } else {
