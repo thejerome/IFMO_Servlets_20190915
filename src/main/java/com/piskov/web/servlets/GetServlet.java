@@ -21,28 +21,16 @@ public class GetServlet extends HttpServlet {
         HttpSession session = req.getSession(false);
         PrintWriter writer = resp.getWriter();
         String result = "";
+        String expression = map(session);
 
-        writer.print(result);
-        if (session == null) {
+        if (consistOfLetters(expression)) {
             resp.setStatus(409);
+            writer.write("BAD FORMAT!");
         } else {
-            String equation = (String) session.getAttribute("equation");
-            if (equation == null) {
-                resp.setStatus(409);
-            } else {
-                String expression = map(session);
-
-                if(consistOfLetters(expression)){
-                    resp.setStatus(409);
-                    writer.write("BAD FORMAT!");
-                }
-                else result =Calculator.calculate(expression);
-                resp.setStatus(200);
-                writer.write(result);
-                }
-            }
-
-
+            result = Calculator.calculate(expression);
+            resp.setStatus(200);
+        }
+        writer.write(result);
         writer.flush();
         writer.close();
     }
@@ -54,14 +42,12 @@ public class GetServlet extends HttpServlet {
         Enumeration<String> list = session.getAttributeNames();
         while (list.hasMoreElements()){
             String buffer = list.nextElement();
-
             if ((buffer.compareTo("equation") !=0))
-
                 variables.put(buffer, session.getAttribute(buffer));
         }
 
         String expression = equation;
-       for (int i = 0; i<10;i++){
+       for (int i = 0; i<variables.size();i++){
             for (char symbol: expression.toCharArray()) {
                 if (symbol >= 'a' && symbol <= 'z') {
                     if (variables.get(String.valueOf(symbol)) != null)

@@ -1,6 +1,5 @@
 package com.piskov.web.servlets;
 
-import java.util.Map;
 import java.util.Stack;
 
 public class Calculator {

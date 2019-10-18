@@ -28,45 +28,44 @@ public class ExpressionFilter implements Filter {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
         String reqURL = req.getRequestURI().substring(6);
-        boolean isError = false;
-
-        if (reqURL.equals("equation")) {
-            String equation = req.getReader().readLine();
-            req.getReader().reset();
-            if (!isExpression(equation)) {
-                res.setStatus(400);
-                res.getWriter().write("Bad FORMAT");
-                isError = !isExpression(equation);
-            }
-            req.getReader().reset();
-        } else if (!reqURL.equals("result")) {
-            try {
-                int value = Integer.parseInt(req.getReader().readLine());
+        int status=0;
+            if (reqURL.equals("equation")) {
+                String equation = req.getReader().readLine();
                 req.getReader().reset();
-                if (!isInRange(value)) {
-                    res.setStatus(403);
-                    isError = !isInRange(value);
+                if (isNotExpression(equation)) {
+                    status=400;
+                    res.getWriter().write("Bad FORMAT");
                 }
-            } catch (NumberFormatException ignored) {
             }
-        }
+            else if (!reqURL.equals("result")) {
+                String value = req.getReader().readLine();
+                req.getReader().reset();
+                if(value != null)
+                    if (!isInRange(value)) {
+                        status = 403;
+                    }
+            }
         req.getReader().reset();
 
 
-        if (!isError) {
+        if (status == 0)
             chain.doFilter(request, response);
-        }
+        else
+            res.setStatus(status);
     }
 
-    private static boolean isExpression(String expression) {
+    private static boolean isNotExpression(String expression) {
         for (int i = 0; i < expression.length(); i++) {
-            if ('*' <= expression.charAt(i) && '/' >= expression.charAt(i)) return true;
+            if ('*' <= expression.charAt(i) && '/' >= expression.charAt(i)) return false;
         }
-        return false;
+        return true;
     }
 
-    private static boolean isInRange(int value){
-        return (value <= 10000 && value >= -10000);
+    private static boolean isInRange(String value){
+            if (value.charAt(0) >= 'a' && value.charAt(0) <= 'z')
+                return true;
+            else
+                return (Integer.parseInt(value) <= 10000 && Integer.parseInt(value) >= -10000) ;
     }
 
     @Override
