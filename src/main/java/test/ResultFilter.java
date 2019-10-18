@@ -17,6 +17,7 @@ import java.io.IOException;
 )
 
 public class ResultFilter implements Filter {
+    //empty because is required by interface
     @Override
     public void init(FilterConfig filterConfig) {}
     @Override
@@ -27,6 +28,10 @@ public class ResultFilter implements Filter {
             chain.doFilter(sreq,sres);
         }
     }
+
+    //empty because is required by interface
     @Override
-    public void destroy() {}
+    public void destroy() {
+
+    }
 }

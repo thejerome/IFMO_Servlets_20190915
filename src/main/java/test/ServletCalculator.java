@@ -38,7 +38,7 @@ public class ServletCalculator extends HttpServlet {
             while (NameVars.hasMoreElements()) {
                 String key = NameVars.nextElement();
                 String val = (String)session.getAttribute(key);
-                if (key.equals("equation")){
+                if ("equation".equals(key)){
                     equation = val;
                 }else{
                     temp.put(key,val);
@@ -47,7 +47,7 @@ public class ServletCalculator extends HttpServlet {
 
             equation = generateEquation(temp, equation).replaceAll(" ", "");
 
-            if (equation.equals("error")){
+            if ("error".equals(equation)){
                 resp.setStatus(409);
             }else {
                 out.print(evaluate(equation));
@@ -99,12 +99,18 @@ public class ServletCalculator extends HttpServlet {
         return (countMicro(parsedData));
     }
 
-    protected Integer countMicro(String data){
+    protected String fixFirstPlus(String data){
         String temp = data;
 
         if (temp.charAt(0) == '+'){
             temp = temp.substring(1);
         }
+
+        return temp;
+    }
+
+    protected Integer countMicro(String data){
+        String temp = fixFirstPlus(data);
 
         int currentPriority = 0;
 
