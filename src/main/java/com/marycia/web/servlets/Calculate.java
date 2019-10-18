@@ -35,7 +35,7 @@ public class Calculate {
         String result;
         if (error) {
             resp.setStatus(409);
-            result = "Lack of data";
+            result = "Bad format";
         } else {
 
         PerserUtil n = new PerserUtil();

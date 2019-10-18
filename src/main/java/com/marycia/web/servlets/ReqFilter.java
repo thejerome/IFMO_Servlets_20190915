@@ -30,20 +30,21 @@ public class ReqFilter implements Filter {
         String value = reqURI.substring(6);
         boolean GetError = false;
 
-        if ("equation".equals(value)) {
+        /* if ("equation".equals(value)) {
             String key = req.getReader().readLine();
             boolean consistOfDel = false;
-            for (int i = 0; i <= key.length(); i++) {
+            for (int i = 0; i < key.length(); i++) {
                 if (key.charAt(i) == '/' || key.charAt(i) == '*' || key.charAt(i) == '-' ||  key.charAt(i) == '+' || key.charAt(i) == '(' || key.charAt(i) == ')')
                 consistOfDel = true;
             }
             if (!consistOfDel) {
                 resp.setStatus(400);
                 resp.getWriter().print("Bad format. Try again");
-            } else {
                 GetError = true;
+            } else {
+                GetError = false;
             }
-        }
+        } */
 
         if (!GetError) {
             chain.doFilter(sreq,sresp);
