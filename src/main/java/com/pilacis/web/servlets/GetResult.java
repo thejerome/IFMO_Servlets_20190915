@@ -18,21 +18,26 @@ import java.util.HashMap;
 public class GetResult extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
+            throws  IOException {
 
         try {
             // запускаем сессию
             HttpSession session = req.getSession();
-
             // отделяем name от переменных
 
             final String name = (String) session.getAttribute("equation");
             HashMap<String, String> variables = new HashMap();
             Enumeration<String> list = session.getAttributeNames();
 
+
+
+
+
+
+
             while (list.hasMoreElements()) {
                 String buffer = list.nextElement();
-                System.out.println(buffer);
+
                 if (buffer.compareTo("equation") != 0) {
                     variables.put(buffer, (String) session.getAttribute(buffer));
                 }

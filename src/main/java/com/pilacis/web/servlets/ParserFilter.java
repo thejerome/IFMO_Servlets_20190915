@@ -12,8 +12,8 @@ import java.io.IOException;
         urlPatterns = {"/calc/*"}
 )
 public class ParserFilter implements Filter {
-    public void init(FilterConfig filterConfig) throws ServletException {
-
+    public void init(FilterConfig filterConfig){
+        //some code
     }
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
@@ -33,20 +33,22 @@ public class ParserFilter implements Filter {
             }
         }
         else if (req.getRequestURI().substring(6).compareTo("result") == 0){
-
+            HttpSession session = req.getSession();
+            if (session == null){
+                statusCode = 409;
+            }
         }
         else{
 
             // url = имя , reader - значение
             HttpSession session = req.getSession();
-            final String variableName = req.getRequestURI().substring(6);
             String valueStr = req.getReader().readLine();
             req.getReader().reset();
 
 
             if (valueStr != null) {
                 while ((valueStr.charAt(0) >= 'a') && (valueStr.charAt(0) <= 'z')) {
-                    System.out.println(valueStr);
+
                     valueStr = (String) session.getAttribute(valueStr);
                 }
                 int value = Integer.valueOf(valueStr);
@@ -58,7 +60,7 @@ public class ParserFilter implements Filter {
             }
             else{
                 statusCode = 204;
-                System.out.println(200000);
+
             }
 
         }
@@ -79,6 +81,6 @@ public class ParserFilter implements Filter {
 
     @Override
     public void destroy() {
-
+        //some code
     }
 }

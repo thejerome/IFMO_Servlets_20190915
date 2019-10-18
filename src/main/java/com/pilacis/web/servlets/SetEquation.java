@@ -26,7 +26,6 @@ public class SetEquation extends HttpServlet {
         Writer out = resp.getWriter();
         final String oldEquation = (String) session.getAttribute("equation");
         final String newEquation = req.getReader().readLine();
-
         resp.setStatus((oldEquation == null) ? 201:200);
         session.setAttribute("equation", newEquation);
 
@@ -36,10 +35,7 @@ public class SetEquation extends HttpServlet {
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException
     {
-
-
         req.removeAttribute("equation");
-
     }
 
 

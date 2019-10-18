@@ -3,10 +3,10 @@ import java.util.*;
 
 public class Parser {
 
-    private Stack<String> stack = new Stack<String>();
-    private ArrayList<String> list = new ArrayList<String>();
-    private HashMap<Character, Integer> operators = new HashMap<Character, Integer>();
-    private static String expression;
+    private Stack<String> stack = new Stack();
+    private ArrayList<String> list = new ArrayList();
+    private HashMap<Character, Integer> operators = new HashMap();
+    public  String expression;
     //////////////////////////////////////////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////////////////////
@@ -16,13 +16,9 @@ public class Parser {
         equation = equation.replace(" ", "");
         for (int i = 0; i < 10; i++) {
             for (String key : variables.keySet()) {
-                if (variables.get(key).charAt(0) == '-'){
-                    variables.put(key, variables.get(key));
-                }
                 equation = equation.replace(key, variables.get(key));
             }
         }
-        System.out.println(equation);
         this.expression = equation;
         this.operators.put('+', 0); this.operators.put('-', 0);
         this.operators.put('*', 1); this.operators.put('/', 1);
@@ -48,7 +44,7 @@ public class Parser {
                 i++;
             } while ((i < this.expression.length()) && (!operators.containsKey(Character.valueOf(this.expression.charAt(i)))));
         }
-        this.expression = expression.substring(i, this.expression.length());
+        this.expression = expression.substring(i);
         return result.toString();
     }
 
@@ -95,11 +91,10 @@ public class Parser {
             list.add(stack.pop());
         }
 
-
     }
 
     public int evaluate(){
-        Stack<Integer> buffer = new Stack<Integer>();
+        Stack<Integer> buffer = new Stack();
         for (String str: this.list) {
             if (this.operators.containsKey(str.charAt(0))) {
                 int rightOperand = buffer.pop();
@@ -125,32 +120,32 @@ public class Parser {
                 buffer.push(Integer.valueOf(str));
             }
         }
-        return buffer.peek();
+        return buffer.pop();
     }
 
 
 
 
-    public String getStackInfo(){
-        ArrayList<String> buffer = new ArrayList<String>();
-        String result = "";
-        while (!this.stack.empty()){
-            buffer.add(this.stack.pop());
-        }
-        for (int i = 0; i < buffer.size(); i++){
-            result += buffer.get(buffer.size()-i-1) + " | ";
-            this.stack.push(buffer.get(buffer.size()-i-1));
-        }
-
-        return result;
-    }
-    public String getListInfo(){
-        String result = "";
-        for (String str: this.list){
-            result += str + " | ";
-        }
-        return result;
-    }
+//    public String getStackInfo(){
+//        ArrayList<String> buffer = new ArrayList();
+//        String result = "";
+//        while (!this.stack.empty()){
+//            buffer.add(this.stack.pop());
+//        }
+//        for (int i = 0; i < buffer.size(); i++){
+//            result += buffer.get(buffer.size()-i-1) + " | ";
+//            this.stack.push(buffer.get(buffer.size()-i-1));
+//        }
+//
+//        return result;
+//    }
+//    public String getListInfo(){
+//        String result = "";
+//        for (String str: this.list){
+//            result += str + " | ";
+//        }
+//        return result;
+//    }
 
 
 
