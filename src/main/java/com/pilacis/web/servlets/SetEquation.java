@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.io.PrintWriter;
+
 import java.io.Writer;
 
 @WebServlet(
@@ -23,7 +23,7 @@ public class SetEquation extends HttpServlet {
     {
 
         HttpSession session = req.getSession();
-        Writer out = resp.getWriter();
+
         final String oldEquation = (String) session.getAttribute("equation");
         final String newEquation = req.getReader().readLine();
         resp.setStatus((oldEquation == null) ? 201:200);

@@ -64,10 +64,8 @@ public class Parser {
                 }
                 else{
 
-                    if (token.charAt(0) == '-'){
-                        if ((this.list.isEmpty())){
+                    if ((token.charAt(0) == '-') && (this.list.isEmpty()) ){
                             this.list.add("0");
-                        }
                     }
 
                     while ((!stack.empty()) &&
