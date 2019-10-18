@@ -17,26 +17,19 @@ public class SetVariable extends HttpServlet {
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
-
         HttpSession session = req.getSession();
 
         final String variableName = req.getRequestURI().substring(6);
         String valueStr = req.getReader().readLine();
 
-        if (((String)session.getAttribute(variableName)) == null){
-            resp.setStatus(201);
-        }
-        else{
-            resp.setStatus(200);
-        }
-
+        // отправляем отчёт
+        resp.setStatus(((String)session.getAttribute(variableName)) == null ? 201:200);
         session.setAttribute(variableName, valueStr);
-
     }
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
-        session.setAttribute(req.getRequestURI().substring(6), null);
+        session.removeAttribute(req.getRequestURI().substring(6));
     }
 }

@@ -29,14 +29,8 @@ public class GetResult extends HttpServlet {
             Enumeration<String> list = session.getAttributeNames();
 
 
-
-
-
-
-
             while (list.hasMoreElements()) {
                 String buffer = list.nextElement();
-
                 if (buffer.compareTo("equation") != 0) {
                     variables.put(buffer, (String) session.getAttribute(buffer));
                 }
@@ -51,7 +45,6 @@ public class GetResult extends HttpServlet {
             out.print(parser.evaluate());
             resp.setStatus(200);
             /////////////////////////////////////////////////////////////////
-
             out.flush();
             out.close();
         }catch(NumberFormatException ex){

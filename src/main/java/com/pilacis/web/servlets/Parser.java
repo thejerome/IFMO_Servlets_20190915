@@ -6,12 +6,12 @@ public class Parser {
     private Stack<String> stack = new Stack();
     private ArrayList<String> list = new ArrayList();
     private HashMap<Character, Integer> operators = new HashMap();
-    public  String expression;
+    public String expression;
     //////////////////////////////////////////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////////////////////
 
-    public Parser(String name, HashMap<String, String> variables){
+    public Parser(String name, HashMap<String, String> variables) {
         String equation = name;
         equation = equation.replace(" ", "");
         for (int i = 0; i < 10; i++) {
@@ -20,14 +20,17 @@ public class Parser {
             }
         }
         this.expression = equation;
-        this.operators.put('+', 0); this.operators.put('-', 0);
-        this.operators.put('*', 1); this.operators.put('/', 1);
-        this.operators.put('(', 4); this.operators.put(')', 4);
+        this.operators.put('+', 0);
+        this.operators.put('-', 0);
+        this.operators.put('*', 1);
+        this.operators.put('/', 1);
+        this.operators.put('(', 4);
+        this.operators.put(')', 4);
 
     }
     ///////////////////////////////////////////////////////////
 
-    public String getToken(){
+    public String getToken() {
         int i = 0;
         boolean isFind = false;
         StringBuilder result = new StringBuilder();
@@ -48,29 +51,28 @@ public class Parser {
         return result.toString();
     }
 
-    public void parse(){
-        while(this.expression.compareTo("") != 0){
+    public void parse() {
+        while (this.expression.compareTo("") != 0) {
 
             String token = this.getToken();
             // случай, если token - оператор
-            if (this.operators.containsKey(token.charAt(0))){
+            if (this.operators.containsKey(token.charAt(0))) {
 
 
-                if (token.charAt(0) == ')'){
-                    while ((!this.stack.empty()) && (this.stack.peek().compareTo("(") != 0)){
+                if (token.charAt(0) == ')') {
+                    while ((!this.stack.empty()) && (this.stack.peek().compareTo("(") != 0)) {
                         this.list.add(this.stack.pop());
                     }
                     this.stack.pop();
-                }
-                else{
+                } else {
 
-                    if ((token.charAt(0) == '-') && (this.list.isEmpty()) ){
-                            this.list.add("0");
+                    if ((token.charAt(0) == '-') && (this.list.isEmpty())) {
+                        this.list.add("0");
                     }
 
                     while ((!stack.empty()) &&
                             (this.operators.get(new Character(token.charAt(0))).compareTo(this.operators.get(new Character(this.stack.peek().charAt(0)))) <= 0)
-                            && (this.stack.peek().charAt(0) != '(' )) {
+                            && (this.stack.peek().charAt(0) != '(')) {
                         this.list.add(this.stack.pop());
 
                     }
@@ -80,71 +82,43 @@ public class Parser {
 
             }
             // случай, если token - число
-            else{
+            else {
                 this.list.add(token);
             }
         }
         // закидываем оставшуюся часть из стека в список
-        while (!this.stack.empty()){
+        while (!this.stack.empty()) {
             list.add(stack.pop());
         }
 
     }
 
-    public int evaluate(){
+    public int evaluate() {
         Stack<Integer> buffer = new Stack();
-        for (String str: this.list) {
+        for (String str : this.list) {
             if (this.operators.containsKey(str.charAt(0))) {
                 int rightOperand = buffer.pop();
                 int leftOperand = buffer.pop();
-                switch(str.charAt(0)){
-                    case('+'):
-                        buffer.push(rightOperand+leftOperand);
+                switch (str.charAt(0)) {
+                    case ('+'):
+                        buffer.push(rightOperand + leftOperand);
                         break;
-                    case('-'):
-                        buffer.push(leftOperand-rightOperand);
+                    case ('-'):
+                        buffer.push(leftOperand - rightOperand);
                         break;
-                    case('*'):
-                        buffer.push(leftOperand*rightOperand);
+                    case ('*'):
+                        buffer.push(leftOperand * rightOperand);
                         break;
-                    case('/'):
-                        buffer.push(leftOperand/rightOperand);
+                    case ('/'):
+                        buffer.push(leftOperand / rightOperand);
                         break;
                     default:
                         break;
                 }
-            }
-            else{
+            } else {
                 buffer.push(Integer.valueOf(str));
             }
         }
         return buffer.pop();
     }
-
-
-
-
-//    public String getStackInfo(){
-//        ArrayList<String> buffer = new ArrayList();
-//        String result = "";
-//        while (!this.stack.empty()){
-//            buffer.add(this.stack.pop());
-//        }
-//        for (int i = 0; i < buffer.size(); i++){
-//            result += buffer.get(buffer.size()-i-1) + " | ";
-//            this.stack.push(buffer.get(buffer.size()-i-1));
-//        }
-//
-//        return result;
-//    }
-//    public String getListInfo(){
-//        String result = "";
-//        for (String str: this.list){
-//            result += str + " | ";
-//        }
-//        return result;
-//    }
-
-
-
 }

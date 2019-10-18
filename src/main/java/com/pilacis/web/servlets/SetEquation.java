@@ -20,7 +20,6 @@ public class SetEquation extends HttpServlet {
     protected void doPut(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException
     {
-
         HttpSession session = req.getSession();
 
         final String oldEquation = (String) session.getAttribute("equation");
@@ -29,7 +28,6 @@ public class SetEquation extends HttpServlet {
         session.setAttribute("equation", newEquation);
 
     }
-
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException

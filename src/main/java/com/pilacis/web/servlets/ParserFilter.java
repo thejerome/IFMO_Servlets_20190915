@@ -36,19 +36,12 @@ public class ParserFilter implements Filter {
                 statusCode = 400;
             }
         }
-        else if (req.getRequestURI().substring(6).compareTo("result") == 0){
-            HttpSession session = req.getSession();
-            if (session == null){
-                statusCode = 409;
-            }
-        }
-        else{
+        else if (req.getRequestURI().substring(6).compareTo("result") != 0){
 
             // url = имя , reader - значение
             HttpSession session = req.getSession();
             String valueStr = req.getReader().readLine();
             req.getReader().reset();
-
 
             if (valueStr != null) {
                 while ((valueStr.charAt(0) >= 'a') && (valueStr.charAt(0) <= 'z')) {
