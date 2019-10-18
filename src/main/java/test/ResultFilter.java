@@ -18,8 +18,9 @@ import java.io.IOException;
 
 public class ResultFilter implements Filter {
     @Override
-    //empty because is required by interface
-    public void init(FilterConfig filterConfig) {}
+    public void init(FilterConfig filterConfig) {
+        //empty because is required by interface
+    }
     @Override
     public void doFilter (ServletRequest sreq, ServletResponse sres, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest req = (HttpServletRequest)sreq;
@@ -30,8 +31,7 @@ public class ResultFilter implements Filter {
     }
 
     @Override
-    //empty because is required by interface
     public void destroy() {
-
+        //empty because is required by interface
     }
 }
