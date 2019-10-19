@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.efimchick.ifmo.web.servlets.CalcServletTest" tests="9" skipped="0" failures="0" errors="0" timestamp="2019-10-19T14:21:43" hostname="DESKTOP-S4U95CF" time="0.345">
+  <properties/>
+  <testcase name="test001" classname="com.efimchick.ifmo.web.servlets.CalcServletTest" time="0.313"/>
+  <testcase name="test002" classname="com.efimchick.ifmo.web.servlets.CalcServletTest" time="0.003"/>
+  <testcase name="test003" classname="com.efimchick.ifmo.web.servlets.CalcServletTest" time="0.004"/>
+  <testcase name="test004" classname="com.efimchick.ifmo.web.servlets.CalcServletTest" time="0.004"/>
+  <testcase name="test005" classname="com.efimchick.ifmo.web.servlets.CalcServletTest" time="0.004"/>
+  <testcase name="test006" classname="com.efimchick.ifmo.web.servlets.CalcServletTest" time="0.004"/>
+  <testcase name="test007" classname="com.efimchick.ifmo.web.servlets.CalcServletTest" time="0.003"/>
+  <testcase name="test008" classname="com.efimchick.ifmo.web.servlets.CalcServletTest" time="0.003"/>
+  <testcase name="test009" classname="com.efimchick.ifmo.web.servlets.CalcServletTest" time="0.003"/>
+  <system-out><![CDATA[configuring app with basedir: D:\codes\edu\IFMO_Servlets0\.\src\main\webapp
+http://localhost:8080/calc?equation=a%2Bb%2Fc&a=1&b=2&c=3
+http://localhost:8080/calc?equation=x%2By%2Fz&x=1&y=2&z=3
+http://localhost:8080/calc?equation=x%2By%2Fz&z=1&y=2&x=3
+http://localhost:8080/calc?equation=x%2By%2Fz&x=1&y=2&z=x
+http://localhost:8080/calc?equation=%28f+%2B+k%29*%28h+-+g%29%2Ff&f=61&k=32&h=354&g=19
+http://localhost:8080/calc?equation=a%2Fb%2Fc%2Fd&a=89411&b=32&c=7&d=5
+http://localhost:8080/calc?equation=a%2Bb%2Fc&a=44&b=21&c=58
+http://localhost:8080/calc?equation=%28c*%28a-b%29%2Fb%29*a&a=87&b=2&c=62
+http://localhost:8080/calc?equation=%28c*%28a-b%29%2Fb%29*a&a=53&b=52&c=b
+]]></system-out>
+  <system-err><![CDATA[окт. 19, 2019 5:21:42 PM org.apache.coyote.AbstractProtocol init
+INFO: Initializing ProtocolHandler ["http-nio-8080"]
+окт. 19, 2019 5:21:42 PM org.apache.tomcat.util.net.NioSelectorPool getSharedSelector
+INFO: Using a shared selector for servlet write/read
+окт. 19, 2019 5:21:42 PM org.apache.catalina.core.StandardService startInternal
+INFO: Starting service Tomcat
+окт. 19, 2019 5:21:43 PM org.apache.catalina.core.StandardEngine startInternal
+INFO: Starting Servlet Engine: Apache Tomcat/8.0.47
+окт. 19, 2019 5:21:43 PM org.apache.catalina.loader.WebappLoader buildClassPath
+INFO: Unknown loader jdk.internal.loader.ClassLoaders$AppClassLoader@8bcc55f class jdk.internal.loader.ClassLoaders$AppClassLoader
+окт. 19, 2019 5:21:43 PM org.apache.catalina.startup.ContextConfig getDefaultWebXmlFragment
+INFO: No global web.xml found
+окт. 19, 2019 5:21:43 PM org.apache.coyote.AbstractProtocol start
+INFO: Starting ProtocolHandler ["http-nio-8080"]
+окт. 19, 2019 5:21:43 PM org.apache.coyote.AbstractProtocol pause
+INFO: Pausing ProtocolHandler ["http-nio-8080"]
+окт. 19, 2019 5:21:43 PM org.apache.catalina.core.StandardService stopInternal
+INFO: Stopping service Tomcat
+окт. 19, 2019 5:21:43 PM org.apache.coyote.AbstractProtocol stop
+INFO: Stopping ProtocolHandler ["http-nio-8080"]
+]]></system-err>
+</testsuite>
