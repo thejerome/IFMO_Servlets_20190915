@@ -16,7 +16,7 @@ import java.io.PrintWriter;
 
 public class GetServlet extends HttpServlet {
 
-    @Override
+    @Override //
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         HttpSession session = req.getSession(false);
         PrintWriter writer = resp.getWriter();
