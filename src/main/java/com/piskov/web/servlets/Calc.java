@@ -2,7 +2,7 @@ package com.piskov.web.servlets;
 
 import java.util.Stack; //
 
-public class Calculator {
+public class Calc {
     private static String expressionParser(String expr) {
         StringBuilder current = new StringBuilder();
         Stack<Character> stack = new Stack<>();

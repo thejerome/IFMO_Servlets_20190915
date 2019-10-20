@@ -27,7 +27,7 @@ public class GetServlet extends HttpServlet {
             resp.setStatus(409);
             writer.write("BAD FORMAT!");
         } else {
-            result = Calculator.calculate(expression);
+            result = Calc.calculate(expression);
         }
         writer.write(result);
         writer.flush();
