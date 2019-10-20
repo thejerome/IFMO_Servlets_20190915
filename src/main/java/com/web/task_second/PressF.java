@@ -6,11 +6,12 @@ import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class pressF implements Filter {
+public class PressF implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-
+        System.out.println("init");
+        throw new ServletException ("");
     }
 
     @Override
@@ -24,6 +25,6 @@ public class pressF implements Filter {
 
     @Override
     public void destroy() {
-
+        System.out.println("destroy");
     }
 }

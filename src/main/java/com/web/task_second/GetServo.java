@@ -1,8 +1,5 @@
 package com.web.task_second;
 
-
-import javax.servlet.*;
-import javax.servlet.Filter;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -11,8 +8,6 @@ import javax.servlet.http.HttpSession;
 import javax.el.ELProcessor;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 
 @WebServlet(
@@ -35,7 +30,7 @@ public class GetServo extends HttpServlet {
         return (int)Math.floor(Math.abs(x));
     }
 
-    int eval(String str) throws NoSuchMethodException, ClassNotFoundException {
+    public int eval(String str) throws NoSuchMethodException, ClassNotFoundException {
         ELProcessor elp = new ELProcessor();
         elp.defineFunction("", "floored", "com.web.task_second.GetServo", "floored");
         Integer name = (Integer) elp.getValue(str, Integer.TYPE);
@@ -43,7 +38,7 @@ public class GetServo extends HttpServlet {
     }
 
 
-    int signof(int x) {
+    public int signof(int x) {
         if (x > 0) return 1;
         if (x < 0) return -1;
         return 0;
