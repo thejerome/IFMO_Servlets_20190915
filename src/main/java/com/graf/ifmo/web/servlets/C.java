@@ -13,7 +13,7 @@ import java.util.regex.Pattern;
 
 public class C extends HttpServlet {
 
-    static int calc(String equation) {
+    public static int calc(String equation) {
         return doParse(tHIS(equation));
     }
 
