@@ -1,26 +1,19 @@
 package com.web.task_second;
 
 
+import javax.servlet.*;
+import javax.servlet.Filter;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.BufferedReader;
+import javax.el.ELProcessor;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-/*
-            assertTrue(Utils.findInSource("javax.servlet.Filter"));
-            assertTrue(Utils.findInSource("void doFilter"));
-            assertTrue(Utils.findInSource("javax.servlet.http.HttpServlet"));
-            assertTrue(Utils.findInSource("void doPut"));
-            assertTrue(Utils.findInSource("void doDelete"));
-            assertTrue(Utils.findInSource("void doGet"));
-*/
 
 @WebServlet(
         name = "GetServo",
@@ -38,34 +31,25 @@ public class GetServo extends HttpServlet {
         return false;
     }
 
-
-    private String solveit(String str) {
-
-        try {
-            System.out.println(str);
-            // https://github.com/thomasfire/actix-pythoneer - не баньте меня, здесь нету плагиата
-            // да, тут куча всего осталось с ресерча, но мне лень это чистить
-            URL url = new URL("http://ec2-13-48-42-108.eu-north-1.compute.amazonaws.com:52280/calc/" + str); // вебовые проблемы требуют вебовых решений
-            HttpURLConnection con = (HttpURLConnection) url.openConnection();                                   // а вообще, это же новое, инновационное решение проблем
-            con.setRequestMethod("GET");                                                                        // ведь сейчас всё в облаках, вот и я запилил в облака
-            int status = con.getResponseCode();
-            BufferedReader in = new BufferedReader(
-                    new InputStreamReader(con.getInputStream()));
-            String inputLine;
-            StringBuffer content = new StringBuffer();
-            while ((inputLine = in.readLine()) != null) {
-                content.append(inputLine);
-            }
-            in.close();
-            con.disconnect();
-            System.out.println(content);
-            return String.valueOf(status) + "splitter" + content; // всё еще возмущен джавой и отсутствием pair
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return "";
-
+    public static int floored(double x) {
+        return (int)Math.floor(Math.abs(x));
     }
+
+    int eval(String str) throws NoSuchMethodException, ClassNotFoundException {
+        ELProcessor elp = new ELProcessor();
+        elp.defineFunction("", "floored", "com.web.task_second.GetServo", "floored");
+        Integer name = (Integer) elp.getValue(str, Integer.TYPE);
+        return (int) name;
+    }
+
+
+    int signof(int x) {
+        if (x > 0) return 1;
+        if (x < 0) return -1;
+        return 0;
+    }
+
+
 
     private String calcit(String str2, HttpSession s) {
         String str = str2;
@@ -76,30 +60,19 @@ public class GetServo extends HttpServlet {
             }
             limit--;
         }
-        System.out.println(str);
+
+        String str_ = str.replaceAll("[(]", "floored(");
+         //str = str.replaceAll("[(]", "((");
+        System.out.println(str_);
         //str = "parseInt(" + str + ")";
-        str = str.replaceAll("[/]", "div")
-                .replaceAll("[(]", "opb") // open bracket
-                .replaceAll("[)]", "clb") // close bracket
-                .replaceAll("[*]", "mul")
-                .replaceAll("[+]", "add")
-                .replaceAll("[-]", "sub");
-
-        String solved = solveit(str);
-        System.out.println(solved);
-
-        String[] response = solved.split("splitter");
-        for (String sw : response)
-            System.out.println(sw);
-
-        int code = (int) Integer.parseInt(response[0]);
-        String content = response[1];
-
-        if (code == 409) {
+        try {
+            int evaled = eval(str);
+            int evaled2 = eval(str_);
+            System.out.println("Evaled:" + evaled);
+            return String.valueOf(evaled2 * signof(evaled));
+        } catch (Exception e) {
             throw new IllegalArgumentException();
         }
-
-        return content;
     }
 
 
