@@ -1,11 +1,9 @@
 package com.esina.ifmo.web.servlets;
 
 import javax.servlet.*;
-import javax.servlet.Filter;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.regex.Pattern;
 
 @WebFilter(
         filterName = "EquationFilter",

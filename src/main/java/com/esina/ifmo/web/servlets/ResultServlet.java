@@ -96,7 +96,7 @@ public class ResultServlet extends HttpServlet {
 
         // Вычисляем и выводим результат выражения
         if (!error) {
-            out.print(Calculator.calculate(equation));
+            out.print(CalculatorUtil.calculate(equation));
             resp.setStatus(200);
         }
 

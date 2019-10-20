@@ -6,7 +6,7 @@ import java.util.regex.Pattern;
 
 // Статический класс-калькулятор, берет чистую строку с выражением и отдает число
 
-public class Calculator {
+public class CalculatorUtil {
     public static int calculate (String toCalc) {
 
         // 1. Перевод строки выражения в очередь в обратной польской нотации
