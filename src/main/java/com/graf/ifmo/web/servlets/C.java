@@ -2,11 +2,7 @@ package com.graf.ifmo.web.servlets;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.*;
 import java.util.*;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @WebServlet(
@@ -17,12 +13,12 @@ import java.util.regex.Pattern;
 
 public class C extends HttpServlet {
 
-    static int calc(String equation) {
-        return doParse(THIS(equation));
+    private static int calc(String equation) {
+        return doParse(tHIS(equation));
     }
 
     //преобразует обычную запись в обратную польскую нотацию
-    private static Queue<String> THIS(String line) {
+    private static Queue<String> tHIS(String line) {
 
         Queue<String> output = new ArrayDeque<>();
         Stack<Character> stack = new Stack<>();
