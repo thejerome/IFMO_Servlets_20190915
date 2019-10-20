@@ -29,13 +29,14 @@ public class ResultServlet extends HttpServlet {
         boolean error = false;
         String equation = "";
 
-        if (session.getAttribute("equation") == null) {
-            error = true;
-            resp.setStatus(409);
-            out.print("Equation is missing!");
-        }
-        else {
-            equation = session.getAttribute("equation").toString().replace(" ", "");
+        try {
+            equation = session.getAttribute("equation").toString();
+
+            if (equation == null)
+                throw new ServletException("Equation is missing!");
+
+            equation = equation.replace(" ", "");
+
 
             // Собираем переменные из сесии в мапу sessionVars
             Enumeration<String> attributes = session.getAttributeNames();
@@ -54,53 +55,44 @@ public class ResultServlet extends HttpServlet {
                     eqVars.put(Character.toString(equation.charAt(i)), "");
             }
 
+
             // Подставляем цифры на место eqVars переменных
             for (Map.Entry<String, String> var : eqVars.entrySet()) {
-                if (error)
-                    break;
-
                 String key = var.getKey();
                 String val = sessionVars.get(key);
 
-                if (val == null) {
-                    error = true;
-                    resp.setStatus(409);
-                    out.print("Value is missing!");
-                    break;
-                }
+                if (val == null)
+                    throw new ServletException("Value is missing!");
 
-                while (!error && !Pattern.matches("^[-0-9]+$", val)) {
+                while (!Pattern.matches("^[-0-9]+$", val)) {
                     key = val;
                     val = sessionVars.get(key);
 
-                    if (val == null) {
-                        error = true;
-                        resp.setStatus(409);
-                        out.print("Value is missing!");
-                        break;
-                    }
+                    if (val == null)
+                        throw new ServletException("Value is missing!");
                 }
 
-                if (!error)
-                    var.setValue(val);
+                var.setValue(val);
             }
 
-            if (!error) {
-                // Вставляем значения переменных в выражение
-                for (int i = 0; i < equation.length(); i++) {
-                    if (equation.charAt(i) >= 'a' && equation.charAt(i) <= 'z')
-                        equation = equation.replace(Character.toString(equation.charAt(i)), eqVars.get(Character.toString(equation.charAt(i))));
-                }
+            // Вставляем значения переменных в выражение
+            for (int i = 0; i < equation.length(); i++) {
+                if (equation.charAt(i) >= 'a' && equation.charAt(i) <= 'z')
+                    equation = equation.replace(Character.toString(equation.charAt(i)), eqVars.get(Character.toString(equation.charAt(i))));
             }
-        }
 
-        // Вычисляем и выводим результат выражения
-        if (!error) {
+            // Вычисляем и выводим результат выражения
             out.print(CalculatorUtil.calculate(equation));
             resp.setStatus(200);
-        }
 
-        out.flush();
-        out.close();
+        }
+        catch (ServletException e) {
+            resp.setStatus(409);
+            out.print(e.getMessage());
+        }
+        finally {
+            out.flush();
+            out.close();
+        }
     }
 }

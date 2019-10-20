@@ -8,24 +8,27 @@ import java.util.regex.Pattern;
 
 public class CalculatorUtil {
     public static int calculate (String toCalc) {
+        return evaluate(toPolNotation(format(toCalc)));
+    }
 
-        // 1. Перевод строки выражения в очередь в обратной польской нотации
-        String eq = '(' + toCalc + ')';
+    private static String format (String eq) {
+        StringBuffer buff = new StringBuffer('(' + eq + ')');
 
-        // Лечим унарный минус, вставляя перед ним 0
         int i = 1;
-        StringBuffer buff = new StringBuffer(eq);
         while (i < buff.length()) {
             if (buff.charAt(i) == '-' && !Character.isDigit(buff.charAt(i-1)))
                 buff.insert(i, '0');
             i++;
         }
-        eq = buff.toString();
 
+        return buff.toString();
+    }
+
+    private static ArrayDeque<String> toPolNotation (String eq) {
         ArrayDeque<String> queue = new ArrayDeque<>();
         Stack<Character> eqStack = new Stack<>();
 
-        i = 0;
+        int i = 0;
         while (i < eq.length()) {
             char ch = eq.charAt(i);
 
@@ -42,7 +45,6 @@ public class CalculatorUtil {
                 queue.offer(num);
                 i--;
             }
-
 
             // Если символ - открывающая скобка, добавляем в стек
             else if (ch == '(') {
@@ -73,8 +75,10 @@ public class CalculatorUtil {
             queue.offer(eqStack.pop().toString());
         }
 
+        return queue;
+    }
 
-        // 2. Вычисление выражения в обратной польской нотации
+    private static int evaluate (ArrayDeque<String> queue) {
         Stack<Integer> polStack = new Stack<>();
 
         while (!queue.isEmpty()) {
