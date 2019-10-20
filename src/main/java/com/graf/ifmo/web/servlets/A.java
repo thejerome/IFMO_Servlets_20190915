@@ -1,6 +1,7 @@
 package com.graf.ifmo.web.servlets;
 
 import javax.servlet.*;
+import javax.servlet.Filter;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
