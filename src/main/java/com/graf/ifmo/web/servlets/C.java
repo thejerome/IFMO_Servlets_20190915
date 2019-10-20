@@ -23,13 +23,13 @@ public class C extends HttpServlet {
         Queue<String> output = new ArrayDeque<>();
         Stack<Character> stack = new Stack<>();
 
-        line = ("(" + line + ")").replaceAll(" ", "").replaceAll("\\D-", "0-");
+        String trueline = ("(" + line + ")").replaceAll(" ", "").replaceAll("\\D-", "0-");
 
-        int size = line.length();
+        int size = trueline.length();
 
         int i = 0;
         while (i < size) {
-            char el = line.charAt(i);
+            char el = trueline.charAt(i);
 
             switch (el) {
                 case '+':
@@ -84,10 +84,10 @@ public class C extends HttpServlet {
                     String chislo;
                     int beg = i;
 
-                    while (Character.isDigit(line.charAt(i)))
+                    while (Character.isDigit(trueline.charAt(i)))
                         i++;
 
-                    chislo = line.substring(beg, i);
+                    chislo = trueline.substring(beg, i);
                     output.offer(chislo);
                     i--;
                     break;
