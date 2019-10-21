@@ -1,6 +1,6 @@
 package com.dorofeeva;
 
-import javax.servlet.ServletException;
+
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -78,15 +78,18 @@ public class Calc extends HttpServlet {
             if (i1>-1){
                 if((i1==0)&&(STB.charAt(i1)=='-')){
                     Temp1.insert(0,'-');
+                    i1--;
                 }
                 else if (i1!=0){
                     sk = STB.substring(i1-1,i1+1);
                     if (negative(sk))
+                    {
                         Temp1.insert(0,'-');
+                        i1--;
+                    }
                 }
             }
             pt1 = Integer.valueOf(Temp1.toString());
-
             Temp1.setLength(0);
             i2 = i0+1;
             if (STB.charAt(i2)=='-')
@@ -112,16 +115,12 @@ public class Calc extends HttpServlet {
                     break;
             }
             STB.delete(i1+1,i2);
-            STB.insert(i1+1,Integer.toString(Tans));
+            STB.insert(i1+1,Tans);
 //            STB.replace(i1,i2,Integer.toString(Tans));
         }
         while (STB.toString().contains("+")||STB.toString().contains("-")){
             if (STB.charAt(0)=='-'){
-                TempSB.setLength(0);
-                TempSB.append(STB.substring(1));
-                if (Pattern.matches("^[0-9]+$", TempSB)){
-                    break;
-                }
+                break;
             }
             Tans = 0;
             k = pm(STB.toString());
@@ -135,11 +134,15 @@ public class Calc extends HttpServlet {
             if (i1>-1){
                 if((i1==0)&&(STB.charAt(i1)=='-')){
                     Temp1.insert(0,'-');
+                    i1--;
                 }
                 else if (i1!=0){
                     sk = STB.substring(i1-1,i1);
                     if (negative(sk))
+                    {
                         Temp1.insert(0,'-');
+                        i1--;
+                    }
                 }
             }
             pt1 = Integer.valueOf(Temp1.toString());
@@ -165,6 +168,8 @@ public class Calc extends HttpServlet {
                     break;
                 case '-':
                     Tans = pt1 - pt2;
+                    break;
+                default:
                     break;
             }
             STB.delete(i1+1,i2);
