@@ -37,7 +37,7 @@ public class Calc extends HttpServlet {
         int i1;
         int i0;
         int i2;
-        int Tans=0;
+        int Tans;
         int pt1;
         int pt2;
         char k;
@@ -106,23 +106,14 @@ public class Calc extends HttpServlet {
             }
             pt2 = Integer.valueOf(Temp2.toString());
             Temp2.setLength(0);
-            switch(k){
-                case'*':
-                    Tans = pt1*pt2;
-                    break;
-                case '/':
-                    Tans = pt1/pt2;
-                    break;
-            }
+            Tans = count(pt1,pt2,k);
             STB.delete(i1+1,i2);
             STB.insert(i1+1,Tans);
-//            STB.replace(i1,i2,Integer.toString(Tans));
         }
         while (STB.toString().contains("+")||STB.toString().contains("-")){
             if (STB.charAt(0)=='-'){
                 break;
             }
-            Tans = 0;
             k = pm(STB.toString());
             i0 = STB.indexOf(String.valueOf(k));
             i1 = i0-1;
@@ -162,19 +153,9 @@ public class Calc extends HttpServlet {
             }
             pt2 = Integer.valueOf(Temp2.toString());
             Temp2.setLength(0);
-            switch(k){
-                case'+':
-                    Tans = pt1 + pt2;
-                    break;
-                case '-':
-                    Tans = pt1 - pt2;
-                    break;
-                default:
-                    break;
-            }
+            Tans = count(pt1,pt2,k);
             STB.delete(i1+1,i2);
             STB.insert(i1+1,Integer.toString(Tans));
-            //STB.replace(i1,i2+1,Integer.toString(Tans));
         }
         ans = Integer.valueOf(STB.toString());
         return(ans);
@@ -194,6 +175,26 @@ public class Calc extends HttpServlet {
         else if (s.contains("+"))
             return ('+');
         return('-');
+    }
+    private int count(int p1, int p2, char k){
+        int a=0;
+        switch(k){
+            case '*':
+                a = p1*p2;
+                break;
+            case '/':
+                a = p1/p2;
+                break;
+            case '+':
+                a=p1+p2;
+                break;
+            case '-':
+                a=p1-p2;
+                break;
+            default:
+                break;
+        }
+        return(a);
     }
     private char ud(String s){
         int a;
