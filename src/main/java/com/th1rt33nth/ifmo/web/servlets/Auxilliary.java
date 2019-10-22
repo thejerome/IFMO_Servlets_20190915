@@ -1,6 +1,5 @@
 package com.th1rt33nth.ifmo.web.servlets;
 
-import java.io.*;
 import java.util.*;
 import java.util.Stack;
 import java.util.ArrayDeque;
