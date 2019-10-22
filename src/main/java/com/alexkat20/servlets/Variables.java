@@ -1,4 +1,4 @@
-package alexkat20;
+package com.alexkat20.servlets;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

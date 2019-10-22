@@ -1,4 +1,4 @@
-package alexkat20;
+package com.alexkat20.servlets;
 
 
 import javax.servlet.FilterConfig;
