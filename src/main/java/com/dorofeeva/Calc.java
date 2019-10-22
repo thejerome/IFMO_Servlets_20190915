@@ -35,18 +35,13 @@ public class Calc extends HttpServlet {
     private int cal(String st) {
         int ans;
         int i1;
-        int i0;
         int i2;
         int Tans;
-        int pt1;
-        int pt2;
         char k;
         String sk;
         String sl;
         StringBuilder STB = new StringBuilder(st);
         StringBuilder TempSB = new StringBuilder();
-        StringBuilder Temp1 = new StringBuilder();
-        StringBuilder Temp2 = new StringBuilder();
         while (STB.toString().contains("(")){
             i1 = STB.indexOf("(");
             i2 = STB.indexOf(")");
@@ -65,97 +60,14 @@ public class Calc extends HttpServlet {
         }
         while (STB.toString().contains("*")||STB.toString().contains("/")){
             k = ud(STB.toString());
-            i0 = STB.indexOf(String.valueOf(k));
-            i1 = i0-1;
-            while ((!op(STB.charAt(i1)))&&(i1>-1)){
-                Temp1.append(STB.charAt(i1));
-                --i1;
-                if(i1<0){
-                    break;
-                }
-            }
-            Temp1.reverse();
-            if (i1>-1){
-                if((i1==0)&&(STB.charAt(i1)=='-')){
-                    Temp1.insert(0,'-');
-                    i1--;
-                }
-                else if (i1!=0){
-                    sk = STB.substring(i1-1,i1+1);
-                    if (negative(sk))
-                    {
-                        Temp1.insert(0,'-');
-                        i1--;
-                    }
-                }
-            }
-            pt1 = Integer.valueOf(Temp1.toString());
-            Temp1.setLength(0);
-            i2 = i0+1;
-            if (STB.charAt(i2)=='-')
-            {
-                Temp2.append('-');
-                i2++;
-            }
-            while ((!op(STB.charAt(i2)))&&(i2!=STB.length())){
-                Temp2.append(STB.charAt(i2));
-                i2++;
-                if(i2==STB.length()){
-                    break;
-                }
-            }
-            pt2 = Integer.valueOf(Temp2.toString());
-            Temp2.setLength(0);
-            Tans = count(pt1,pt2,k);
-            STB.delete(i1+1,i2);
-            STB.insert(i1+1,Tans);
+            STB = change(STB, k);
         }
         while (STB.toString().contains("+")||STB.toString().contains("-")){
             if (STB.charAt(0)=='-'){
                 break;
             }
             k = pm(STB.toString());
-            i0 = STB.indexOf(String.valueOf(k));
-            i1 = i0-1;
-            while ((i1!=-1)&&(!op(STB.charAt(i1)))){
-                Temp1.append(STB.charAt(i1));
-                --i1;
-            }
-            Temp1.reverse();
-            if (i1>-1){
-                if((i1==0)&&(STB.charAt(i1)=='-')){
-                    Temp1.insert(0,'-');
-                    i1--;
-                }
-                else if (i1!=0){
-                    sk = STB.substring(i1-1,i1);
-                    if (negative(sk))
-                    {
-                        Temp1.insert(0,'-');
-                        i1--;
-                    }
-                }
-            }
-            pt1 = Integer.valueOf(Temp1.toString());
-            Temp1.setLength(0);
-            i2 = i0+1;
-            if (STB.charAt(i2)=='-')
-            {
-                Temp2.append('-');
-                i2++;
-            }
-            while ((i2!=STB.length())&&(!op(STB.charAt(i2)))){
-                Temp2.append(STB.charAt(i2));
-                ++i2;
-                if(i2==STB.length()){
-                    break;
-                }
-            }
-            pt2 = Integer.valueOf(Temp2.toString());
-            Temp2.setLength(0);
-            Tans = count(pt1,pt2,k);
-            STB.delete(i1+1,i2);
-            STB.insert(i1+1,Integer.toString(Tans));
+            STB = change(STB, k);
         }
         ans = Integer.valueOf(STB.toString());
         return(ans);
@@ -175,6 +87,62 @@ public class Calc extends HttpServlet {
         else if (s.contains("+"))
             return ('+');
         return('-');
+    }
+    private StringBuilder change (StringBuilder ST, char k){
+        int i0;
+        int i1;
+        int i2;
+        String sk;
+        int pt1;
+        int pt2;
+        int Tans;
+        StringBuilder T1 = new StringBuilder();
+        StringBuilder T2 = new StringBuilder();
+        i0 = ST.indexOf(String.valueOf(k));
+        i1 = i0-1;
+        while ((!op(ST.charAt(i1)))&&(i1>-1)){
+            T1.append(ST.charAt(i1));
+            --i1;
+            if(i1<0){
+                break;
+            }
+        }
+        T1.reverse();
+        if (i1>-1){
+            if((i1==0)&&(ST.charAt(i1)=='-')){
+                T1.insert(0,'-');
+                i1--;
+            }
+            else if (i1!=0){
+                sk = ST.substring(i1-1,i1+1);
+                if (negative(sk))
+                {
+                    T1.insert(0,'-');
+                    i1--;
+                }
+            }
+        }
+        pt1 = Integer.valueOf(T1.toString());
+        T1.setLength(0);
+        i2 = i0+1;
+        if (ST.charAt(i2)=='-')
+        {
+            T2.append('-');
+            i2++;
+        }
+        while ((!op(ST.charAt(i2)))&&(i2!=ST.length())){
+            T2.append(ST.charAt(i2));
+            i2++;
+            if(i2==ST.length()){
+                break;
+            }
+        }
+        pt2 = Integer.valueOf(T2.toString());
+        T2.setLength(0);
+        Tans = count(pt1,pt2,k);
+        ST.delete(i1+1,i2);
+        ST.insert(i1+1,Tans);
+        return ST;
     }
     private int count(int p1, int p2, char k){
         int a=0;
