@@ -1,4 +1,4 @@
-package com.alexkat20.servlets;
+package com.alexkat20.web.servlets;
 
 import java.util.*;
 
