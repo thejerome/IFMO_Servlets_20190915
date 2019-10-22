@@ -36,39 +36,37 @@ public class Result extends HttpServlet{
 
     public static String getExpression(String input)
     {
-        String output = ""; //Строка для хранения выражения
-        Stack<Character> operStack = new Stack<>(); //Стек для хранения операторов
+        String output = "";
+        Stack<Character> operStack = new Stack<>();
 
-        for (int i = 0; i < input.length(); i++) //Для каждого символа в входной строке
+        for (int i = 0; i < input.length(); i++)
         {
-            //Разделители пропускаем
-            if (isDelimeter(input.charAt(i)))
-                continue; //Переходим к следующему символу
 
-            //Если символ - цифра, то считываем все число
-            if (input.charAt(i) >= '0' && input.charAt(i) <= '9') //Если цифра
+            if (isDelimeter(input.charAt(i)))
+                continue;
+
+
+            if (input.charAt(i) >= '0' && input.charAt(i) <= '9')
             {
-                //Читаем до разделителя или оператора, чтобы получить число
+
                 while (!isDelimeter(input.charAt(i)) && !isOperator(input.charAt(i)))
                 {
-                    output += input.charAt(i); //Добавляем каждую цифру числа к нашей строке
-                    i++; //Переходим к следующему символу
+                    output += input.charAt(i);
+                    i++;
 
-                    if (i == input.length()) break; //Если символ - последний, то выходим из цикла
+                    if (i == input.length()) break;
                 }
 
-                output += " "; //Дописываем после числа пробел в строку с выражением
-                i--; //Возвращаемся на один символ назад, к символу перед разделителем
+                output += " ";
+                i--;
             }
 
-            //Если символ - оператор
-            if (isOperator(input.charAt(i)) | input.charAt(i) == '(' | input.charAt(i) == ')') //Если оператор
+            if (isOperator(input.charAt(i)) | input.charAt(i) == '(' | input.charAt(i) == ')')
             {
-                if (input.charAt(i) == '(') //Если символ - открывающая скобка
-                    operStack.push(input.charAt(i)); //Записываем её в стек
-                else if (input.charAt(i) == ')') //Если символ - закрывающая скобка
+                if (input.charAt(i) == '(')
+                    operStack.push(input.charAt(i));
+                else if (input.charAt(i) == ')')
                 {
-                    //Выписываем все операторы до открывающей скобки в строку
                     char s = operStack.pop();
 
                     while (s != '(')
@@ -77,20 +75,19 @@ public class Result extends HttpServlet{
                         s = operStack.pop();
                     }
                 }
-                else //Если любой другой оператор
+                else
                 {
-                    if (operStack.size() > 0 && getPriority(input.charAt(i)) <= getPriority(operStack.peek())) //Если в стеке есть элементы, и если приоритет нашего оператора меньше или равен приоритету оператора на вершине стека
-                        output += (operStack.pop().toString() + " ");//То добавляем последний оператор из стека в строку с выражением
+                    if (operStack.size() > 0 && getPriority(input.charAt(i)) <= getPriority(operStack.peek()))
+                        output += (operStack.pop().toString() + " ");
 
 
 
-                    operStack.push(input.charAt(i)); //Если стек пуст, или же приоритет оператора выше - добавляем операторов на вершину стека
+                    operStack.push(input.charAt(i));
 
                 }
             }
         }
 
-        //Когда прошли по всем символам, выкидываем из стека все оставшиеся там операторы в строку
         while (operStack.size() > 0)
             output += (operStack.pop() + " ");
 
@@ -99,7 +96,7 @@ public class Result extends HttpServlet{
             if (output.charAt(i) != ')')
                 result += output.charAt(i);
         }
-        return result; //Возвращаем выражение в постфиксной записи
+        return result;
     }
 
 
@@ -121,28 +118,27 @@ public class Result extends HttpServlet{
 
     public static int counting(String input)
     {
-        int result = 0; //Результат
-        Stack<Integer> temp = new Stack<>(); //стек для решения
+        int result = 0;
+        Stack<Integer> temp = new Stack<>();
 
-        for (int i = 0; i < input.length(); i++) //Для каждого символа в строке
+        for (int i = 0; i < input.length(); i++)
         {
-            //Если символ - цифра, то читаем все число и записываем на вершину стека
+
             if (input.charAt(i) >= '0' && input.charAt(i)<= '9')
             {
                 String a = "";
 
-                while (!isDelimeter(input.charAt(i)) && !isOperator(input.charAt(i))) //Пока не разделитель
+                while (!isDelimeter(input.charAt(i)) && !isOperator(input.charAt(i)))
                 {
-                    a += input.charAt(i); //Добавляем
+                    a += input.charAt(i);
                     i++;
                     if (i == input.length()) break;
                 }
-                temp.push(Integer.parseInt(a)); //Записываем в стек
+                temp.push(Integer.parseInt(a));
                 i--;
             }
-            else if (isOperator(input.charAt(i))) //Если символ - оператор
+            else if (isOperator(input.charAt(i)))
             {
-                //Берем два последних значения из стека
                 int a = temp.pop();
                 if (a > 100000){
                     String aStr = Integer.toString(a).substring(4);
@@ -154,7 +150,7 @@ public class Result extends HttpServlet{
                     b = 0 - Integer.parseInt(bStr);
                 }
 
-                switch (input.charAt(i)) //И производим над ними действие, согласно оператору
+                switch (input.charAt(i))
                 {
                     case '+': result = b + a; break;
                     case '-': result = b - a; break;
@@ -162,11 +158,11 @@ public class Result extends HttpServlet{
                     case '/': result = b / a; break;
                     default: result = 0; break;
                 }
-                temp.push(result); //Результат вычисления записываем обратно в стек
+                temp.push(result);
             }
         }
 
-        return (temp.peek()); //Забираем результат всех вычислений из стека и возвращаем его
+        return (temp.peek());
     }
 
 
@@ -180,11 +176,9 @@ public class Result extends HttpServlet{
         String eq = (String) session.getAttribute("equation");
 
         if (eq != null) {
-            //out.println(eq);
 
-            String ans = "";
+            String ans;
             Map<String, String> parameterMap = new HashMap<>();
-            //Map<String, Integer> fail = new HashMap<>();
             for (String s : session.getValueNames()) {
                 if (s != "equation") {
                     String v = (String) session.getAttribute(s);
@@ -205,11 +199,9 @@ public class Result extends HttpServlet{
             StringBuilder example = new StringBuilder();
 
 
-            //out.println(parameterMap.entrySet());
 
             for (int i = 0; i < eq.length(); ++i) {
                 char cur = eq.charAt(i);
-                //out.println(cur);
                 if (cur >= 'a' && cur <= 'z') {
                     String newVal = parameterMap.get(Character.toString(cur));
                     if (newVal == null) break;
@@ -221,9 +213,9 @@ public class Result extends HttpServlet{
                 } else {
                     example.append(eq.charAt(i));
                 }
-                //out.println(example);
+
             }
-            //out.println(example);
+
             eq = example.toString();
 
 
@@ -240,14 +232,5 @@ public class Result extends HttpServlet{
             response.setStatus(409);
             response.getWriter().println("lack of data");
         }
-        //out.println(eq);
-        //String exit = Calculator.getExpression(eq);
-        //out.println(exit);
-        //out.print(Calculator.counting(exit));
-
-
-
-
     }
-
 }
