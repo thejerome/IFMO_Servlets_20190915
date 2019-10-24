@@ -29,11 +29,9 @@ public class ResultServlet extends HttpServlet{
             String equation = session.getAttribute("equation").toString();
             if (equation == null)
                 throw new ServletException("Equation does not exist!");
-            System.out.println(equation);
             String varList = session.getAttribute("varList").toString();
             if (varList == null)
                 throw new ServletException("There are no variables at all!");
-            System.out.println(varList);
             
             //insert values in expression
             StringBuilder equation2 = new StringBuilder();
@@ -53,7 +51,6 @@ public class ResultServlet extends HttpServlet{
             if (!Pattern.matches("^[0-9*+-/()]+$", equation)){
                 throw new ServletException("Value is missing!");
             }
-            System.out.println(equation);
             writer.print(CalcUtil.eval(equation));
             resp.setStatus(200);
 

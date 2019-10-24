@@ -31,13 +31,10 @@ public class CalcUtil {
 
             //if bracket ends, and also calc
             if (i < equation.length && equation[i] == ')') {
-                while (ops[currentOp] != '('){
-                    int value2 = values[currentVal];
-                    currentVal--;
-                    int value1 = values[currentVal];
-                    char op = ops[currentOp];
-                    currentOp--;
-                    values[currentVal] = oneOp(op, value2, value1);
+                while (ops[currentOp] != '(') {
+                    int[] ans = makeCalculation(values, ops, currentVal, currentOp);
+                    currentVal = ans[0];
+                    currentOp = ans[1];
                 }
                 currentOp--;
             }
@@ -45,38 +42,27 @@ public class CalcUtil {
 
             //if operator
             if (i < equation.length && isOp(equation[i])){
-                while (currentOp != -1 && importance(equation[i]) <= importance(ops[currentOp])){
-                    int value2 = values[currentVal];
-                    currentVal--;
-                    int value1 = values[currentVal];
-                    char op = ops[currentOp];
-                    currentOp--;
-
-                    values[currentVal] = oneOp(op, value2, value1);
+                while (currentOp != -1 && importance(equation[i]) <= importance(ops[currentOp])) {
+                    int[] ans = makeCalculation(values, ops, currentVal, currentOp);
+                    currentVal = ans[0];
+                    currentOp = ans[1];
                 }
                 currentOp++;
                 ops[currentOp] = equation[i];
             }
         }
         //final calculations when no brackets left
-        while (currentOp != -1){
-            int value2 = values[currentVal];
-            currentVal--;
-            int value1 = 0;
-            if (currentVal == -1)
-                currentVal++;
-            else
-                value1 = values[currentVal];
-            char op = ops[currentOp];
-            currentOp--;
-            values[currentVal] = oneOp(op, value2, value1);
+        while (currentOp != -1) {
+            int[] ans = makeCalculation(values, ops, currentVal, currentOp);
+            currentVal = ans[0];
+            currentOp = ans[1];
         }
         //the only left is the result 
         return values[currentVal];
     }
 
     //makes order correct
-    public static int importance(char op){
+    private static int importance(char op){
         switch(op){
             case '+':
             case '-':
@@ -102,7 +88,7 @@ public class CalcUtil {
         }
     }
 
-    public static int oneOp(char op, int b, int a) {
+    private static int oneOp(char op, int b, int a) {
         switch (op) {
             case '+':
                 return a + b;
@@ -112,7 +98,24 @@ public class CalcUtil {
                 return a * b;
             case '/':
                 return a / b;
+            default:
+                return 0;
         }
-        return 0;
+    }
+    private static int[] makeCalculation(int[] values, char[] ops, int currentVal, int currentOp){
+        int value2 = values[currentVal];
+        currentVal--;
+        int value1 = 0;
+        if (currentVal == -1)
+            currentVal++;
+        else
+            value1 = values[currentVal];
+        char op = ops[currentOp];
+        currentOp--;
+        values[currentVal] = oneOp(op, value2, value1);
+        int[] updated = new int[2];
+        updated[0] = currentVal;
+        updated[1] = currentOp;
+        return updated;
     }
 }
