@@ -1,7 +1,7 @@
 package com.blagodarov.ifmo.web.servlets;
 
-public class Calc {
-    
+public class CalcUtil {
+
     public static int eval(String expression) {
         char[] equation = expression.toCharArray();
 
@@ -37,7 +37,7 @@ public class Calc {
                     int value1 = values[currentVal];
                     char op = ops[currentOp];
                     currentOp--;
-                    values[currentVal] = one_op(op, value2, value1);
+                    values[currentVal] = oneOp(op, value2, value1);
                 }
                 currentOp--;
             }
@@ -52,7 +52,7 @@ public class Calc {
                     char op = ops[currentOp];
                     currentOp--;
 
-                    values[currentVal] = one_op(op, value2, value1);
+                    values[currentVal] = oneOp(op, value2, value1);
                 }
                 currentOp++;
                 ops[currentOp] = equation[i];
@@ -69,7 +69,7 @@ public class Calc {
                 value1 = values[currentVal];
             char op = ops[currentOp];
             currentOp--;
-            values[currentVal] = one_op(op, value2, value1);
+            values[currentVal] = oneOp(op, value2, value1);
         }
         //the only left is the result 
         return values[currentVal];
@@ -86,8 +86,9 @@ public class Calc {
                 return 2;
             case '0':
                 return 3;
+            default:
+                return 0;
         }
-        return 0;
     }
     private static boolean isOp(char c){
         switch (c){
@@ -101,7 +102,7 @@ public class Calc {
         }
     }
 
-    public static int one_op(char op, int b, int a) {
+    public static int oneOp(char op, int b, int a) {
         switch (op) {
             case '+':
                 return a + b;

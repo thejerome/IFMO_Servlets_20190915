@@ -54,7 +54,7 @@ public class ResultServlet extends HttpServlet{
                 throw new ServletException("Value is missing!");
             }
             System.out.println(equation);
-            writer.print(Calc.eval(equation));
+            writer.print(CalcUtil.eval(equation));
             resp.setStatus(200);
 
         } catch (Exception e) {
@@ -66,8 +66,6 @@ public class ResultServlet extends HttpServlet{
         }
     }
     private boolean isLetter(String s){
-        if (s.charAt(0)>='a' && s.charAt(0)<='z') 
-            return true;
-        return false;
+        return s.charAt(0)>='a' && s.charAt(0)<='z';
     }
 }
