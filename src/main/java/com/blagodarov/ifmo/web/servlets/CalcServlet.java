@@ -31,7 +31,7 @@ public class CalcServlet extends HttpServlet {
         writer.flush();
         writer.close();
     }
-    public static int calc(String expression) {
+    private static int calc(String expression) {
         char[] equation = expression.toCharArray();
 
         // Stack for numbers: 'values' 
@@ -60,13 +60,10 @@ public class CalcServlet extends HttpServlet {
 
             //if bracket ends, and also calc
             if (i < equation.length && equation[i] == ')') {
-                while (ops[currentOp] != '('){
-                    int value2 = values[currentVal];
-                    currentVal--;
-                    int value1 = values[currentVal];
-                    char op = ops[currentOp];
-                    currentOp--;
-                    values[currentVal] = one_op(op, value2, value1);
+                while (ops[currentOp] != '(') {
+                    int[] ans = makeCalculation(values, ops, currentVal, currentOp);
+                    currentVal = ans[0];
+                    currentOp = ans[1];
                 }
                 currentOp--;
             }
@@ -74,34 +71,28 @@ public class CalcServlet extends HttpServlet {
 
             //if operator
             if (i < equation.length && isOp(equation[i])){
-                while (currentOp != -1 && importance(equation[i]) <= importance(ops[currentOp])){
-                    int value2 = values[currentVal];
-                    currentVal--;
-                    int value1 = values[currentVal];
-                    char op = ops[currentOp];
-                    currentOp--;
-
-                    values[currentVal] = one_op(op, value2, value1);
+                while (currentOp != -1 && importance(equation[i]) <= importance(ops[currentOp])) {
+                    int[] ans = makeCalculation(values, ops, currentVal, currentOp);
+                    currentVal = ans[0];
+                    currentOp = ans[1];
                 }
                 currentOp++;
                 ops[currentOp] = equation[i];
             }
         }
         //final calculations when no brackets left
-        while (currentOp != -1){
-            int value2 = values[currentVal];
-            currentVal--;
-            int value1 = values[currentVal];
-            char op = ops[currentOp];
-            currentOp--;
-            values[currentVal] = one_op(op, value2, value1);
+        while (currentOp != -1) {
+            int[] ans = makeCalculation(values, ops, currentVal, currentOp);
+            currentVal = ans[0];
+            currentOp = ans[1];
         }
         //the only left is the result 
         return values[currentVal];
     }
+    
 
     //makes order correct
-    public static int importance(char op){
+    private static int importance(char op){
         switch(op){
             case '+':
             case '-':
@@ -111,8 +102,9 @@ public class CalcServlet extends HttpServlet {
                 return 2;
             case '0':
                 return 3;
+            default:
+                return 0;
         }
-        return 0;
     }
     private static boolean isOp(char c){
         switch (c){
@@ -126,10 +118,7 @@ public class CalcServlet extends HttpServlet {
         }
     }
 
-    public static int one_op(char op, int b, int a) {
-        System.out.println(a);
-        System.out.println(op);
-        System.out.println(b);
+    private static int oneOp(char op, int b, int a) {
         switch (op) {
             case '+':
                 return a + b;
@@ -139,9 +128,29 @@ public class CalcServlet extends HttpServlet {
                 return a * b;
             case '/':
                 return a / b;
+            default:
+                return 0;
         }
-        return 0;
     }
-
-
+    private static int[] makeCalculation(int[] values, char[] ops, int curVa, int curO){
+        int currentVal = curVa;
+        int currentOp = curO;
+        
+        int value2 = values[currentVal];
+        currentVal--;
+        
+        int value1 = 0;
+        if (currentVal == -1)
+            currentVal++;
+        else
+            value1 = values[currentVal];
+        values[currentVal] = oneOp(ops[currentOp], value2, value1);
+        currentOp--;
+        
+        int[] updated = new int[2];
+        updated[0] = currentVal;
+        updated[1] = currentOp;
+        
+        return updated;}
 }
+
