@@ -17,6 +17,7 @@ public class ServletFilter implements javax.servlet.Filter {
 
     public void init(FilterConfig filterConfig){
         //forCommit
+        //forCodacy
     }
 
     @Override
