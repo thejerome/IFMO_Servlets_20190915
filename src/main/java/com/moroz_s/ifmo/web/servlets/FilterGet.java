@@ -38,5 +38,6 @@ public class FilterGet implements Filter {
 
     @Override
     public void destroy(){
+        //let it be something here
     }
 }

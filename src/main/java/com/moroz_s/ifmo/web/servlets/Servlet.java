@@ -18,7 +18,7 @@ public class Servlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         HttpSession session = req.getSession();
         String equation = ((String)session.getAttribute("equation")).replace(" ", "");
-        StringBuilder reformed = Reform(equation);
+        StringBuilder reformed = reform(equation);
         boolean notEnoughData = false;
         ArrayDeque<String> cal = new ArrayDeque<>();
 
@@ -36,7 +36,7 @@ public class Servlet extends HttpServlet {
     }
 
 
-    private StringBuilder Reform(String equation){
+    private StringBuilder reform(String equation){
         ArrayDeque<String> stack = new ArrayDeque<>();
         StringBuilder StringBuilder = new StringBuilder();
         StringTokenizer tokenizer = new StringTokenizer(equation, "()+-*/", true);
@@ -57,10 +57,10 @@ public class Servlet extends HttpServlet {
                 }
                 stack.push(token);
             } else
-            if (token.equals("(")) {
+            if (token.charAt(0) == '(') {
                 stack.push(token);
             } else
-            if (token.equals(")")) {
+            if (token.charAt(0) == ')') {
                 while (!Objects.equals(stack.peek(), "(")) {
                     String op = stack.pop();
                     StringBuilder.append(op).append('|');
