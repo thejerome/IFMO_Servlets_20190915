@@ -41,6 +41,7 @@ public class Var extends HttpServlet {
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) {
         resp.setStatus(204);
-        req.getSession().setAttribute(req.getRequestURI(), null);
+        String variable = req.getRequestURI().substring(6);
+        req.getSession().setAttribute(variable, null);
     }
 }
