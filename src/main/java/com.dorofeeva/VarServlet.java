@@ -24,7 +24,7 @@ public class VarServlet extends HttpServlet{
         String old;
         StringBuilder VList = new StringBuilder();
 
-        if (VarCor(val)){
+        if (varCor(val)){
             if (session.getAttribute(var) == null){
                 resp.setStatus(201);
             }
@@ -53,7 +53,7 @@ public class VarServlet extends HttpServlet{
         resp.setStatus(204);
     }
 
-    private boolean VarCor (String var){
+    private boolean varCor (String var){
         boolean f;
         if (var.charAt(0)>='a' && var.charAt(0)<='z') {
             return true;

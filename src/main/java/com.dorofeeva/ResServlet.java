@@ -32,17 +32,20 @@ public class ResServlet extends HttpServlet{
                 throw new ServletException("There are no variables");
 
             StringBuilder STB = new StringBuilder();
+            String val;
+            char varname;
+
             for (int i = 0; i < equation.length(); i++){
-                char var = equation.charAt(i);
-                if (Let(equation.substring(i, i + 1))) {
-                    String value = session.getAttribute(equation.substring(i, i + 1)).toString();
-                    while (Let(value)) {
-                        value = session.getAttribute(String.valueOf(value)).toString();
+                varname = equation.charAt(i);
+                if (itsLet(equation.substring(i, i + 1))) {
+                    val = session.getAttribute(equation.substring(i, i + 1)).toString();
+                    while (itsLet(val)) {
+                        val = session.getAttribute(String.valueOf(val)).toString();
                     }
-                    STB.append(value);
+                    STB.append(val);
                 }
                 else
-                    STB.append(var);
+                    STB.append(varname);
             }
             equation = STB.toString();
 
@@ -60,7 +63,7 @@ public class ResServlet extends HttpServlet{
             writer.close();
         }
     }
-    private boolean Let(String s){
+    private boolean itsLet(String s){
         boolean f;
         f = s.charAt(0)>='a' && s.charAt(0)<='z';
         return f;
