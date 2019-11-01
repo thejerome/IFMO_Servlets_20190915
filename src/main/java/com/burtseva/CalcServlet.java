@@ -1,3 +1,5 @@
+package com.burtseva;
+
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -25,13 +27,13 @@ public class CalcServlet extends HttpServlet {
         printWriter.close();
     }
 
-    private int calc(String string){
+    private int calc(String stringForFutureResult){
         int firstBracket;
         int secondBracket;
         int resultOfIncludedCalc;
         char sign;
         String tempString;
-        StringBuilder stringBuilder = new StringBuilder(string);
+        StringBuilder stringBuilder = new StringBuilder(stringForFutureResult);
         StringBuilder tempStringBuilder = new StringBuilder();
 
         while (stringBuilder.toString().contains("(")){
@@ -53,19 +55,19 @@ public class CalcServlet extends HttpServlet {
             stringBuilder.insert(firstBracket,resultOfIncludedCalc);
         }
 
-        string = stringBuilder.toString();
+        stringForFutureResult = stringBuilder.toString();
 
-        while (string.contains("*") || string.contains("/")){
-            sign = checkMultiplicationAndDivision(string);
-            string = change(string, sign);
+        while (stringForFutureResult.contains("*") || stringForFutureResult.contains("/")){
+            sign = checkMultiplicationAndDivision(stringForFutureResult);
+            stringForFutureResult = change(stringForFutureResult, sign);
         }
 
-        while ( (string.charAt(0) != '-') && (string.contains("+") || string.contains("-")) ){
-            sign = checkPlusAndMinus(string);
-            string = change(string, sign);
+        while ( (stringForFutureResult.charAt(0) != '-') && (stringForFutureResult.contains("+") || stringForFutureResult.contains("-")) ){
+            sign = checkPlusAndMinus(stringForFutureResult);
+            stringForFutureResult = change(stringForFutureResult, sign);
         }
 
-        return Integer.parseInt(string);
+        return Integer.parseInt(stringForFutureResult);
     }
 
     private boolean checkingForCorrectSign(char c){
@@ -85,14 +87,14 @@ public class CalcServlet extends HttpServlet {
     }
 
 
-    private char checkMultiplicationAndDivision(String string){
-        if (string.contains("*") && string.contains("/")){
-            if (string.indexOf("*") < string.indexOf("/"))
+    private char checkMultiplicationAndDivision(String str){
+        if (str.contains("*") && str.contains("/")){
+            if (str.indexOf("*") < str.indexOf("/"))
                 return '*';
-            if (string.indexOf("/") < string.indexOf("*"))
+            if (str.indexOf("/") < str.indexOf("*"))
                 return '/';
         }
-        else if (string.contains("/"))
+        else if (str.contains("/"))
             return '/';
         return '*';
     }
@@ -113,7 +115,7 @@ public class CalcServlet extends HttpServlet {
         return 0;
     }
 
-    private String change (String string, char sign){
+    private String change (String str, char sign){
         int signLocation;
         int firstNumLocation;
         int secondNumLocation;
@@ -124,23 +126,23 @@ public class CalcServlet extends HttpServlet {
         StringBuilder stringBuilderForFirstNum = new StringBuilder();
         StringBuilder stringBuilderForSecondNum = new StringBuilder();
 
-        signLocation = string.indexOf(String.valueOf(sign));
+        signLocation = str.indexOf(String.valueOf(sign));
         firstNumLocation = signLocation - 1;
 
-        while ((firstNumLocation > -1) && (!checkingForCorrectSign(string.charAt(firstNumLocation)))){
-            stringBuilderForFirstNum.append(string.charAt(firstNumLocation));
+        while ((firstNumLocation > -1) && (!checkingForCorrectSign(str.charAt(firstNumLocation)))){
+            stringBuilderForFirstNum.append(str.charAt(firstNumLocation));
             firstNumLocation -= 1;
         }
         stringBuilderForFirstNum.reverse();
 
         if (firstNumLocation > -1){
 
-            if((firstNumLocation == 0)&&(string.charAt(firstNumLocation) == '-')){
+            if((firstNumLocation == 0)&&(str.charAt(firstNumLocation) == '-')){
                 stringBuilderForFirstNum.insert(0,'-');
                 firstNumLocation--;
             }
             else if (firstNumLocation != 0){
-                tempString = string.substring(firstNumLocation-1,firstNumLocation+1);
+                tempString = str.substring(firstNumLocation-1,firstNumLocation+1);
                 if ( (tempString.charAt(1) == '-') && (checkingForCorrectSign(tempString.charAt(0))) ) {
                     stringBuilderForFirstNum.insert(0,'-');
                     firstNumLocation--;
@@ -152,13 +154,13 @@ public class CalcServlet extends HttpServlet {
         firstNum = Integer.parseInt(stringBuilderForFirstNum.toString());
 
         secondNumLocation = signLocation + 1;
-        if (string.charAt(secondNumLocation) == '-') {
+        if (str.charAt(secondNumLocation) == '-') {
             stringBuilderForSecondNum.append('-');
             secondNumLocation++;
         }
 
-        while ( (secondNumLocation < string.length()) && (!checkingForCorrectSign(string.charAt(secondNumLocation))) ){
-            stringBuilderForSecondNum.append(string.charAt(secondNumLocation));
+        while ( (secondNumLocation < str.length()) && (!checkingForCorrectSign(str.charAt(secondNumLocation))) ){
+            stringBuilderForSecondNum.append(str.charAt(secondNumLocation));
             secondNumLocation++;
         }
 
@@ -169,7 +171,7 @@ public class CalcServlet extends HttpServlet {
 
         calcResult = count(firstNum,secondNum,sign);
 
-        StringBuilder stringBuilder = new StringBuilder(string);
+        StringBuilder stringBuilder = new StringBuilder(str);
         stringBuilder.delete(firstNumLocation + 1,secondNumLocation);
         stringBuilder.insert(firstNumLocation + 1,calcResult);
 
