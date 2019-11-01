@@ -6,9 +6,10 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.*;
 
-@WebServlet(name = "calcServlet",
-            urlPatterns = {"/calc"})
-public class calcServlet extends HttpServlet {
+@WebServlet(
+        name = "CalcServlet", urlPatterns = {"/calc"}
+)
+public class CalcServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         PrintWriter printWriter = response.getWriter();
         Map<String, String[]> parameterMap= request.getParameterMap();
@@ -24,11 +25,13 @@ public class calcServlet extends HttpServlet {
         printWriter.close();
     }
 
-    private int calc(String equation){
-        int firstBracket, secondBracket, resultOfIncludedCalc;
+    private int calc(String string){
+        int firstBracket;
+        int secondBracket;
+        int resultOfIncludedCalc;
         char sign;
         String tempString;
-        StringBuilder stringBuilder = new StringBuilder(equation);
+        StringBuilder stringBuilder = new StringBuilder(string);
         StringBuilder tempStringBuilder = new StringBuilder();
 
         while (stringBuilder.toString().contains("(")){
@@ -50,19 +53,19 @@ public class calcServlet extends HttpServlet {
             stringBuilder.insert(firstBracket,resultOfIncludedCalc);
         }
 
-        equation = stringBuilder.toString();
+        string = stringBuilder.toString();
 
-        while (equation.contains("*") || equation.contains("/")){
-            sign = checkMultiplicationAndDivision(equation);
-            equation = change(equation, sign);
+        while (string.contains("*") || string.contains("/")){
+            sign = checkMultiplicationAndDivision(string);
+            string = change(string, sign);
         }
 
-        while ( (equation.charAt(0) != '-') && (equation.contains("+") || equation.contains("-")) ){
-            sign = checkPlusAndMinus(equation);
-            equation = change(equation, sign);
+        while ( (string.charAt(0) != '-') && (string.contains("+") || string.contains("-")) ){
+            sign = checkPlusAndMinus(string);
+            string = change(string, sign);
         }
 
-        return Integer.parseInt(equation);
+        return Integer.parseInt(string);
     }
 
     private boolean checkingForCorrectSign(char c){
@@ -111,7 +114,12 @@ public class calcServlet extends HttpServlet {
     }
 
     private String change (String string, char sign){
-        int signLocation, firstNumLocation, secondNumLocation, firstNum, secondNum, calcResult;
+        int signLocation;
+        int firstNumLocation;
+        int secondNumLocation;
+        int firstNum;
+        int secondNum;
+        int calcResult;
         String tempString;
         StringBuilder stringBuilderForFirstNum = new StringBuilder();
         StringBuilder stringBuilderForSecondNum = new StringBuilder();
