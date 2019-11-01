@@ -27,13 +27,14 @@ public class CalcServlet extends HttpServlet {
         printWriter.close();
     }
 
-    private int calc(String stringForFutureResult){
+    private int calc(String str){
         int firstBracket;
         int secondBracket;
         int resultOfIncludedCalc;
         char sign;
+        String stringForFutureResult;
         String tempString;
-        StringBuilder stringBuilder = new StringBuilder(stringForFutureResult);
+        StringBuilder stringBuilder = new StringBuilder(str);
         StringBuilder tempStringBuilder = new StringBuilder();
 
         while (stringBuilder.toString().contains("(")){
