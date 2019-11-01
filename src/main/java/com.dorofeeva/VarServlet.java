@@ -17,9 +17,6 @@ public class VarServlet extends HttpServlet{
         HttpSession session = req.getSession();
         String var = req.getRequestURI().substring(6);
         String val = req.getReader().readLine();
-        System.out.print(var);
-        System.out.print(' ');
-        System.out.println(val);
 
         String old;
         StringBuilder VList = new StringBuilder();

@@ -27,7 +27,9 @@ public class EqFilter implements Filter {
             throws IOException, ServletException {
 
         String equation = req.getReader().readLine();
+
         equation = equation.replace(" ", "");
+
         req.getReader().reset();
 
         if (ck(equation)){

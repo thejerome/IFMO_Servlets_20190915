@@ -16,12 +16,9 @@ import java.io.*;
 public class ResServlet extends HttpServlet{
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-
         PrintWriter writer = resp.getWriter();
-
+        HttpSession session = req.getSession();
         try {
-            HttpSession session = req.getSession();
-
             if (session == null)
                 throw new ServletException("Session is empty");
             String equation = session.getAttribute("equation").toString();
@@ -34,6 +31,7 @@ public class ResServlet extends HttpServlet{
             StringBuilder STB = new StringBuilder();
             String val;
             char varname;
+//я не умею делать мапы так что только так
 
             for (int i = 0; i < equation.length(); i++){
                 varname = equation.charAt(i);
