@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.efimchick.ifmo.web.servlets.StatefulCalcServletTest" tests="13" skipped="0" failures="0" errors="0" timestamp="2019-11-08T01:11:39" hostname="DC-303" time="3.719">
+  <properties/>
+  <testcase name="test001" classname="com.efimchick.ifmo.web.servlets.StatefulCalcServletTest" time="3.166"/>
+  <testcase name="test002" classname="com.efimchick.ifmo.web.servlets.StatefulCalcServletTest" time="0.021"/>
+  <testcase name="test003" classname="com.efimchick.ifmo.web.servlets.StatefulCalcServletTest" time="0.024"/>
+  <testcase name="test004" classname="com.efimchick.ifmo.web.servlets.StatefulCalcServletTest" time="0.021"/>
+  <testcase name="test005" classname="com.efimchick.ifmo.web.servlets.StatefulCalcServletTest" time="0.017"/>
+  <testcase name="test006" classname="com.efimchick.ifmo.web.servlets.StatefulCalcServletTest" time="0.017"/>
+  <testcase name="test007" classname="com.efimchick.ifmo.web.servlets.StatefulCalcServletTest" time="0.017"/>
+  <testcase name="test008" classname="com.efimchick.ifmo.web.servlets.StatefulCalcServletTest" time="0.015"/>
+  <testcase name="test009" classname="com.efimchick.ifmo.web.servlets.StatefulCalcServletTest" time="0.016"/>
+  <testcase name="test010" classname="com.efimchick.ifmo.web.servlets.StatefulCalcServletTest" time="0.02"/>
+  <testcase name="test011" classname="com.efimchick.ifmo.web.servlets.StatefulCalcServletTest" time="0.271"/>
+  <testcase name="test012" classname="com.efimchick.ifmo.web.servlets.StatefulCalcServletTest" time="0.055"/>
+  <testcase name="testSources" classname="com.efimchick.ifmo.web.servlets.StatefulCalcServletTest" time="0.054"/>
+  <system-out><![CDATA[configuring app with basedir: C:\Users\Administrator\Desktop\IFMO_Servlets_20190915\.\src\main\webapp
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+BAD FORMAT!
+
+]]></system-out>
+  <system-err><![CDATA[Nov 08, 2019 4:11:34 AM org.apache.coyote.AbstractProtocol init
+INFO: Initializing ProtocolHandler ["http-nio-8080"]
+Nov 08, 2019 4:11:35 AM org.apache.tomcat.util.net.NioSelectorPool getSharedSelector
+INFO: Using a shared selector for servlet write/read
+Nov 08, 2019 4:11:35 AM org.apache.catalina.core.StandardService startInternal
+INFO: Starting service Tomcat
+Nov 08, 2019 4:11:35 AM org.apache.catalina.core.StandardEngine startInternal
+INFO: Starting Servlet Engine: Apache Tomcat/8.0.47
+Nov 08, 2019 4:11:35 AM org.apache.catalina.loader.WebappLoader buildClassPath
+INFO: Unknown loader jdk.internal.loader.ClassLoaders$AppClassLoader@8bcc55f class jdk.internal.loader.ClassLoaders$AppClassLoader
+Nov 08, 2019 4:11:35 AM org.apache.catalina.startup.ContextConfig getDefaultWebXmlFragment
+INFO: No global web.xml found
+Nov 08, 2019 4:11:39 AM org.apache.catalina.util.SessionIdGeneratorBase createSecureRandom
+WARNING: Creation of SecureRandom instance for session ID generation using [SHA1PRNG] took [177] milliseconds.
+Nov 08, 2019 4:11:39 AM org.apache.coyote.AbstractProtocol start
+INFO: Starting ProtocolHandler ["http-nio-8080"]
+Nov 08, 2019 4:11:43 AM org.apache.coyote.AbstractProtocol pause
+INFO: Pausing ProtocolHandler ["http-nio-8080"]
+Nov 08, 2019 4:11:43 AM org.apache.catalina.core.StandardService stopInternal
+INFO: Stopping service Tomcat
+Nov 08, 2019 4:11:43 AM org.apache.coyote.AbstractProtocol stop
+INFO: Stopping ProtocolHandler ["http-nio-8080"]
+]]></system-err>
+</testsuite>
