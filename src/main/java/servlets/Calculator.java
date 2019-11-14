@@ -29,49 +29,61 @@ public class Calculator extends HttpServlet {
         return nstack.peek().equals(s);
     }
 
-    private void equationtostack(char[] modequation) {
-        for (char c : modequation)
-            if ('0' <= c && c <= '9') {
-                int j;
-                if (!stack.isEmpty() && prev == 1) {
-                    if (stack.peek().matches("[-+]?\\d+")) {
-                        j = Integer.parseInt(stack.peek().trim());
-                        stack.pop();
-                        stack.push(j + String.valueOf(c));
-                        prev = 1;
-                    }
-                } else {
-                    stack.push(String.valueOf(c));
-                    prev = 1;
-                }
-            } else {
-                if (c == '+' || c == '-') {
-                    if ((!nstack.isEmpty()) && (equals("+") || equals("-") ||
-                            equals("*") || equals("/"))) {
-                        stackaction();
-                    }
-                    nstack.push(String.valueOf(c));
-                    prev = 0;
-                }
-                if (c == '*' || c == '/') {
-                    if ((!nstack.isEmpty()) && (equals("*") || equals("/"))) {
-                        stackaction();
-                    }
-                    nstack.push(String.valueOf(c));
-                    prev = 0;
-                }
-                if (c == '(') {
-                    nstack.push("(");
-                    prev = 0;
-                }
-                if (c == ')') {
-                    prev = 0;
-                    do {
-                        stackaction();
-                    } while (!equals("("));
-                    nstack.pop();
-                }
+    private void brackets(char c) {
+        if (c == '(') {
+            nstack.push("(");
+            prev = 0;
+        }
+        if (c == ')') {
+            prev = 0;
+            do {
+                stackaction();
+            } while (!equals("("));
+            nstack.pop();
+        }
+    }
+    private void multanddiv(char c) {
+        if (c == '*' || c == '/') {
+            if ((!nstack.isEmpty()) && (equals("*") || equals("/"))) {
+                stackaction();
             }
+            nstack.push(String.valueOf(c));
+            prev = 0;
+        }
+    }
+    private void addandsub(char c) {
+        if (c == '+' || c == '-') {
+            if ((!nstack.isEmpty()) && (equals("+") || equals("-") ||
+                    equals("*") || equals("/"))) {
+                stackaction();
+            }
+            nstack.push(String.valueOf(c));
+            prev = 0;
+        }
+    }
+private void numeral(char c) {
+    if ('0' <= c && c <= '9') {
+        int j;
+        if (!stack.isEmpty() && prev == 1) {
+            if (stack.peek().matches("[-+]?\\d+")) {
+                j = Integer.parseInt(stack.peek().trim());
+                stack.pop();
+                stack.push(j + String.valueOf(c));
+                prev = 1;
+            }
+        } else {
+            stack.push(String.valueOf(c));
+            prev = 1;
+        }
+    }
+}
+    private void equationtostack(char[] modequation) {
+        for (char c : modequation) {
+            numeral(c);
+            addandsub(c);
+            multanddiv(c);
+            brackets(c);
+        }
         while (!stack.isEmpty()) {
             nstack.push(stack.peek());
             stack.pop();
