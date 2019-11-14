@@ -67,6 +67,8 @@ public class ShuntingClass {
                     case "/":
                         res = b / a;
                         break;
+                    default:
+                        break;
                 }
                 stack.push(String.valueOf(res));
             }
@@ -74,7 +76,7 @@ public class ShuntingClass {
         return stack.pop();
     }
 
-    String[] parseEq(String infixEq){
+    private String[] parseEq(String infixEq){
         final String numbers = "0123456789";
         final String operators = "+-*/()";
         ArrayList<String> tokenList = new ArrayList<>();
