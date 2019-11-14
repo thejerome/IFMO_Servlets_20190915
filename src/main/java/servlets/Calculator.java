@@ -20,6 +20,15 @@ public class Calculator extends HttpServlet {
     private Stack<String>  nstack = new Stack<>();
     private int prev = 0;
 
+    private void stackaction() {
+        stack.push(String.valueOf(nstack.peek()));
+        nstack.pop();
+    }
+
+    private boolean equals(String s) {
+        return nstack.peek().equals(s);
+    }
+
     private void equationtostack(char[] modequation) {
         for (char c : modequation)
             if ('0' <= c && c <= '9') {
@@ -37,18 +46,16 @@ public class Calculator extends HttpServlet {
                 }
             } else {
                 if (c == '+' || c == '-') {
-                    if ((!nstack.isEmpty()) && (nstack.peek().equals("+") || nstack.peek().equals("-") ||
-                            nstack.peek().equals("*") || nstack.peek().equals("/"))) {
-                        stack.push(String.valueOf(nstack.peek()));
-                        nstack.pop();
+                    if ((!nstack.isEmpty()) && (equals("+") || equals("-") ||
+                            equals("*") || equals("/"))) {
+                        stackaction();
                     }
                     nstack.push(String.valueOf(c));
                     prev = 0;
                 }
                 if (c == '*' || c == '/') {
-                    if ((!nstack.isEmpty()) && (nstack.peek().equals("*") || nstack.peek().equals("/"))) {
-                        stack.push(String.valueOf(nstack.peek()));
-                        nstack.pop();
+                    if ((!nstack.isEmpty()) && (equals("*") || equals("/"))) {
+                        stackaction();
                     }
                     nstack.push(String.valueOf(c));
                     prev = 0;
@@ -60,9 +67,8 @@ public class Calculator extends HttpServlet {
                 if (c == ')') {
                     prev = 0;
                     do {
-                        stack.push(String.valueOf(nstack.peek()));
-                        nstack.pop();
-                    } while (!nstack.peek().equals("("));
+                        stackaction();
+                    } while (!equals("("));
                     nstack.pop();
                 }
             }
