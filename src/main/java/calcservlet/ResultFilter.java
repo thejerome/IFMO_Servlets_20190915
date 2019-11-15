@@ -10,6 +10,8 @@ import java.util.StringTokenizer;
 
 @WebFilter(filterName = "ResultFilter", urlPatterns = "/calc/result")
 public class ResultFilter implements Filter {
+
+    @Override
     public void destroy() {
     }
 
@@ -30,8 +32,8 @@ public class ResultFilter implements Filter {
 
     }
 
+    @Override
     public void init(FilterConfig config) {
-
     }
 
     private boolean goodFormat(String qtn) {
@@ -43,9 +45,7 @@ public class ResultFilter implements Filter {
         }
         q = builder.toString();
         for(int i = 0; i < q.length()-1; i+=2) {
-            if(Character.isAlphabetic(q.charAt(i)) || Character.isDigit(q.charAt(i)) &&  "+-*/".contains(String.valueOf(q.charAt(i+1)))) {
-                continue;
-            }
+            if(!(Character.isAlphabetic(q.charAt(i)) || Character.isDigit(q.charAt(i)) &&  "+-*/".contains(String.valueOf(q.charAt(i+1)))))
             return false;
         }
         return Character.isAlphabetic(q.charAt(q.length() - 1));

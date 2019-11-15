@@ -1,7 +1,6 @@
 package calculator;
 
 import java.util.*;
-import java.lang.*;
 
 public class Calculator {
     private static String operators = "+-*/";
@@ -29,7 +28,7 @@ public class Calculator {
     }
 
     private static boolean isOperator(String token) {
-        if (token.equals("u-")) return true;
+        if ("u-".equals(token)) return true;
         for (int i = 0; i < operators.length(); i++) {
             if (token.charAt(0) == operators.charAt(i)) return true;
         }
@@ -37,13 +36,13 @@ public class Calculator {
     }
 
     private static boolean isFunction(String token) {
-        return token.equals("sqrt") || token.equals("cube") || token.equals("pow10");
+        return "sqrt".equals(token) || "cube".equals(token) || "pow10".equals(token);
     }
 
     private static int priority(String token) {
-        if (token.equals("(")) return 1;
-        if (token.equals("+") || token.equals("-")) return 2;
-        if (token.equals("*") || token.equals("/")) return 3;
+        if ("(".equals(token)) return 1;
+        if ("+".equals(token) || "-".equals(token)) return 2;
+        if ("*".equals(token) || "/".equals(token)) return 3;
         return 4;
     }
 
@@ -59,11 +58,11 @@ public class Calculator {
                 flag = false;
                 return postfix;
             }
-            if (curr.equals(" ")) continue;
+            if (" ".equals(curr)) continue;
             if (isFunction(curr)) stack.push(curr);
             else if (isDelimiter(curr)) {
-                if (curr.equals("(")) stack.push(curr);
-                else if (curr.equals(")")) {
+                if ("(".equals(curr)) stack.push(curr);
+                else if (")".equals(curr)) {
                     while (!"(".equals(stack.peek())) {
                         postfix.add(stack.pop());
                         if (stack.isEmpty()) {
@@ -76,7 +75,7 @@ public class Calculator {
                         postfix.add(stack.pop());
                     }
                 } else {
-                    if (curr.equals("-") && (prev.equals("") || (isDelimiter(prev) && !prev.equals(")")))) {
+                    if ("-".equals(curr) && ("".equals(prev) || (isDelimiter(prev) && !")".equals(prev)))) {
                         curr = "u-";
                     } else {
                         while (!stack.isEmpty() && (priority(curr) <= priority(stack.peek()))) {
@@ -111,7 +110,8 @@ public class Calculator {
                         stack.push(stack.pop() + stack.pop());
                         break;
                     case "-": {
-                        int b = stack.pop(), a = stack.pop();
+                        int b = stack.pop();
+                        int a = stack.pop();
                         stack.push(a - b);
                         break;
                     }
@@ -119,7 +119,8 @@ public class Calculator {
                         stack.push(stack.pop() * stack.pop());
                         break;
                     case "/": {
-                        int b = stack.pop(), a = stack.pop();
+                        int b = stack.pop();
+                        int a = stack.pop();
                         stack.push(a / b);
                         break;
                     }

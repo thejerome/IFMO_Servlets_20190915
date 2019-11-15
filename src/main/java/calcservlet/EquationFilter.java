@@ -1,8 +1,8 @@
 package calcservlet;
 
 import javax.servlet.*;
-import javax.servlet.annotation.WebFilter;
 import javax.servlet.Filter;
+import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
@@ -12,8 +12,6 @@ import java.util.StringTokenizer;
 @WebFilter(filterName = "EquationFilter", urlPatterns = "/calc/equation")
 
 public class EquationFilter implements Filter {
-    public void destroy() {
-    }
 
     public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws ServletException, IOException {
         HttpServletRequest request = (HttpServletRequest) req;
@@ -29,6 +27,12 @@ public class EquationFilter implements Filter {
         }
     }
 
+    @Override
+    public void destroy() {
+
+    }
+
+    @Override
     public void init(FilterConfig config){
 
     }
@@ -41,10 +45,8 @@ public class EquationFilter implements Filter {
         }
         q = builder.toString();
         for(int i = 0; i < q.length()-1; i+=2) {
-            if((Character.isAlphabetic(q.charAt(i)) || Character.isDigit(q.charAt(i))) &&  "+-*/".contains(String.valueOf(q.charAt(i+1)))) {
-                continue;
-            }
-            return false;
+            if (!((Character.isAlphabetic(q.charAt(i)) || Character.isDigit(q.charAt(i))) &&  "+-*/".contains(String.valueOf(q.charAt(i+1)))))
+                return false;
         }
         return Character.isAlphabetic(q.charAt(q.length() - 1));
     }

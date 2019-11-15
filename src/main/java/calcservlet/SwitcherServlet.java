@@ -39,11 +39,9 @@ public class SwitcherServlet extends HttpServlet {
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) {
         HttpSession session = req.getSession();
         String varName = req.getPathInfo().substring(1);
-        if(session != null) {
-            if(session.getAttribute(varName) != null) {
-                session.removeAttribute(varName);
-                resp.setStatus(HttpServletResponse.SC_NO_CONTENT);
-            }
+        if(session != null && session.getAttribute(varName) != null) {
+            session.removeAttribute(varName);
+            resp.setStatus(HttpServletResponse.SC_NO_CONTENT);
         }
     }
 }

@@ -1,6 +1,5 @@
 package calcservlet;
 
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -31,11 +30,9 @@ public class EquationServlet extends HttpServlet {
 
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) {
         HttpSession session = req.getSession();
-        if(session != null) {
-            if(session.getAttribute("equation") != null) {
-                session.removeAttribute("equation");
-                resp.setStatus(HttpServletResponse.SC_NO_CONTENT);
-            }
+        if(session != null && (session.getAttribute("equation") != null)) {
+            session.removeAttribute("equation");
+            resp.setStatus(HttpServletResponse.SC_NO_CONTENT);
         }
     }
 }
