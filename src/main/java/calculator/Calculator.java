@@ -59,8 +59,7 @@ public class Calculator {
                 return postfix;
             }
             if (" ".equals(curr)) continue;
-            if (isFunction(curr)) stack.push(curr);
-            else if (isDelimiter(curr)) {
+            if (isDelimiter(curr)) {
                 if ("(".equals(curr)) stack.push(curr);
                 else if (")".equals(curr)) {
                     while (!"(".equals(stack.peek())) {
@@ -71,9 +70,6 @@ public class Calculator {
                         }
                     }
                     stack.pop();
-                    if (!stack.isEmpty() && isFunction(stack.peek())) {
-                        postfix.add(stack.pop());
-                    }
                 } else {
                     if ("-".equals(curr) && ("".equals(prev) || (isDelimiter(prev) && !")".equals(prev)))) {
                         curr = "u-";
