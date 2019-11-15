@@ -1,7 +1,11 @@
 package calcservlet;
 
-import javax.servlet.*;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
 import javax.servlet.Filter;
+import javax.servlet.FilterConfig;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -29,12 +33,12 @@ public class EquationFilter implements Filter {
 
     @Override
     public void destroy() {
-
+        //destroy
     }
 
     @Override
     public void init(FilterConfig config){
-
+        //init
     }
     private boolean goodFormat(String qtn) {
         StringTokenizer tokenizer = new StringTokenizer(qtn, "() ");
