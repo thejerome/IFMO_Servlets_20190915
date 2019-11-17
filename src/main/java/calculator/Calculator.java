@@ -1,18 +1,40 @@
 package calculator;
 
+import java.net.PortUnreachableException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 import java.util.StringTokenizer;
 
 class Node {
-    String value;
-    Node left;
-    Node right;
+    private String value;
+    private Node left;
+    private Node right;
 
     Node(String v) {
         value = v;
         left = right = null;
+    }
+
+    public void setLeft(Node left) {
+        this.left = left;
+    }
+
+
+    public void setRight(Node right) {
+        this.right = right;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public Node getLeft() {
+        return left;
+    }
+
+    public Node getRight() {
+        return right;
     }
 }
 public class Calculator {
@@ -33,7 +55,9 @@ public class Calculator {
                 _postfix = toPostfix(_infix);
             }
             Stack<Node> st = new Stack<>();
-            Node t, t1, t2;
+            Node t;
+            Node t1;
+            Node t2;
 
             for (String c: _postfix) {
                 if(!isOperator(c)) {
@@ -43,8 +67,8 @@ public class Calculator {
                     t = new Node(c);
                     t1 = st.pop();
                     t2 = st.pop();
-                    t.right = t1;
-                    t.left = t2;
+                    t.setRight(t1);
+                    t.setLeft(t2);
                     st.push(t);
                 }
             }
@@ -63,7 +87,6 @@ public class Calculator {
     }
 
     public void setInfix(String expression) {
-        expression = expression.replace(" ", "");
         this._infix = expression;
     }
 
@@ -72,17 +95,17 @@ public class Calculator {
             return 0;
         }
 
-        if(root.left == null && root.right == null ) {
-            return toInt(String.valueOf(root.value));
+        if(root.getLeft() == null && root.getRight() == null ) {
+            return toInt(String.valueOf(root.getValue()));
         }
 
-        int l_val = eval(root.left);
-        int r_val = eval(root.right);
-        if("+".equals(root.value)) {
+        int l_val = eval(root.getLeft());
+        int r_val = eval(root.getRight());
+        if("+".equals(root.getValue())) {
             return l_val + r_val;
-        } else if("*".equals(root.value)) {
+        } else if("*".equals(root.getValue())) {
             return l_val * r_val;
-        } else if("-".equals(root.value)) {
+        } else if("-".equals(root.getValue())) {
             return l_val - r_val;
         }
         else return l_val / r_val;

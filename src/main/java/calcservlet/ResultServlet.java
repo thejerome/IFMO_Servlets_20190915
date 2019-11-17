@@ -29,7 +29,7 @@ public class ResultServlet extends HttpServlet {
                 qtn = qtn.replace(attribute, session.getAttribute(attribute).toString());
             }
             Calculator calc = new Calculator();
-
+            qtn = qtn.replace(" ", "");
             calc.setInfix(qtn);
             calc.constructTree();
             int res = calc.getResult();
