@@ -28,7 +28,11 @@ public class ResultServlet extends HttpServlet {
                 }
                 qtn = qtn.replace(attribute, session.getAttribute(attribute).toString());
             }
-            int res = Calculator.compute(qtn);
+            Calculator calc = new Calculator();
+
+            calc.setInfix(qtn);
+            calc.constructTree();
+            int res = calc.getResult();
             out.print(res);
         }
         out.flush();
