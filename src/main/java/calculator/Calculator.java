@@ -1,6 +1,5 @@
 package calculator;
 
-import java.net.PortUnreachableException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
