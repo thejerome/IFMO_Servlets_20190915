@@ -35,4 +35,3 @@ public class Result extends HttpServlet {
     }
 
 }
-

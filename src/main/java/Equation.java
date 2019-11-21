@@ -13,12 +13,12 @@ import java.io.PrintWriter;
         urlPatterns = {"/calc/equation"}
 )
 public class Equation extends HttpServlet {
-void func(PrintWriter out, HttpServletResponse resp) {
-    resp.setStatus(400);
-    out.print("Badly formatted value");
-    out.flush();
-    out.close();
-}
+    void func(PrintWriter out, HttpServletResponse resp) {
+        resp.setStatus(400);
+        out.print("Badly formatted value");
+        out.flush();
+        out.close();
+    }
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         HttpSession session = req.getSession();
