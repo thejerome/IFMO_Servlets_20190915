@@ -25,7 +25,6 @@ void func(PrintWriter out, HttpServletResponse resp) {
         PrintWriter out = resp.getWriter();
         BufferedReader reader = req.getReader();
         String str = reader.readLine();
-        char prev = '\0';
         int cg = 0;
         char[] modequation = str.toCharArray();
         for (char c : modequation) {
