@@ -15,7 +15,7 @@ import java.io.PrintWriter;
         urlPatterns = {"/calc/equation"}
 )
 public class Equation extends HttpServlet {
-    void func(PrintWriter out, HttpServletResponse resp) {
+    private void func(PrintWriter out, HttpServletResponse resp) {
         resp.setStatus(400);
         out.print("Badly formatted value");
         out.flush();
