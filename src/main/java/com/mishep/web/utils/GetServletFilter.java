@@ -17,7 +17,9 @@ import javax.servlet.http.HttpServletRequest;
 public class GetServletFilter implements Filter {
 
     @Override
-    public void init(FilterConfig filterConfig)  { }
+    public void init(FilterConfig filterConfig)  {
+        //+c
+    }
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) {
@@ -31,7 +33,9 @@ public class GetServletFilter implements Filter {
     }
 
     @Override
-    public void destroy() { }
+    public void destroy() {
+        //+c
+    }
 }
 
 
