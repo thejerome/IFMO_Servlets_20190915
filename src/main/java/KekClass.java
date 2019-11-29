@@ -1,4 +1,3 @@
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -13,7 +12,7 @@ import java.util.ArrayList;
 )
 public class KekClass extends HttpServlet {
 
-    public String calculateRPN(ArrayList<String> equation) {
+    private String calculateRPN(ArrayList<String> equation) {
         while (equation.size() > 1) {
             for (int i = 1; i < equation.size() - 1; i++) {
                 if (   !equation.get(i - 1).equals("+")
@@ -32,9 +31,7 @@ public class KekClass extends HttpServlet {
                     int leftNumber = Integer.parseInt(equation.get(i - 1));
                     int rightNumber = Integer.parseInt(equation.get(i));
                     String operator = equation.get(i + 1);
-                    for (int j = i + 1; j >= i - 1; j--) {
-                        equation.remove(j);
-                    }
+                    equation.subList(i - 1, i + 2).clear();
                     switch (operator) {
                         case ("+"):
                             equation.add(i - 1, Integer.toString(leftNumber + rightNumber));
@@ -57,7 +54,7 @@ public class KekClass extends HttpServlet {
         return equation.get(0);
     }
 
-    public ArrayList<String> buildRPN(String equation){
+    private ArrayList<String> buildRPN(String equation){
         ArrayList<Character> operatorStack = new ArrayList<>();
         ArrayList<String> outputStack = new ArrayList<>();
         StringBuilder tempNumber = new StringBuilder();
@@ -116,7 +113,7 @@ public class KekClass extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         PrintWriter outputStream = new PrintWriter(resp.getOutputStream());
         String equation = req.getParameter("equation");
         StringBuilder stringBuilder = new StringBuilder();
