@@ -1,60 +1,10 @@
 package com.mishep.web.utils;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayDeque;
 import java.util.Objects;
 import java.util.StringTokenizer;
 
 public class GetCalculate {
-    public static String getResult(HttpServletRequest req, String tokenStr) {
-        StringTokenizer str = new StringTokenizer(tokenStr, ".");
-        ArrayDeque<String> calc = new ArrayDeque<>();
-        do {
-            String tokenizer = str.nextToken();
-            boolean numberValue = true;
-            if (tokenizer.charAt(0) == '-' && tokenizer.length() == 1)
-                numberValue = false;
-            for (int i = 0; i < tokenizer.length(); i++) {
-                if (i == 0 && tokenizer.charAt(i) == '-')
-                    continue;
-                if (!Character.isDigit(tokenizer.charAt(i))) {
-                    numberValue = false;
-                }
-            }
-            if (numberValue) {
-                calc.push(tokenizer);
-                continue;
-            }
-            boolean varValue = true;
-            for (int i = 0; i < tokenizer.length(); i++) {
-                if (!(tokenizer.charAt(i) >= 'a' && tokenizer.charAt(i) <= 'z') || tokenizer.length() != 1) {
-                    varValue = false;
-                    break;
-                }
-            }
-            if (varValue) {
-                String a = tokenizer;
-                while (a.charAt(0) >= 'a' && a.charAt(0) <= 'z'){
-                    a = (String) (req.getSession()).getAttribute(a);
-                    if (a == null)
-                        throw new IllegalArgumentException();
-                }
-                if (tokenizer.charAt(0) >= 'a' && tokenizer.charAt(0) <= 'z'){
-                    calc.push(a);
-                } else {
-                    calc.push(tokenizer);
-                }
-                continue;
-            }
-            if (isOperator(tokenizer)) {
-                String op2 = calc.pop();
-                String op1 = calc.pop();
-                calc.push(String.valueOf(calcSimpleEquation(Integer.parseInt(op1), Integer.parseInt(op2), tokenizer)));
-            }
-        } while (str.hasMoreTokens());
-        return calc.pop();
-    }
-
     public static String getReversePolishNotation(String equation) {
         StringBuilder rpn = new StringBuilder();
         ArrayDeque<String> signStack = new ArrayDeque<>();
@@ -104,7 +54,7 @@ public class GetCalculate {
         return rpn.toString();
     }
 
-    private static int calcSimpleEquation(int op1, int op2, String op) {
+    public static int calcSimpleEquation(int op1, int op2, String op) {
         char c = op.charAt(0);
         switch (c) {
             case '+':
@@ -120,7 +70,7 @@ public class GetCalculate {
         }
     }
 
-    private static boolean isOperator(String op) {
+    public static boolean isOperator(String op) {
         char c = op.charAt(0);
         return c == '+' || c == '-' || c == '/' || c == '*';
     }
