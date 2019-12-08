@@ -1,3 +1,5 @@
+package servlet;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -8,11 +10,8 @@ import java.io.PrintWriter;
 import java.util.*;
 import java.util.regex.Pattern;
 
-@WebServlet(name = "CalcServlet", urlPatterns = "/calc")
+@WebServlet(name = "servlet.CalcServlet", urlPatterns = "/calc")
 public class CalcServlet extends HttpServlet {
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-    }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         PrintWriter out = response.getWriter();
@@ -67,8 +66,9 @@ public class CalcServlet extends HttpServlet {
                 return rightValue * leftValue;
             case '/':
                 return leftValue / rightValue;
+            default:
+                return 0;
         }
-        return 0;
     }
 
     private List<String> getPostfixOf(String input) {
