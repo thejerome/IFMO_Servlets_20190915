@@ -114,10 +114,7 @@ public class CalcServlet extends HttpServlet {
     }
     
     private static boolean isNumber(char c){
-        if (c >= '0' && c <= '9'){
-            return true;
-        }
-        return false;
+        return (c >= '0' && c <= '9');
     }
 
     //basic operation with two numbers
