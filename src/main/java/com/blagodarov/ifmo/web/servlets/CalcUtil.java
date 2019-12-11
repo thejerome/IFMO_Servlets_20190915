@@ -1,65 +1,67 @@
 package com.blagodarov.ifmo.web.servlets;
 
+import java.util.Stack;
+
 public class CalcUtil {
 
     public static int eval(String expression) {
         char[] equation = expression.toCharArray();
 
-        // Stack for numbers: 'values' 
-        int[] values = new int[26];
-        int currentVal = -1;
+        // Stack for numbers
+        Stack<Integer> values = new Stack<Integer>();
 
-        // Stack for Operators: 'ops' 
-        char[] ops = new char[50];
-        int currentOp = -1;
+        // Stack for operators 
+        Stack<Character> ops = new Stack<Character>();
+
         for (int i = 0; i < equation.length; i++) {
+            char symbol = equation[i];
 
             // If we are on a number
-            if (equation[i] >= '0' && equation[i] <= '9') {
+            if (isNumber(symbol)) {
                 StringBuilder newNumber = new StringBuilder();
-                while (i < equation.length && equation[i] >= '0' && equation[i] <= '9') //If number is big
+                while (i < equation.length && isNumber(equation[i])) //If number is big
                     newNumber.append(equation[i++]);
-                currentVal++;
-                values[currentVal] = Integer.parseInt(newNumber.toString());
+                values.push(Integer.parseInt(newNumber.toString()));
+                i--;
             }
 
             //if bracket starts
-            if (i < equation.length && equation[i] == '(') {
-                currentOp++;
-                ops[currentOp] = equation[i];
+            else if (symbol == '(') {
+                ops.push(symbol);
             }
 
             //if bracket ends, and also calc
-            if (i < equation.length && equation[i] == ')') {
-                while (ops[currentOp] != '(') {
-                    int[] ans = makeCalculation(values, ops, currentVal, currentOp);
-                    currentVal = ans[0];
-                    currentOp = ans[1];
+            else if (symbol == ')') {
+                while (ops.peek()!= '(') {
+                    int ans = oneOp(values.pop(), ops.pop(), values.pop());
+                    values.push(ans);
                 }
-                currentOp--;
+                ops.pop();
             }
 
 
             //if operator
-            if (i < equation.length && isOp(equation[i])){
-                while (currentOp != -1 && importance(equation[i]) <= importance(ops[currentOp])) {
-                    int[] ans = makeCalculation(values, ops, currentVal, currentOp);
-                    currentVal = ans[0];
-                    currentOp = ans[1];
+            else if (isOp(symbol)){
+                //check for negative numbers
+                if (symbol == '-' && (i==0 || equation[i-1] =='(')){
+                    values.push(0);
                 }
-                currentOp++;
-                ops[currentOp] = equation[i];
+                while (!ops.empty() && importance(symbol) <= importance(ops.peek())) {
+                    int ans = oneOp(values.pop(), ops.pop(), values.pop());
+                    values.push(ans);
+                }
+                ops.push(equation[i]);
             }
         }
         //final calculations when no brackets left
-        while (currentOp != -1) {
-            int[] ans = makeCalculation(values, ops, currentVal, currentOp);
-            currentVal = ans[0];
-            currentOp = ans[1];
+        while (!ops.empty()) {
+            int ans = oneOp(values.pop(), ops.pop(), values.pop());
+            values.push(ans);
         }
         //the only left is the result 
-        return values[currentVal];
+        return values.pop();
     }
+
 
     //makes order correct
     private static int importance(char op){
@@ -88,7 +90,12 @@ public class CalcUtil {
         }
     }
 
-    private static int oneOp(char op, int b, int a) {
+    private static boolean isNumber(char c){
+        return (c >= '0' && c <= '9');
+    }
+
+    //basic operation with two numbers
+    private static int oneOp(int b, char op, int a) {
         switch (op) {
             case '+':
                 return a + b;
@@ -101,21 +108,5 @@ public class CalcUtil {
             default:
                 return 0;
         }
-    }
-    private static int[] makeCalculation(int[] values, char[] ops, int currentVal, int currentOp){
-        int value2 = values[currentVal];
-        currentVal--;
-        int value1 = 0;
-        if (currentVal == -1)
-            currentVal++;
-        else
-            value1 = values[currentVal];
-        char op = ops[currentOp];
-        currentOp--;
-        values[currentVal] = oneOp(op, value2, value1);
-        int[] updated = new int[2];
-        updated[0] = currentVal;
-        updated[1] = currentOp;
-        return updated;
     }
 }
