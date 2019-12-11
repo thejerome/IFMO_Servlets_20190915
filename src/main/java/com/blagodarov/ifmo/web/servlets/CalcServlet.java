@@ -41,21 +41,24 @@ public class CalcServlet extends HttpServlet {
         Stack<Character> ops = new Stack<Character>();
         
         for (int i = 0; i < equation.length; i++) {
+             char symbol = equation[i];
+             
             // If we are on a number
-            if (equation[i] >= '0' && equation[i] <= '9') {
+            if (isNumber(symbol)) {
                 StringBuilder newNumber = new StringBuilder();
-                while (i < equation.length && equation[i] >= '0' && equation[i] <= '9') //If number is big
+                while (i < equation.length && isNumber(equation[i])) //If number is big
                     newNumber.append(equation[i++]);
                 values.push(Integer.parseInt(newNumber.toString()));
+                i--;
             }
 
             //if bracket starts
-            if (i < equation.length && equation[i] == '(') {
-                ops.push(equation[i]);
+            else if (symbol == '(') {
+                ops.push(symbol);
             }
 
             //if bracket ends, and also calc
-            if (i < equation.length && equation[i] == ')') {
+            else if (symbol == ')') {
                 while (ops.peek()!= '(') {
                     int ans = oneOp(values.pop(), ops.pop(), values.pop());
                     values.push(ans);
@@ -65,8 +68,8 @@ public class CalcServlet extends HttpServlet {
 
 
             //if operator
-            if (i < equation.length && isOp(equation[i])){
-                while (!ops.empty() && importance(equation[i]) <= importance(ops.peek())) {
+            else if (isOp(symbol)){
+                while (!ops.empty() && importance(symbol) <= importance(ops.peek())) {
                     int ans = oneOp(values.pop(), ops.pop(), values.pop());
                     values.push(ans);
                 }
@@ -108,6 +111,13 @@ public class CalcServlet extends HttpServlet {
             default:
                 return false;
         }
+    }
+    
+    private static boolean isNumber(char c){
+        if (c >= '0' && c <= '9'){
+            return true;
+        }
+        return false;
     }
 
     //basic operation with two numbers
