@@ -4,7 +4,7 @@ import java.util.*;
 import java.util.regex.Pattern;
 
 class Calc {
-    static String replaceVars(Map<String, String> vars) {
+    protected static String replaceVars(Map<String, String> vars) {
         String equation = vars.remove("expr");
         for (Map.Entry<String, String> param : vars.entrySet()) {
             String value;
@@ -19,7 +19,7 @@ class Calc {
         return equation;
     }
 
-    static int evaluate(String equation) {
+    protected static int evaluate(String equation) {
         List<String> rpn = getPostfixOf(equation); //infix form to postfix form for calc algorithm
         return getValueOf(rpn);
     }
