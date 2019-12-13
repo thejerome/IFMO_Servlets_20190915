@@ -58,11 +58,11 @@ public class Result extends HttpServlet {
         return deque.getFirst();
     }
 
-    private String rPN(String equation) {
-        equation = equation.replaceAll("\\s", "");
+    private String rPN(String eq) {
+        eq = eq.replaceAll("\\s", "");
         StringBuilder rpn = new StringBuilder();
         ArrayDeque<String> opStack = new ArrayDeque<>();
-        StringTokenizer st = new StringTokenizer(equation, "+-*/()", true);
+        StringTokenizer st = new StringTokenizer(eq, "+-*/()", true);
         while (st.hasMoreTokens()) {
             String token = st.nextToken();
             if (isNumber(token) || isVar(token)) {
