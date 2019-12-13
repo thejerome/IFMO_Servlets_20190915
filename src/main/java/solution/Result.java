@@ -22,6 +22,7 @@ public class Result extends HttpServlet {
         String result = "";
         String equation = (String) session.getAttribute("equation");
         try {
+            equation = equation.replaceAll("\\s", "");
             result = get( rPN(equation), req);
         } catch (IllegalAccessException e) {
             resp.setStatus(409);
@@ -59,7 +60,6 @@ public class Result extends HttpServlet {
     }
 
     private String rPN(String eq) {
-        eq = eq.replaceAll("\\s", "");
         StringBuilder rpn = new StringBuilder();
         ArrayDeque<String> opStack = new ArrayDeque<>();
         StringTokenizer st = new StringTokenizer(eq, "+-*/()", true);
