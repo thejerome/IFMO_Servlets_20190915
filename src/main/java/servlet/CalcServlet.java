@@ -88,7 +88,7 @@ public class CalcServlet extends HttpServlet {
                         output.add(ops.pop());
                     }
                     ops.pop();
-                } else if (!token.isBlank()){
+                } else if (!" ".equals(token)){
                     while (!ops.isEmpty() && hasHighPrecedence(token, ops.peek())) {
                         output.add(ops.pop());
                     }
