@@ -1,4 +1,5 @@
-import javax.servlet.ServletException;
+package calculation;
+
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -51,7 +52,7 @@ public class Solution extends HttpServlet {
     }
 
     private int get(String in) {
-        String equation = RPN(in);
+        String equation = rPN(in);
         int left;
         int right;
         String s;
@@ -88,7 +89,7 @@ public class Solution extends HttpServlet {
     }
 
 
-    private String RPN(String s) {
+    private String rPN(String s) {
         StringBuilder sbstack = new StringBuilder();
         StringBuilder sbOut = new StringBuilder();
         char cIn;
