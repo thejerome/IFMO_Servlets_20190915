@@ -74,7 +74,7 @@ class Calc {
                         output.add(ops.pop());
                     }
                     ops.pop();
-                } else if (!token.isBlank()){
+                } else if (!" ".equals(token)){
                     if("-".equals(token) &&
                             (output.isEmpty() || !isNum.matcher(output.get(output.size()-1)).matches()) &&
                             (ops.isEmpty() || "(".equals(ops.peek()))) {
