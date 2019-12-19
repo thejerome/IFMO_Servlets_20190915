@@ -52,6 +52,8 @@ public class EquationServlet extends HttpServlet {
                 switch (token) {
                     case "+":
                     case "-":
+                    case "*":
+                        break;
                     case ")":
                         while ("+-/*".contains(stack.getFirst())) {
                             polishNotation.add(stack.removeFirst());
@@ -62,7 +64,6 @@ public class EquationServlet extends HttpServlet {
                             stack.addFirst(token);
                         }
                         break;
-                    case "*":
                     case "/":
                         while ("/*".contains(stack.getFirst())) {
                             polishNotation.add(stack.removeFirst());
@@ -74,6 +75,7 @@ public class EquationServlet extends HttpServlet {
                         break;
                     default:
                         polishNotation.add(token);
+                        break;
                 }
             } catch (NoSuchElementException e) {
                 if (!(")").equals(token))
