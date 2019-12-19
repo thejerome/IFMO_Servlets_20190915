@@ -1,3 +1,5 @@
+package servlet;
+
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -54,7 +56,7 @@ public class EquationServlet extends HttpServlet {
                         while ("+-/*".contains(stack.getFirst())) {
                             polishNotation.add(stack.removeFirst());
                         }
-                        if (token.equals(")")) {
+                        if (")".equals(token)) {
                             stack.removeFirst();
                         } else {
                             stack.addFirst(token);
@@ -74,7 +76,7 @@ public class EquationServlet extends HttpServlet {
                         polishNotation.add(token);
                 }
             } catch (NoSuchElementException e) {
-                if (!token.equals(")"))
+                if (!(")").equals(token))
                     stack.addFirst(token);
             }
         }
@@ -110,6 +112,7 @@ public class EquationServlet extends HttpServlet {
                     if(args.containsKey(token)) {
                         stack.addFirst(args.get(token));
                     }
+                    break;
 
             }
         }
