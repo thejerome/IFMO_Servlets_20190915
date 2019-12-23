@@ -71,3 +71,7 @@ fabric.properties
 
 Embedded Tomcat
 tomcat.8080/
+
+.gradle/
+.idea/
+build/
