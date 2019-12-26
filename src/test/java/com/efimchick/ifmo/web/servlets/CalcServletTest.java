@@ -47,8 +47,6 @@ public class CalcServletTest {
                         + new File("./" + webappDirLocation).getAbsolutePath()
         );
 
-        // Declare an alternative location for your "WEB-INF/classes" dir
-        // Servlet 3.0 annotation will work
 
         File additionWebInfClasses = new File("build/classes");
         WebResourceRoot resources = new StandardRoot(ctx);
