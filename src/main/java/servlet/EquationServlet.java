@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.*;
 
 @WebServlet(
@@ -32,31 +33,41 @@ public class EquationServlet extends HttpServlet {
             Integer value = args.get(StringValue.get(key));
             args.put(key, value);
         }
-        List<String> polishTokens = parseIntoPolishNotation(equation);
+        List<String> polishTokens = null;
+        try {
+            polishTokens = parseIntoPolishNotation(equation);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         int result = calculate(polishTokens, args);
         resp.getOutputStream().print(result);
         resp.getOutputStream().flush();
         resp.getOutputStream().close();
     }
 
-    private List<String> parseIntoPolishNotation(String equation) {
-        List<String> tokens = new ArrayList<>();
-        StringTokenizer tokenizer = new StringTokenizer(equation.replaceAll(" ", ""), "()+-/*", true);
-        while (tokenizer.hasMoreElements()) {
-            tokens.add(tokenizer.nextToken());
+    private List<String> parseIntoPolishNotation(String equation) throws ParseException {
+        if (!(equation.contains("+")
+                || equation.contains("-")
+                || equation.contains("*")
+                || equation.contains("/"))) {
+            throw new ParseException("notValidEquation", 0);
         }
+        StringTokenizer tokenizer = new StringTokenizer(equation.replaceAll(" ", ""), "()+-/*", true);
+
         Deque<String> stack = new ArrayDeque<>();
         List<String> polishNotation = new ArrayList<>();
-        for (String token : tokens) {
+
+        while (tokenizer.hasMoreElements()) {
+            String token = tokenizer.nextToken();
             try {
                 switch (token) {
                     case "+":
                     case "-":
                     case ")":
-                        while ("+-/*".contains(stack.getFirst())) {
-                            polishNotation.add(stack.removeFirst());
-                        }
+                        iterateAndRemove("+-/*", stack, polishNotation);
                         if (")".equals(token)) {
+                            if (!stack.getFirst().equals("("))
+                                throw new ParseException("notValidEquation", 0);
                             stack.removeFirst();
                         } else {
                             stack.addFirst(token);
@@ -64,9 +75,7 @@ public class EquationServlet extends HttpServlet {
                         break;
                     case "*":
                     case "/":
-                        while ("/*".contains(stack.getFirst())) {
-                            polishNotation.add(stack.removeFirst());
-                        }
+                        iterateAndRemove("/*", stack, polishNotation);
                         stack.addFirst(token);
                         break;
                     case "(":
@@ -76,14 +85,23 @@ public class EquationServlet extends HttpServlet {
                         polishNotation.add(token);
                 }
             } catch (NoSuchElementException e) {
-                if (!(")").equals(token))
+                if (!")".equals(token)) {
                     stack.addFirst(token);
+                }
             }
         }
         while (!stack.isEmpty()) {
+            if (stack.getFirst().equals("("))
+                throw new ParseException("notValidEquation", 0);
             polishNotation.add(stack.removeFirst());
         }
         return polishNotation;
+    }
+
+    private void iterateAndRemove(String match, Deque<String> stack, List<String> polishNotation) {
+        while (match.contains(stack.getFirst())) {
+            polishNotation.add(stack.removeFirst());
+        }
     }
 
     private static int calculate(List<String> polishNotation, Map<String, Integer> args) {
