@@ -73,8 +73,8 @@ public class CalcServlet extends HttpServlet {
             if ('a' < letter.charAt(i) && 'z' > letter.charAt(i)) {
                 return true;
             }
+            i++;
         }
-        i++;
 
         return false;
     }
