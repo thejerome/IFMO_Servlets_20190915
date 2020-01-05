@@ -2,7 +2,7 @@ package com.ifmo.aumetov;
 
 import java.util.*;
 
-public class CalcMethod {
+public class CalcMethodUtil {
     private static String operators = "+-*/";
     private static String delimiters = "()" + operators;
 

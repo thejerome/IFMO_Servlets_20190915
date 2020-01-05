@@ -34,8 +34,8 @@ public class CalcServlet extends HttpServlet {
             }
         }
 
-        CalcMethod calcMethod = new CalcMethod();
-        List<String> expression = calcMethod.parse(equation);
+        CalcMethodUtil calcMethodUtil = new CalcMethodUtil();
+        List<String> expression = calcMethodUtil.parse(equation);
 
         servletResponseWriter.println(calc(expression));
     }
