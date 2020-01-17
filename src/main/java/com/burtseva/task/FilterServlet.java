@@ -1,3 +1,5 @@
+package com.burtseva.task;
+
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;

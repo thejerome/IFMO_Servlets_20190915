@@ -1,3 +1,5 @@
+package com.burtseva.task;
+
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -10,7 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
 
-@WebServlet(name = "Result", urlPatterns = {"/calc/result"})
+@WebServlet(name = "com.burtseva.task.Result", urlPatterns = {"/calc/result"})
 public class Result extends HttpServlet {
     private static boolean isPriorOper(char character) {
         return character == '*' || character == '/';

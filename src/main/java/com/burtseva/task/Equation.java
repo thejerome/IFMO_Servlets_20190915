@@ -1,3 +1,5 @@
+package com.burtseva.task;
+
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -6,8 +8,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-@WebServlet (name = "Equation", urlPatterns = {"/calc/equation"})
-
+@WebServlet (name = "com.burtseva.task.Equation", urlPatterns = {"/calc/equation"})
 public class Equation extends HttpServlet {
     private static boolean isOperator(char character) {
         return character == '+' || character == '-' || character == '*' || character == '/';
@@ -15,7 +16,7 @@ public class Equation extends HttpServlet {
     private static boolean isDelimiter(char character) {
         return character == '(' || character == ')';
     }
-    static boolean isVariable(char character) {
+    public static boolean isVariable(char character) {
         return character >= 'a' && character <= 'z';
     }
     private static boolean isNumber(char character) {
