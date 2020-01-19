@@ -46,9 +46,10 @@ class Calculator{
 
     private int placeVariable(char c) {
         String value = variables.get(String.valueOf(c));
-
         if (Pattern.matches("[a-z]", Character.toString(value.charAt(0)))) {
-            return placeVariable(value.charAt(0));
+            while (value.charAt(0) >= 'a' && value.charAt(0) <= 'z'){
+                return placeVariable(value.charAt(0));
+            }
         }
         return Integer.parseInt(value);
     }
@@ -56,6 +57,8 @@ class Calculator{
     private static String buildRPN(String equation) {
         StringBuilder op = new StringBuilder();
         Stack<Character> stack = new Stack<>();
+        if (equation.charAt(0) == '-')
+            op.append(0);
         for( int i = 0; i < equation.length(); i ++) {
             char c = equation.charAt(i);
             if (isOperand(Character.toString(c)))
@@ -70,6 +73,8 @@ class Calculator{
                 while (stack.peek() != '(')
                     op.append(stack.pop());
                 stack.pop();
+            } else {
+                return null;
             }
         }
         while (!stack.isEmpty())

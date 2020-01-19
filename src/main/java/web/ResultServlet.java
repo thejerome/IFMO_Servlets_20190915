@@ -26,20 +26,25 @@ public class ResultServlet extends HttpServlet{
         } else {
             try {
                 String equationRes = String.valueOf(httpSession.getAttribute("equation"));
-                Map<String, String> variables = new HashMap<>();
-                for (int i=0; i < equationRes.length(); ++i) {
-                    if (Pattern.matches("[a-z]", Character.toString(equationRes.charAt(i)))) {
-                        String variablesEq = String.valueOf(equationRes.charAt(i));
-                        String upVariables = String.valueOf(httpSession.getAttribute(variablesEq));
-                        variables.put(variablesEq, upVariables);
-                    }
-                }
+                Map<String, String> variables = upVariables(equationRes, httpSession);
                 Calculator equation = new Calculator(variables);
                 printWriter.print(equation.solve(equationRes));
             } catch (NullPointerException e) {
                 response.setStatus(409);
             }
         }
+    }
+
+    private Map<String, String> upVariables(String equationRes, HttpSession httpSession) {
+        Map<String, String> variables = new HashMap<>();
+        for (int i=0; i < equationRes.length(); ++i) {
+            if (Pattern.matches("[a-z]", Character.toString(equationRes.charAt(i)))) {
+                String variablesEq = String.valueOf(equationRes.charAt(i));
+                String upVariables = String.valueOf(httpSession.getAttribute(variablesEq));
+                variables.put(variablesEq, upVariables);
+            }
+        }
+        return variables;
     }
 
 }
