@@ -16,7 +16,7 @@ import javax.servlet.annotation.WebServlet;
         urlPatterns = {"/calc"}
 )
 
-public class calculator extends HttpServlet{
+public class Calculator extends HttpServlet{
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         PrintWriter out = resp.getWriter();
@@ -103,7 +103,7 @@ public class calculator extends HttpServlet{
         return ch == '*' || ch == '-' || ch == '/' || ch == '+' ;
     }
 
-    private int isThat_D_or_M(char ch) {
+    private int isThatDorM(char ch) {
         switch (ch) {
             case '/':
             case '*':
@@ -123,7 +123,7 @@ public class calculator extends HttpServlet{
             if (whatIsOperator(currentChar)) {
                 while (basket.length() > 0) {
                     basketChar = basket.charAt(basket.length() - 1);
-                    if ((isThat_D_or_M(currentChar) <= isThat_D_or_M(basketChar)) && whatIsOperator(basketChar)) {
+                    if ((isThatDorM(currentChar) <= isThatDorM(basketChar)) && whatIsOperator(basketChar)) {
                         finalOut.append(" ").append(basketChar);
                         basket.setLength(basket.length() - 1);
                     } else {
