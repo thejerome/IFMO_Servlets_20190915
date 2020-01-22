@@ -1,4 +1,5 @@
-import javax.servlet.ServletException;
+package task2;
+
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -10,7 +11,7 @@ import java.util.regex.Pattern;
 public class ParametersServlet extends HttpServlet {
 
     @Override
-    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) {
         final String[] part = req.getRequestURI().split("/");
         final String param = part[part.length - 1];
 
@@ -19,7 +20,7 @@ public class ParametersServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         final String[] part = req.getRequestURI().split("/");
         final String param = part[part.length - 1];
 
