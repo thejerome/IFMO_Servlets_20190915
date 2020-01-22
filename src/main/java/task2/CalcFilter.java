@@ -17,7 +17,7 @@ import java.util.regex.Pattern;
 @WebFilter("/calc/result")
 public class CalcFilter implements Filter {
 
-    private final Pattern variableRegex = Pattern.compile("[a-z]");
+    private static final Pattern VARIABLE_REGEX = Pattern.compile("[a-z]");
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
@@ -43,7 +43,7 @@ public class CalcFilter implements Filter {
         }
 
         req.getSession().setAttribute("_equation", eq);
-        for (Matcher matcher = variableRegex.matcher(eq); matcher.find(); matcher = variableRegex.matcher(eq)) {
+        for (Matcher matcher = VARIABLE_REGEX.matcher(eq); matcher.find(); matcher = VARIABLE_REGEX.matcher(eq)) {
             final int start = matcher.start();
             final int end = matcher.end();
 
@@ -64,9 +64,15 @@ public class CalcFilter implements Filter {
         chain.doFilter(req, resp);
     }
 
+    /**
+     * Unnecessary method
+     */
     @Override
     public void init(FilterConfig filterConfig) {}
 
+    /**
+     * Unnecessary method
+     */
     @Override
     public void destroy() {}
 }

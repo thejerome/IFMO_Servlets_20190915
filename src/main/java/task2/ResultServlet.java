@@ -11,10 +11,11 @@ import java.util.regex.Pattern;
 @WebServlet("/calc/result")
 public class ResultServlet extends HttpServlet {
 
-    private final Pattern parenthesesRegex = Pattern.compile("\\([^()]*\\)");
-    private final Pattern[] subeqRegex = new Pattern[] {Pattern.compile("-?\\d+[*/]-?\\d+"),
-            Pattern.compile("-?\\d+[+-]-?\\d+")};
-    private final Pattern opRegex = Pattern.compile("\\d[+*/-][\\d-]");
+    private static final Pattern PARENTHESES_REGEX = Pattern.compile("\\([^()]*\\)");
+    private static final Pattern[] SUBEQ_REGEX = new Pattern[] {
+            Pattern.compile("-?\\d+[*/]-?\\d+"), Pattern.compile("-?\\d+[+-]-?\\d+")
+    };
+    private static final Pattern OP_REGEX = Pattern.compile("\\d[+*/-][\\d-]");
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -22,7 +23,7 @@ public class ResultServlet extends HttpServlet {
             String eq = req.getSession().getAttribute("equation").toString();
             req.getSession().setAttribute("equation", req.getSession().getAttribute("_equation"));
 
-            for (Matcher matcher = parenthesesRegex.matcher(eq); matcher.find(); matcher = parenthesesRegex.matcher(eq)) {
+            for (Matcher matcher = PARENTHESES_REGEX.matcher(eq); matcher.find(); matcher = PARENTHESES_REGEX.matcher(eq)) {
                 final int start = matcher.start();
                 final int end = matcher.end();
 
@@ -39,7 +40,7 @@ public class ResultServlet extends HttpServlet {
     private String calc(String equation) {
         String eq = equation;
 
-        for (Pattern subeqRegex : subeqRegex) {
+        for (Pattern subeqRegex : SUBEQ_REGEX) {
             for (Matcher matcher = subeqRegex.matcher(eq); matcher.find(); matcher = subeqRegex.matcher(eq)) {
                 final int start = matcher.start();
                 final int end = matcher.end();
@@ -53,7 +54,7 @@ public class ResultServlet extends HttpServlet {
     }
 
     private Long calcSubeq(String subeq) {
-        final Matcher matcher = opRegex.matcher(subeq);
+        final Matcher matcher = OP_REGEX.matcher(subeq);
 
         if (!matcher.find()) {
             return null;
