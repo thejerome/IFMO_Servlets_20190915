@@ -1,3 +1,5 @@
+package task1;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -42,7 +44,9 @@ public class CalcServlet extends HttpServlet {
         resp.getWriter().println(calc(eq));
     }
 
-    private String calc(String eq) {
+    private String calc(String equation) {
+        String eq = equation;
+
         for (Pattern subeqRegex : subeqRegex) {
             for (Matcher matcher = subeqRegex.matcher(eq); matcher.find(); matcher = subeqRegex.matcher(eq)) {
                 final int start = matcher.start();
@@ -56,11 +60,11 @@ public class CalcServlet extends HttpServlet {
         return eq;
     }
 
-    private long calcSubeq(String subeq) {
+    private Long calcSubeq(String subeq) {
         final Matcher matcher = opRegex.matcher(subeq);
 
         if (!matcher.find()) {
-            throw new RuntimeException();
+            return null;
         }
 
         final int pos = matcher.start() + 1;
@@ -72,7 +76,7 @@ public class CalcServlet extends HttpServlet {
             case '-': return first - second;
             case '*': return first * second;
             case '/': return first / second;
-            default: throw new RuntimeException();
+            default: return null;
         }
     }
 }
