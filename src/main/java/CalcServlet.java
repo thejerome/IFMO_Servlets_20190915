@@ -12,9 +12,9 @@ public class CalcServlet extends HttpServlet {
 
     private final Pattern variableRegex = Pattern.compile("[a-z]");
     private final Pattern parenthesesRegex = Pattern.compile("\\([^()]*\\)");
-    private final Pattern[] subeqRegex = new Pattern[] {Pattern.compile("\\d+[*/]\\d+"),
-            Pattern.compile("\\d+[+-]\\d+")};
-    private final Pattern opRegex = Pattern.compile("[+*/-]");
+    private final Pattern[] subeqRegex = new Pattern[] {Pattern.compile("-?\\d+[*/]-?\\d+"),
+            Pattern.compile("-?\\d+[+-]-?\\d+")};
+    private final Pattern opRegex = Pattern.compile("\\d[+*/-][\\d-]");
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -27,6 +27,9 @@ public class CalcServlet extends HttpServlet {
             eq = eq.substring(0, start) + req.getParameter(eq.substring(start, end)) +
                     (end == eq.length() - 1 ? "" : eq.substring(end));
         }
+
+        eq = eq.replaceAll("---", "-");
+        eq = eq.replaceAll("--", "+");
 
         for (Matcher matcher = parenthesesRegex.matcher(eq); matcher.find(); matcher = parenthesesRegex.matcher(eq)) {
             final int start = matcher.start();
@@ -60,7 +63,7 @@ public class CalcServlet extends HttpServlet {
             throw new RuntimeException();
         }
 
-        final int pos = matcher.start();
+        final int pos = matcher.start() + 1;
         final long first = Long.parseLong(subeq.substring(0, pos));
         final long second = Long.parseLong(subeq.substring(pos + 1));
 
