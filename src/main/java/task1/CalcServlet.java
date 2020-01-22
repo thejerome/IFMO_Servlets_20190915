@@ -12,17 +12,18 @@ import java.util.regex.Pattern;
 @WebServlet("/calc")
 public class CalcServlet extends HttpServlet {
 
-    private final Pattern variableRegex = Pattern.compile("[a-z]");
-    private final Pattern parenthesesRegex = Pattern.compile("\\([^()]*\\)");
-    private final Pattern[] subeqRegex = new Pattern[] {Pattern.compile("-?\\d+[*/]-?\\d+"),
-            Pattern.compile("-?\\d+[+-]-?\\d+")};
-    private final Pattern opRegex = Pattern.compile("\\d[+*/-][\\d-]");
+    private static final Pattern VARIABLE_REGEX = Pattern.compile("[a-z]");
+    private static final Pattern PARENTHESES_REGEX = Pattern.compile("\\([^()]*\\)");
+    private static final Pattern[] SUBEQ_REGEX = new Pattern[] {
+            Pattern.compile("-?\\d+[*/]-?\\d+"), Pattern.compile("-?\\d+[+-]-?\\d+")
+    };
+    private static final Pattern OP_REGEX = Pattern.compile("\\d[+*/-][\\d-]");
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String eq = req.getParameter("equation").replaceAll("\\s", "");
 
-        for (Matcher matcher = variableRegex.matcher(eq); matcher.find(); matcher = variableRegex.matcher(eq)) {
+        for (Matcher matcher = VARIABLE_REGEX.matcher(eq); matcher.find(); matcher = VARIABLE_REGEX.matcher(eq)) {
             final int start = matcher.start();
             final int end = matcher.end();
 
@@ -33,7 +34,7 @@ public class CalcServlet extends HttpServlet {
         eq = eq.replaceAll("---", "-");
         eq = eq.replaceAll("--", "+");
 
-        for (Matcher matcher = parenthesesRegex.matcher(eq); matcher.find(); matcher = parenthesesRegex.matcher(eq)) {
+        for (Matcher matcher = PARENTHESES_REGEX.matcher(eq); matcher.find(); matcher = PARENTHESES_REGEX.matcher(eq)) {
             final int start = matcher.start();
             final int end = matcher.end();
 
@@ -47,7 +48,7 @@ public class CalcServlet extends HttpServlet {
     private String calc(String equation) {
         String eq = equation;
 
-        for (Pattern subeqRegex : subeqRegex) {
+        for (Pattern subeqRegex : SUBEQ_REGEX) {
             for (Matcher matcher = subeqRegex.matcher(eq); matcher.find(); matcher = subeqRegex.matcher(eq)) {
                 final int start = matcher.start();
                 final int end = matcher.end();
@@ -61,7 +62,7 @@ public class CalcServlet extends HttpServlet {
     }
 
     private Long calcSubeq(String subeq) {
-        final Matcher matcher = opRegex.matcher(subeq);
+        final Matcher matcher = OP_REGEX.matcher(subeq);
 
         if (!matcher.find()) {
             return null;
