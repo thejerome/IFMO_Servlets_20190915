@@ -2,7 +2,7 @@ package servlets;
 import java.util.Stack;
 import java.util.StringTokenizer;
 
-public class Helper {
+public class CalcHelper {
     public static boolean isLetter(char ch) {
         return (ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z');
     }
@@ -75,7 +75,8 @@ public class Helper {
     }
 
     public static int calculation(String st) {
-        int left, right;
+        int right;
+        int left;
         Stack<Integer> stack = new Stack<>();
         String equation = toPostfix(st);
         StringTokenizer stringTokenizer = new StringTokenizer(equation);

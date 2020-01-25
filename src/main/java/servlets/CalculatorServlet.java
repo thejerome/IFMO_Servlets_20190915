@@ -23,9 +23,9 @@ public class CalculatorServlet extends HttpServlet {
     private int getResult(String equation, HttpServletRequest request) {
         StringBuilder numericEquation = new StringBuilder();
         for (int i = 0; i < equation.length(); i++) {
-            if (Helper.isLetter(equation.charAt(i))) {
+            if (CalcHelper.isLetter(equation.charAt(i))) {
                 String parameter = request.getParameter(Character.toString(equation.charAt(i)));
-                while (Helper.isLetter(parameter.charAt(0))) {
+                while (CalcHelper.isLetter(parameter.charAt(0))) {
                     parameter = request.getParameter(Character.toString(parameter.charAt(0)));
                 }
                 numericEquation.append(parameter);
@@ -35,7 +35,7 @@ public class CalculatorServlet extends HttpServlet {
                 numericEquation.append(equation.charAt(i));
             }
         }
-        return Helper.calculation(numericEquation.toString());
+        return CalcHelper.calculation(numericEquation.toString());
     }
 }
 
