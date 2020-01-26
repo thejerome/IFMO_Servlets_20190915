@@ -62,7 +62,7 @@ public class ResultServlet extends HttpServlet {
     }
 
     public static int calculation(String st) {
-        int left, right;
+        int left;
         Stack<Integer> stack = new Stack<>();
         String equation = toPostfix(st);
         StringTokenizer stringTokenizer = new StringTokenizer(equation);
@@ -70,7 +70,7 @@ public class ResultServlet extends HttpServlet {
         while (stringTokenizer.hasMoreTokens()) {
             tmp = stringTokenizer.nextToken();
             if (SomeHelper.isOperator(tmp.charAt(0)) && 1 == tmp.length()) {
-                right = stack.pop();
+                int right = stack.pop();
                 left = stack.pop();
                 left = SomeHelper.calculate(left, right, tmp.charAt(0));
                 stack.push(left);
