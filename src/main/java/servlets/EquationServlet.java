@@ -48,7 +48,6 @@ public class EquationServlet extends HttpServlet {
         throws ServletException, IOException {
 
         String key = "equation";
-
         HttpSession session = request.getSession(false);
         session.removeAttribute(key);
 
