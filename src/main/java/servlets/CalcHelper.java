@@ -95,5 +95,4 @@ public class CalcHelper {
         }
         return stack.pop();
     }
-
 }
