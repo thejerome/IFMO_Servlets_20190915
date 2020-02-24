@@ -23,10 +23,6 @@ public class CalculationServlet extends HttpServlet {
         out.write(evalPostfix(mapVariables(equationToPostfix(equation), map)));
     }
 
-    private static boolean isLetter(char ch) {
-        return ch >= 'a' && ch <= 'z';
-    }
-
     private static String equationToPostfix(String expr) {
         StringBuilder result = new StringBuilder();
         Stack<Character> stack = new Stack<>();
