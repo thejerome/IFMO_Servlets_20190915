@@ -47,11 +47,9 @@ public class CalculationServlet extends HttpServlet {
                 }
             } catch (IllegalArgumentException e) {
                 response.setStatus(409);
-                printWriter.println("");
             }
         } else {
             response.setStatus(409);
-            response.getWriter().println("");
         }
     }
 
