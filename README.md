@@ -17,3 +17,4 @@ All calculations are supposed to be integer.
 
 Other implementation restrictions are covered by unit tests. 
  
+Sho mus g o
