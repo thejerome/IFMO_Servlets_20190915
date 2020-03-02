@@ -1,7 +1,11 @@
 package com.efmichik.ifmo.web.servlets;
 
-import javax.servlet.*;
 import javax.servlet.Filter;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletResponse;
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,6 +17,7 @@ public class CalcFilter implements Filter {
     private final static String SESSION_EXPRESSION = "expression";
     private final static String SESSION_VARIABLE = "variable_";
 
+    /*Unused method. Need to implement Filter Interface Correctly*/
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
     }
@@ -31,6 +36,7 @@ public class CalcFilter implements Filter {
         chain.doFilter(request, response);
     }
 
+    /*Unused method. Need to implement Filter Interface Correctly*/
     @Override
     public void destroy() {
     }

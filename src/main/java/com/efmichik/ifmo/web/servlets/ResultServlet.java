@@ -83,8 +83,9 @@ public class ResultServlet extends HttpServlet {
                     throw new UnsupportedOperationException("Cannot divide by zero");
                 }
                 return a / b;
+            default:
+                return 0;
         }
-        return 0;
     }
 
     private int getVariableValue(HttpServletRequest req, String variable) {
