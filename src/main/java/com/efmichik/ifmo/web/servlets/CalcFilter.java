@@ -17,7 +17,9 @@ public class CalcFilter implements Filter {
     private final static String SESSION_EXPRESSION = "expression";
     private final static String SESSION_VARIABLE = "variable_";
 
-    /*Unused method. Need to implement Filter Interface Correctly*/
+    /**
+     * Unnecessary method
+     */
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
     }
@@ -36,7 +38,9 @@ public class CalcFilter implements Filter {
         chain.doFilter(request, response);
     }
 
-    /*Unused method. Need to implement Filter Interface Correctly*/
+    /**
+     * Unnecessary method
+     */
     @Override
     public void destroy() {
     }
