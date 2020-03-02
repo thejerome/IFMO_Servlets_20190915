@@ -21,8 +21,7 @@ public class CalcFilter implements Filter {
      * Unnecessary method
      */
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
-    }
+    public void init(FilterConfig filterConfig) throws ServletException {}
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
@@ -42,8 +41,7 @@ public class CalcFilter implements Filter {
      * Unnecessary method
      */
     @Override
-    public void destroy() {
-    }
+    public void destroy() {}
 
     private String getExpression(HttpServletRequest req) {
         HttpSession session = req.getSession();
