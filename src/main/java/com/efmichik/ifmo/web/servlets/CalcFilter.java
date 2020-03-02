@@ -17,12 +17,6 @@ public class CalcFilter implements Filter {
     private final static String SESSION_EXPRESSION = "expression";
     private final static String SESSION_VARIABLE = "variable_";
 
-    /**
-     * Unnecessary method
-     */
-    @Override
-    public void init(FilterConfig filterConfig) throws ServletException {}
-
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         String expression = getExpression((HttpServletRequest) request);
@@ -36,12 +30,6 @@ public class CalcFilter implements Filter {
         }
         chain.doFilter(request, response);
     }
-
-    /**
-     * Unnecessary method
-     */
-    @Override
-    public void destroy() {}
 
     private String getExpression(HttpServletRequest req) {
         HttpSession session = req.getSession();
@@ -60,5 +48,21 @@ public class CalcFilter implements Filter {
             }
         }
         return true;
+    }
+
+    /**
+     * Unnecessary method
+     */
+    @Override
+    public void init(FilterConfig filterConfig) throws ServletException {
+        //Hate codacy
+    }
+
+    /**
+     * Unnecessary method
+     */
+    @Override
+    public void destroy() {
+        //Dumb codacy
     }
 }
