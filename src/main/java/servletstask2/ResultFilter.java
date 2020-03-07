@@ -14,8 +14,13 @@ import java.io.IOException;
 @WebFilter("/calc/*")
 public class ResultFilter implements Filter {
 
+    private FilterConfig filterConfig;
+
     @Override
-    public void init(FilterConfig filterConfig) {}
+    public void init(FilterConfig filterConfig) {
+        this.filterConfig = filterConfig;
+        filterConfig.getServletContext().log(String.format("%s initialized", filterConfig.getFilterName()));
+    }
 
     @Override
     public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws IOException, ServletException {
@@ -27,17 +32,24 @@ public class ResultFilter implements Filter {
     }
 
     @Override
-    public void destroy() {}
+    public void destroy() {
+        filterConfig.getServletContext().log(String.format("%s destroyed", filterConfig.getFilterName()));
+        filterConfig = null;
+    }
 
     private void doFilter(HttpServletRequest req, HttpServletResponse resp, FilterChain chain) throws IOException, ServletException {
         if (req.getPathInfo().split("/")[1].equals("result")) {
             if (req.getMethod().equalsIgnoreCase("get")) {
                 chain.doFilter(req, resp);
+                return;
             }
         } else {
             if (!req.getMethod().equalsIgnoreCase("get")) {
                 chain.doFilter(req, resp);
+                return;
             }
         }
+
+        filterConfig.getServletContext().log(String.format("%s %s is not permitted", req.getMethod(), req.getRequestURI()));
     }
 }
