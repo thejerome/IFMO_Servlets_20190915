@@ -109,7 +109,7 @@ public class Calculator{
         return strNum.matches("-?\\d+(\\.\\d+)?");
     }
 
-    static boolean validation(String eq) {
+    public static boolean validation(String eq) {
         int index = 0;
         for (int i = 0; i < eq.length(); i++) {
             char c = eq.charAt(i);
