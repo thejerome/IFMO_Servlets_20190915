@@ -122,7 +122,7 @@ public class Calculator{
         return index != 0;
     }
 
-    private boolean isoperator(char c){
+    private static boolean isoperator(char c){
         return c =='+' || c == '-' || c =='/' || c == '*' || c == '^';
     }
 }
