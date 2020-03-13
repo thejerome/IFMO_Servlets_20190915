@@ -24,7 +24,6 @@ public class ExpressionServlet extends HttpServlet {
             System.out.println("equation " + expression + " created");
         }
         session.setAttribute("equation", expression);
-        return;
     }
 
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp)  {
