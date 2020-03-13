@@ -88,7 +88,7 @@ public class Calculator {
                 else return resolveVar(v.charAt(0), map);
             }
         } catch (Exception e) {
-            throw new Exception();
+            throw new RuntimeException();
         }
     }
 }
