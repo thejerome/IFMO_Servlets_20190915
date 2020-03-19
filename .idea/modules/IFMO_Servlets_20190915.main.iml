@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module version="4">
+  <component name="ExternalSystem" externalSystem="GRADLE" externalSystemModuleGroup="com.efimchick.ifmo.web" externalSystemModuleType="sourceSet" externalSystemModuleVersion="1.0-SNAPSHOT" linkedProjectId="IFMO_Servlets_20190915:main" linkedProjectPath="$MODULE_DIR$/../.." rootProjectPath="$MODULE_DIR$/../.." />
+  <component name="FacetManager">
+    <facet type="web" name="Web Gradle : IFMO_Servlets_20190915-1.0-SNAPSHOT.war">
+      <configuration>
+        <webroots>
+          <root url="file://C:\Users\Hooin Kema\IdeaProjects\IFMO_Servlets_20190915\src\main\webapp" relative="/" />
+        </webroots>
+        <sourceRoots />
+      </configuration>
+    </facet>
+  </component>
+</module>
