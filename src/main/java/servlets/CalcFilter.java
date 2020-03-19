@@ -20,11 +20,11 @@ public class CalcFilter implements Filter {
 
     private static final Pattern VARIABLE_REGEX = Pattern.compile("[a-z]");
 
-    /**
-     * Unnecessary method
-     */
     @Override
-    public void init(FilterConfig filterConfig) {}
+    public void init(FilterConfig filterConfig) {
+        this.filterConfig = filterConfig;
+        filterConfig.getServletContext().log(String.format("%s initialized", filterConfig.getFilterName()));
+    }
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
@@ -68,9 +68,11 @@ public class CalcFilter implements Filter {
         chain.doFilter(req, resp);
     }
 
-    /**
-     * Unnecessary method
-     */
+    private FilterConfig filterConfig;
+
     @Override
-    public void destroy() {}
+    public void destroy() {
+        filterConfig.getServletContext().log(String.format("%s destroyed", filterConfig.getFilterName()));
+        filterConfig = null;
+    }
 }
