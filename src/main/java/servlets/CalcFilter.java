@@ -20,6 +20,8 @@ public class CalcFilter implements Filter {
 
     private static final Pattern VARIABLE_REGEX = Pattern.compile("[a-z]");
 
+    private FilterConfig filterConfig;
+
     @Override
     public void init(FilterConfig filterConfig) {
         this.filterConfig = filterConfig;
@@ -67,8 +69,6 @@ public class CalcFilter implements Filter {
         req.getSession().setAttribute("equation", eq);
         chain.doFilter(req, resp);
     }
-
-    private FilterConfig filterConfig;
 
     @Override
     public void destroy() {
