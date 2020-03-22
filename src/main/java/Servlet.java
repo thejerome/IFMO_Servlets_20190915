@@ -1,3 +1,5 @@
+package calc;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -10,7 +12,7 @@ import java.util.regex.Pattern;
 
 
 @WebServlet(
-        name="Servlet",
+        name="calc.Servlet",
         urlPatterns = {"/calc"}
 )
 public class Servlet extends HttpServlet {
@@ -29,14 +31,6 @@ public class Servlet extends HttpServlet {
             }
         }
         resp.getWriter().print(start(equation, var));
-    }
-
-    private boolean containsLetters(String str) {
-        for (char c : str.toCharArray()) {
-            if (c >= 'A' && c <= 'Z')
-                return true;
-        }
-        return false;
     }
 
     private boolean containsNiceLetters(String str) {
@@ -72,11 +66,11 @@ public class Servlet extends HttpServlet {
     private boolean checkInt(Object var) {
         try {
             int val = (int) var;
+            System.out.println(val);
         } catch (ClassCastException e) {
             return false;
-        } finally {
-            return true;
         }
+        return true;
     }
 
     private String replace(Map<String, Object> varsMap, String expr) {
