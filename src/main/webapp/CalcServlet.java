@@ -1,12 +1,16 @@
 package servlet;
 
-import javax.servlet.*;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.*;
 import java.io.*;
 import java.util.*;
 import java.util.regex.Pattern;
 
 @WebServlet(name = "servlet.CalcServlet", urlPatterns="/calc")
 public class CalcServlet extends HttpServlet {
+
+
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         PrintWriter writer = response.getWriter();
         Map<String, String[]> eqVarialbes = new HashMap<String, String[]>(request.getParameterMap());
