@@ -2,7 +2,9 @@ package servlet;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.*;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.util.*;
 import java.util.regex.Pattern;
@@ -15,16 +17,14 @@ public class CalcServlet extends HttpServlet {
         PrintWriter writer = response.getWriter();
         Map<String, String[]> eqVarialbes = new HashMap<String, String[]>(request.getParameterMap());
         String equation = createEquation(eqVarialbes);
-        writer.write(calculate(equation));
-        writer.flush();
-        writer.close();
+        writer.println(calculate(equation));
     }
 
     private String createEquation(Map<String, String[]> eqVarialbles) {
         String res = eqVarialbles.remove("equation")[0];
         for(Map.Entry<String, String[]> param : eqVarialbles.entrySet()) {
             String value;
-            if (Charecter.isAlphabetic(param.getValue()[0].charAt(0))) {
+            if (Character.isAlphabetic(param.getValue()[0].charAt(0))) {
                 value = eqVarialbles.get(param.getValue()[0])[0];
             } else {
                 value = param.getValue()[0];
@@ -40,7 +40,7 @@ public class CalcServlet extends HttpServlet {
     }
 
     private List<String> getPostfixOf(String equation) {
-        StringTokinizer stringTokinizer = new StringTokinizer(equation, "(+-*/) ", true);
+        StringTokenizer stringTokinizer = new StringTokenizer(equation, "(+-*/) ", true);
         List<String> res = new ArrayList<String>();
         Stack<String> operands = new Stack<String>();
         Pattern pattern = Pattern.compile("\\d+");
@@ -108,14 +108,14 @@ public class CalcServlet extends HttpServlet {
 
     private int doOperation(int first, int second, char operation) {
         switch(operation) {
-            case "+":
+            case '+':
                 return first + second;
-            case "-":
-                return first - second;
-            case "*":
+            case '-':
+                return second - first;
+            case '*':
                 return first * second;
-            case "/":
-                return first / second;
+            case '/':
+                return second / first;
             default:
                 return 0;
         }
