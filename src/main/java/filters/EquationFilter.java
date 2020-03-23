@@ -29,12 +29,12 @@ public class EquationFilter implements Filter {
 
     @Override
     public void destroy() {
-
+        // something goes here
     }
 
     @Override
     public void init(FilterConfig config) {
-
+        // something goes here
     }
 
     private boolean isGood(String toCheck) {
