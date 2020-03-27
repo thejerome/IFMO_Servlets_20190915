@@ -25,7 +25,8 @@ public class Calculator {
         return false;
     }
 
-    private static String clear(String expr, Map<String, Object> var) {
+    private static String clear(String expr1, Map<String, Object> var) {
+        String expr = expr1;
         List<String> keysToDelete = new ArrayList<>();
         for (Map.Entry<String, Object> kek : var.entrySet()) {
             System.out.println(expr);
@@ -124,20 +125,20 @@ public class Calculator {
         return out.toString().split(" ");
     }
 
-    private enum op {
+    private enum Op {
         PLUS(1), MINUS(1), STAR(2), NOTSTAR(2);
         final int prec;
 
-        op(int p) {
+        Op(int p) {
             prec = p;
         }
     }
 
-    private static Map<String, op> operators = new HashMap<String, op>() {{
-        put("+", op.PLUS);
-        put("-", op.MINUS);
-        put("*", op.STAR);
-        put("/", op.NOTSTAR);
+    private static Map<String, Op> operators = new HashMap<String, Op>() {{
+        put("+", Op.PLUS);
+        put("-", Op.MINUS);
+        put("*", Op.STAR);
+        put("/", Op.NOTSTAR);
     }};
 
     private static boolean prec(String op, String sub) {
@@ -163,8 +164,10 @@ public class Calculator {
                 return num2 * num1;
             case "/":
                 return num2 / num1;
+            default:
+                throw new IllegalArgumentException();
         }
-        throw new IllegalArgumentException();
+
     }
 
     private static int answer(String[] toks) {
