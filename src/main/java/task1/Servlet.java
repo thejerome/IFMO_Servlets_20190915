@@ -23,9 +23,9 @@ public class Servlet extends HttpServlet {
         resp.getOutputStream().flush();
     }
 
-    private String clear(String expr, Map<String, String[]> par) {
+    private String clear(String expr1, Map<String, String[]> par) {
         Map<String, Object> var = new HashMap<>();
-
+        String expr = expr1;
         for (Map.Entry<String, String[]> param : par.entrySet()) {
             if (!"equation".equals(param.getKey())) {
                 var.put(param.getKey(), param.getValue()[0]);
