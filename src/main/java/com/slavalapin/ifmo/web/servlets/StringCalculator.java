@@ -10,11 +10,11 @@ import javax.servlet.http.HttpServletResponse;
 
 
 @WebServlet(
-        name = "StringCalc",
+        name = "StringCalculator",
         urlPatterns = "/calc"
 )
 
-public class StringCalc extends HttpServlet {
+public class StringCalculator extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest requestCalculation, HttpServletResponse responseCalculation)
@@ -24,23 +24,23 @@ public class StringCalc extends HttpServlet {
         String expressionOriginal = requestParameters.get("equation")[0];
 
         ArrayDeque<String> expressionReady = mapVariables(toPolishNotation(expressionOriginal), requestParameters);
-        String result = compute(expressionReady);
+        int result = compute(expressionReady);
 
         PrintWriter responseBodyWriter = responseCalculation.getWriter();
-        responseBodyWriter.printLn(result.toString());
+        responseBodyWriter.print(result);
         responseBodyWriter.flush();
         responseBodyWriter.close();
     }
 
 
     private int compute(ArrayDeque<String> expression) {
-       Stack<Integer> calculationStack = new Stack<>;
-       while (!expression.isEmpty) {
-           step = expression.poll();
+       Stack<Integer> calculationStack = new Stack<Integer>();
+       while (!expression.isEmpty()) {
+           String step = expression.poll();
            if(Character.isDigit(step.charAt(0)))
                calculationStack.push(Integer.parseInt(step));
            else {
-               char symbol = step.at(0);
+               char symbol = step.charAt(0);
                int rightOperand = calculationStack.pop();
                int leftOperand = calculationStack.pop();
                int resultIntermediate = 0;
@@ -68,21 +68,21 @@ public class StringCalc extends HttpServlet {
 
     private ArrayDeque<String> toPolishNotation(String inputExpression) {
 
-        Strig expression = "(" + inputExpression + ")";
+        String expression = "(" + inputExpression + ")";
         ArrayDeque<String> expressionPolished = new ArrayDeque<>();
 
-        Stack<Char> operandCharStack = new Stack<>;
+        Stack<Character> operandCharStack = new Stack<Character>();
         int i = 0;
         while (i < expression.length()) {
             char cursor = expression.charAt(i);
 
             if (Character.isDigit(cursor) || Character.isLetter(cursor)) {
-                String entity = "";
+                StringBuilder entity = new StringBuilder();
                 while (Character.isDigit(cursor) || Character.isLetter(cursor)) {
-                    entity = entity + expression.charAt(i);
+                    entity.append(expression.charAt(i));
                     i++;
                 }
-                expressionPolished.offer(entity);
+                expressionPolished.offer(entity.toString());
                 i--;
             }
 
@@ -112,19 +112,19 @@ public class StringCalc extends HttpServlet {
         }
 
     private ArrayDeque<String> mapVariables (ArrayDeque<String> templateExpression, Map<String, String[]> variables) {
-        ArrayDeque<String> builtExpression = new ArrayDeque<>;
+        ArrayDeque<String> builtExpression = new ArrayDeque<String>();
         for (String item : templateExpression){
-            if Character.isLetter(item.charAt(0))
+            if (Character.isLetter(item.charAt(0)))
                 builtExpression.offer(untangleVariablesMap(variables, item));
             else
-                builtExpression.offfer(item);
+                builtExpression.offer(item);
         }
         return builtExpression;
     }
 
     private String untangleVariablesMap(Map<String, String[]> variables, String variableName) {
         String value = variables.get(variableName)[0];
-        if Character.isDigit(value.charAt(0))
+        if (Character.isDigit(value.charAt(0)))
                 return value;
         else
             return untangleVariablesMap(variables, value);
