@@ -26,15 +26,22 @@ public class StringCalculator extends HttpServlet {
         ArrayDeque<String> expressionReady = mapVariables(toPolishNotation(expressionOriginal), requestParameters);
         int result = compute(expressionReady);
 
+        //StringBuilder result = new StringBuilder();
+        /*while (!expressionReady.isEmpty()) {
+            result.append(expressionReady.poll());
+            result.append(" ");
+        }*/
+
+
         PrintWriter responseBodyWriter = responseCalculation.getWriter();
-        responseBodyWriter.print(result);
+        responseBodyWriter.print(result/*.toString()*/);
         responseBodyWriter.flush();
         responseBodyWriter.close();
     }
 
 
     private int compute(ArrayDeque<String> expression) {
-       Stack<Integer> calculationStack = new Stack<Integer>();
+       Stack<Integer> calculationStack = new Stack<>();
        while (!expression.isEmpty()) {
            String step = expression.poll();
            if(Character.isDigit(step.charAt(0)))
@@ -43,19 +50,19 @@ public class StringCalculator extends HttpServlet {
                char symbol = step.charAt(0);
                int rightOperand = calculationStack.pop();
                int leftOperand = calculationStack.pop();
-               int resultIntermediate = 0;
+               int resultIntermediate;
                switch (symbol) {
                    case '+':
                        resultIntermediate = rightOperand + leftOperand;
                        break;
                    case '-':
-                       resultIntermediate = rightOperand - leftOperand;
+                       resultIntermediate = leftOperand - rightOperand;
                        break;
                    case '*':
                        resultIntermediate = rightOperand * leftOperand;
                        break;
                    case '/':
-                       resultIntermediate = rightOperand / leftOperand;
+                       resultIntermediate = leftOperand / rightOperand;
                        break;
                    default:
                        throw new java.lang.IllegalStateException("Unexpected value: " + step);
@@ -71,7 +78,7 @@ public class StringCalculator extends HttpServlet {
         String expression = "(" + inputExpression + ")";
         ArrayDeque<String> expressionPolished = new ArrayDeque<>();
 
-        Stack<Character> operandCharStack = new Stack<Character>();
+        Stack<Character> operandCharStack = new Stack<>();
         int i = 0;
         while (i < expression.length()) {
             char cursor = expression.charAt(i);
@@ -79,8 +86,12 @@ public class StringCalculator extends HttpServlet {
             if (Character.isDigit(cursor) || Character.isLetter(cursor)) {
                 StringBuilder entity = new StringBuilder();
                 while (Character.isDigit(cursor) || Character.isLetter(cursor)) {
-                    entity.append(expression.charAt(i));
+                    entity.append(cursor);
                     i++;
+                    if (i<expression.length())
+                        cursor = expression.charAt(i);
+                    else
+                        break;
                 }
                 expressionPolished.offer(entity.toString());
                 i--;
@@ -112,7 +123,7 @@ public class StringCalculator extends HttpServlet {
         }
 
     private ArrayDeque<String> mapVariables (ArrayDeque<String> templateExpression, Map<String, String[]> variables) {
-        ArrayDeque<String> builtExpression = new ArrayDeque<String>();
+        ArrayDeque<String> builtExpression = new ArrayDeque<>();
         for (String item : templateExpression){
             if (Character.isLetter(item.charAt(0)))
                 builtExpression.offer(untangleVariablesMap(variables, item));
