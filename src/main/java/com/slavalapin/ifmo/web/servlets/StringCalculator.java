@@ -65,7 +65,7 @@ public class StringCalculator extends HttpServlet {
                        resultIntermediate = leftOperand / rightOperand;
                        break;
                    default:
-                       throw new java.lang.IllegalStateException("Unexpected value: " + step);
+                       throw new IllegalStateException("Unexpected value: " + step);
                }
                calculationStack.push(resultIntermediate);
            }
